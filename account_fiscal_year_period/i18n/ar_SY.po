@@ -1,0 +1,240 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* account_fiscal_year_period
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-16 10:09+0000\n"
+"PO-Revision-Date: 2019-12-16 10:09+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: account_fiscal_year_period
+#: model:ir.model,name:account_fiscal_year_period.model_account_move
+msgid "Account Entry"
+msgstr "القيد"
+
+#. module: account_fiscal_year_period
+#: model:ir.model,name:account_fiscal_year_period.model_account_period
+msgid "Account period"
+msgstr "الفترات المحاسبية"
+
+#. module: account_fiscal_year_period
+#: model:ir.actions.act_window,help:account_fiscal_year_period.action_account_fiscalyear
+msgid "Click to start a new fiscal year."
+msgstr "إضغط لإضافة فترة جديدة"
+
+#. module: account_fiscal_year_period
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_form
+msgid "Close"
+msgstr "إغلاق"
+
+#. module: account_fiscal_year_period
+#: selection:account.fiscalyear.periods,state:0
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_search
+msgid "Closed"
+msgstr "مغلقة"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_code
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_code
+msgid "Code"
+msgstr "الرقم"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_comments
+msgid "Comments"
+msgstr "ملاحظات"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_company_id
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_company_id
+msgid "Company"
+msgstr "الشركة"
+
+#. module: account_fiscal_year_period
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_form
+msgid "Create Periods"
+msgstr "إنشاء الفترات"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_create_uid
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_create_uid
+msgid "Created by"
+msgstr "أنشئ بواسطة"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_create_date
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_create_date
+msgid "Created on"
+msgstr "أنشئ في"
+
+#. module: account_fiscal_year_period
+#: model:ir.actions.act_window,help:account_fiscal_year_period.action_account_fiscalyear
+msgid "Define your company's financial year according to your needs. A\n"
+"                financial year is a period at the end of which a company's\n"
+"                accounts are made up (usually 12 months). The financial year is\n"
+"                usually referred to by the date in which it ends. For example,\n"
+"                if a company's financial year ends November 30, 2011, then\n"
+"                everything between December 1, 2010 and November 30, 2011\n"
+"                would be referred to as FY 2011."
+msgstr "Define your company's financial year according to your needs. A\n"
+"                financial year is a period at the end of which a company's\n"
+"                accounts are made up (usually 12 months). The financial year is\n"
+"                usually referred to by the date in which it ends. For example,\n"
+"                if a company's financial year ends November 30, 2011, then\n"
+"                everything between December 1, 2010 and November 30, 2011\n"
+"                would be referred to as FY 2011."
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_display_name
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_display_name
+msgid "Display Name"
+msgstr "الاسم المعروض"
+
+#. module: account_fiscal_year_period
+#: selection:account.fiscalyear.periods,state:0
+msgid "Draft"
+msgstr "مبدئي"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_date_stop
+msgid "End Date"
+msgstr "تاريخ الإنتهاء"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_date_stop
+msgid "End of Period"
+msgstr "تاريخ النهاية"
+
+#. module: account_fiscal_year_period
+#: model:ir.model,name:account_fiscal_year_period.model_account_fiscalyear
+#: model:ir.model,name:account_fiscal_year_period.model_account_fiscalyear_periods
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_name
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_fiscalyear_id
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_search
+msgid "Fiscal Year"
+msgstr "الفترات المالية"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_name
+msgid "Name"
+msgstr "الإسم"
+
+#. module: account_fiscal_year_period
+#: model:ir.actions.act_window,name:account_fiscal_year_period.action_account_fiscalyear
+#: model:ir.ui.menu,name:account_fiscal_year_period.menu_action_account_fiscalyear
+msgid "Fiscal Years"
+msgstr "السنوات المالية"
+
+#. module: account_fiscal_year_period
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_form
+msgid "Fiscal year"
+msgstr "السنة المالية"
+
+#. module: account_fiscal_year_period
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_tree
+msgid "Fiscalyear"
+msgstr "السنوات المالية"
+
+#. module: account_fiscal_year_period
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_search
+msgid "Group By..."
+msgstr "تجميع حسب.."
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_id
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_id
+msgid "ID"
+msgstr "المعرف"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods___last_update
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period___last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_write_uid
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_write_uid
+msgid "Last Updated by"
+msgstr "آخر تحديث بواسطة"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_write_date
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_write_date
+msgid "Last Updated on"
+msgstr "آخر تحديث في"
+
+#. module: account_fiscal_year_period
+#: selection:account.fiscalyear.periods,state:0
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_form
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_search
+msgid "Open"
+msgstr "فتح"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_special
+msgid "Opening/Closing Period"
+msgstr "إغلاق/فتح الفترة"
+
+#. module: account_fiscal_year_period
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_form
+msgid "Period"
+msgstr "فترة"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_sequence
+msgid "Period Sequence"
+msgstr "تسلسل"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_period_ids
+#: model:ir.ui.menu,name:account_fiscal_year_period.account_fiscal_year
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_form
+msgid "Periods"
+msgstr "الفترات"
+
+#. module: account_fiscal_year_period
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_search
+msgid "Search Fiscalyear"
+msgstr "البحث في السنوات المالية"
+
+#. module: account_fiscal_year_period
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_form
+msgid "Set To Draft"
+msgstr "إرجاع الى مبدئي"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_date_start
+msgid "Start Date"
+msgstr "تاريخ البدء"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_date_start
+msgid "Start of Period"
+msgstr "تاريخ البداية"
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_fiscalyear_periods_state
+#: model:ir.model.fields,field_description:account_fiscal_year_period.field_account_period_state
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_search
+msgid "Status"
+msgstr "الحالة "
+
+#. module: account_fiscal_year_period
+#: model:ir.model.fields,help:account_fiscal_year_period.field_account_period_special
+msgid "These periods can overlap."
+msgstr "These periods can overlap."
+
+#. module: account_fiscal_year_period
+#: model:ir.ui.view,arch_db:account_fiscal_year_period.view_account_fiscalyear_periods_form
+msgid "are you sure closed year and periods?"
+msgstr "هلا أنت  متأكد بأنك تريد إغلاق الفترة"
+
