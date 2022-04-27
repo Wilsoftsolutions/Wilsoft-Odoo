@@ -126,6 +126,7 @@ class ShopifyInstanceEpt(models.Model):
     name = fields.Char(size=120, required=True)
     shopify_company_id = fields.Many2one('res.company', string='Company', required=True,
                                          default=lambda self: self.env.company)
+    partner_id = fields.Many2one('res.partner', string='Partner')
     shopify_warehouse_id = fields.Many2one('stock.warehouse', string='Warehouse', default=_get_default_warehouse,
                                            domain="[('company_id', '=',shopify_company_id)]",
                                            help="Selected Warehouse will be set in your Shopify "

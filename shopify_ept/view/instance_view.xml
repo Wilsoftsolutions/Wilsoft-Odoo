@@ -96,6 +96,10 @@
                                    readonly="1" groups="base.group_multi_company"/>
                             <field name="shopify_warehouse_id" required="1"
                                    readonly="1"/>
+
+                        </group>
+                        <group>
+                            <field name="partner_id"/>
                         </group>
                     </group>
                     <group string="Shopify Site Info">
