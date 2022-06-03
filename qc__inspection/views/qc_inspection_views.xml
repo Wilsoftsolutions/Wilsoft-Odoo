@@ -1,0 +1,178 @@
+<odoo>
+  <data>
+      
+        <!-- Form View -->
+        <record id="qc_inspect_form_view" model="ir.ui.view">
+            <field name="name">qc.inspect.form.view</field>
+            <field name="model">qc.inspection</field>
+            <field name="arch" type="xml">
+                <form string="Qc Inspection">                  
+                    <sheet>
+                        <div class="oe_title">
+                           
+                                <group>
+                                <field name="name" 
+                                       placeholder="Quality Control Inspector ...."/>
+                                    <field name="ref" 
+                                       placeholder="Ref. SR# ...."/>
+                                </group>
+                                 <group>
+                                <field name="vendor_id" 
+                                       placeholder="Vendor Name ...."/>
+                                      
+                                    </group>
+                                 <group>
+                                      <field name="purchase_order_id" 
+                                       placeholder="Purchase Order ...."/>
+                                    </group>
+                             <group>
+                                     <field name="po_item_id" 
+                                       placeholder="Article ...."/>
+                                    </group>
+                        </div>   
+                        <strong><hr></hr></strong>
+                       <table style="width:90%" >
+                        <tr class="oe_title" >
+                        <th style="text-align:center">ARTICLE</th>
+                        <th style="text-align:center">COLOR</th>
+                        <th style="text-align:center">IMAGE</th>
+                        <th style="text-align:center">Plan</th>
+                        <th style="text-align:center">39</th>
+                        <th style="text-align:center" >40</th>
+                        <th style="text-align:center">41</th>
+                        <th style="text-align:center">42</th>
+                        <th style="text-align:center">43</th>
+                        <th style="text-align:center">44</th>
+                        <th style="text-align:center">45</th>
+                        <th style="text-align:center">46</th>
+                      </tr>
+                           
+                      <tr>
+                        <td><field name="article" 
+                        /></td>
+                        <td><field name="color" 
+                        /></td>
+                        <td><field name="image" 
+                        /></td>
+                        <td><field name="plan" 
+                        /></td>
+                      </tr>
+                      <tr>
+                        <td>Check</td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                        <td style="text-align:center"><field name="check39"/></td>
+                        <td style="text-align:center"><field name="check40"/></td>
+                        <td style="text-align:center"><field name="check41"/></td>
+                        <td style="text-align:center"><field name="check42"/></td>
+                        <td style="text-align:center"><field name="check43"/></td>
+                        <td style="text-align:center"><field name="check44"/></td>
+                        <td style="text-align:center"><field name="check45"/></td>
+                        <td style="text-align:center"><field name="check46"/></td>
+                      </tr>
+                        <tr>
+                        <td>Rework</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center"><field name="rework39"/></td>
+                        <td style="text-align:center"><field name="rework40"/></td>
+                        <td style="text-align:center"><field name="rework41"/></td>
+                        <td style="text-align:center"><field name="rework42"/></td>
+                        <td style="text-align:center"><field name="rework43"/></td>
+                        <td style="text-align:center"><field name="rework44"/></td>
+                        <td style="text-align:center"><field name="rework45"/></td>
+                        <td style="text-align:center"><field name="rework46"/></td>
+                      </tr>
+                        <tr>
+                        <td>B.pair</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center"><field name="bpair39"/></td>
+                        <td style="text-align:center"><field name="bpair40"/></td>
+                        <td style="text-align:center"><field name="bpair41"/></td>
+                        <td style="text-align:center"><field name="bpair42"/></td>
+                        <td style="text-align:center"><field name="bpair43"/></td>
+                        <td style="text-align:center"><field name="bpair44"/></td>
+                        <td style="text-align:center"><field name="bpair45"/></td>
+                        <td style="text-align:center"><field name="bpair46"/></td>
+                      </tr>
+                            <tr>
+                        <td>WH Receiving</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                      </tr>
+                            <tr>
+                        <td>Balance</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                        <td style="text-align:center"></td>
+                      </tr>
+                    </table>
+
+                    </sheet>                 
+                </form>
+            </field>
+        </record>
+      
+    
+      
+      <!-- Tree View -->
+        <record id="qc_inspect_tree_view" model="ir.ui.view">
+            <field name="name">qc.inspect.tree.view</field>
+            <field name="model">qc.inspection</field>
+            <field name="arch" type="xml">
+                <tree string="QC Inpection">                 
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+      
+      <record id="action_qc_inspect" model="ir.actions.act_window">
+            <field name="name">QC Inspection</field>
+            <field name="res_model">qc.inspection</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                   Quality Control Inspection
+                </p>
+            </field>
+        </record>
+        
+      
+      
+        <menuitem name="Quality Control" id="custom_parent_menu"
+                  />
+      
+        <menuitem name="QC Inspection" id="custom_sub_inspect_menu"
+                 parent="custom_parent_menu" />
+      
+        <menuitem name="QC Inspection" id="custom_sub_qc_inspection_menu"
+                 parent="custom_sub_inspect_menu"  
+                 action="action_qc_inspect" 
+                  />
+      
+      
+   
+  </data>
+</odoo>
