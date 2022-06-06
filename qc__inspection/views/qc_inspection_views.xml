@@ -11,11 +11,18 @@
                         <div class="oe_title">
                            
                                 <group>
+                                    <group>
                                 <field name="name" 
                                        placeholder="Quality Control Inspector ...."/>
-                                    <field name="ref" 
+                                        <field name="ref" 
                                        placeholder="Ref. SR# ...."/>
+                                        </group>
+                                    <group>
+                                <field name="id" string="SR #"/>
+                                        </group>
                                 </group>
+                             <h3 style="text-decoration-line: underline">Purchase Order Details:
+                            </h3>
                                  <group>
                                 <field name="vendor_id" 
                                        placeholder="Vendor Name ...."/>
@@ -30,7 +37,9 @@
                                        placeholder="Article ...."/>
                                     </group>
                         </div>   
-                        <strong><hr></hr></strong>
+                        <div style="    border-top-style: solid;
+                                    border-top-width: thin; 
+                                    margin-bottom: 10px"></div>
                        <table style="width:90%" >
                         <tr class="oe_title" >
                         <th style="text-align:center">ARTICLE</th>
@@ -54,7 +63,7 @@
                         /></td>
                         <td><field name="image" 
                         /></td>
-                        <td><field name="plan" 
+                        <td style="text-align:center"><field name="plan" 
                         /></td>
                       </tr>
                       <tr>
@@ -128,7 +137,32 @@
                         <td style="text-align:center"></td>
                       </tr>
                     </table>
-
+                        <div style="    border-top-style: solid;
+                                    border-top-width: thin; 
+                                    margin-bottom: 10px;
+                                    margin-top: 10px"></div>
+                        <h3 style="text-decoration-line: underline">Inspection Details:
+                            </h3>
+                        <group>
+                            <field name="upper"/>
+                            <field name="linning"/>
+                            <field name="mid_sole"/>
+                            <field name="outsole"/>
+                            <field name="finished"/>
+                            <field name="packaging"/>
+                            <field name="acc"/>
+                            <field name="other"/>
+                            </group>
+                         <div style="border-top-style: solid;
+                                    border-top-width: thin; 
+                                    margin-bottom: 10px;
+                                    margin-top: 10px"></div>
+                        <h3 style="text-decoration-line: underline">Qc Inspector Comments:
+                            </h3>
+                        <group>
+                        <field name="comment" style=' max-width: 1150px;  width: 500px'/>
+                        <field name="attch_ids" widget="many2many_binary"/>
+                   </group>
                     </sheet>                 
                 </form>
             </field>
@@ -141,8 +175,10 @@
             <field name="name">qc.inspect.tree.view</field>
             <field name="model">qc.inspection</field>
             <field name="arch" type="xml">
-                <tree string="QC Inpection">                 
+                <tree string="QC Inpection">
                     <field name="name"/>
+                    <field name="vendor_id"/>
+                    <field name="po_item_id"/>
                 </tree>
             </field>
         </record>
