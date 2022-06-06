@@ -1,0 +1,37 @@
+<odoo>
+	<data>
+		<!-- Product Category Inherit -->
+		<record id="product_category_form_inherit" model="ir.ui.view">
+			<field name="name">product.category.form</field>
+			<field name="model">product.category</field>
+			<field name="inherit_id" ref="product.product_category_form_view"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='parent_id']" position="after">
+					<!-- Add your fields or attributes here -->
+					<field name="analytic_tag_id" widget="many2many_tags"/>
+				</xpath>
+
+			</field>
+		</record>
+
+
+		<record id="stock_form_inherit" model="ir.ui.view">
+			<field name="name">stock form inherit</field>
+			<field name="model">stock.picking</field>
+			<field name="inherit_id" ref="stock.view_picking_form"/>
+			<field name="arch" type="xml">
+<!--				<xpath expr="//page[@name='detailed_operations']//field[@name='move_line_ids_without_package']//tree//field[@name='product_id']"-->
+<!--					   position="after">-->
+<!--					<field name="test"/>-->
+<!--				</xpath>-->
+				<xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
+					<field name="stock_analytic_tag_id" widget="many2many_tags"/>
+				</xpath>
+
+			</field>
+		</record>
+
+
+	</data>
+</odoo>

@@ -1,0 +1,21 @@
+<odoo>
+	<data>
+		<!-- Inherit Form View to Modify it -->
+		<record id="res_partner_form_inherit" model="ir.ui.view">
+			<field name="name">res.partner.form</field>
+			<field name="model">res.partner</field>
+			<field name="inherit_id" ref="base.view_partner_form"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='property_payment_term_id']" position="after">
+					<field name="sale_tax_ids" widget="many2many_tags" domain="[('type_tax_use', '=', 'sale')]"/>
+				</xpath>
+
+				<xpath expr="//field[@name='property_supplier_payment_term_id']" position="after">
+					<field name="purchase_tax_ids" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase')]"/>
+				</xpath>
+
+			</field>
+		</record>
+	</data>
+</odoo>
