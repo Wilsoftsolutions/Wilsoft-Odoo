@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data><template id="jkgjh">
+            <t t-set="company" t-value="user.company_id"/>
+
+            <!--					<div class="header" >-->
+
+            <div class="header">
+                <!--                         header of the report-->
+                <h3 class="text-center"><b>Sale Invoice</b></h3>
+
+                <!--                       second section of the report-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6" style="border:1px solid black; margin-left:0px">
+                            <div class="row">
+                                <div class="col-3">
+                                    <span>
+                                        <img src="/invoice_date/static/274718224_3254234354857449_7899967545692053477_n.jpg"
+                                             width="100%" height="135"/>
+                                    </span>
+                                </div>
+                                <div class="col-9">
+                                    <span>
+                                        <h6>
+                                            <b>GLANS DESIGN LIMITED</b>
+                                        </h6>
+                                        <p style="font-size:13px;margin-top:-10px">124/1, Quaid-e-Azam Industrial Estate
+                                            Kot Lakhpat, Lahore, Punjab
+                                            54700
+                                        </p>
+                                        <p style="font-size:11px; margin-top:-10px"><b>Phone :</b>Tel # <t t-esc="company.phone"/>
+                                            <br/>
+                                            <b>Address :</b><t t-esc="company.street"/>
+                                            <br/>
+                                            <b>E-mail :</b><t t-esc="company.email"/>
+                                            <br/>
+                                            <b>NTN :</b><t t-esc="company.vat"/>
+                                            <br/>
+                                            <b>SRTN :</b>3277876227804
+                                            <br/>
+                                        </p>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4 offset-2 text-right">
+                            <p style="font-size:11px">
+                                <b>Printed By:</b>
+                                <span style="border-bottom:1px solid black; margin-left:10px"><t t-esc="user.name"/> </span>
+                            </p>
+                            <p style="font-size:11px">
+                                <b>Printed On:</b>
+                                <span style="border-bottom:1px solid black; margin-left:10px"><t t-esc="date"/></span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-7" style="border:1px solid black; padding:9px; margin-top:9px; margin-left:-15px">
+                        <table style="font-size:13px; margin-top:9px">
+                            <tr style="font-size:11px">
+
+                                <td>Customer:</td>
+                                <td style="">
+                                    <div style="border-bottom:1px solid black; width:550px; margin-left:20px">
+                                        <span style="margin-left:20px; color:black"><t t-esc="c_name"/></span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr style="font-size:11px">
+                                <td>Address:</td>
+                                <td style="">
+                                    <div style="border-bottom:1px solid black; width:550px; margin-left:20px">
+                                        <span style="margin-left:20px"><t t-esc="address"/> </span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr style="font-size:11px">
+                                <td>Tel:</td>
+                                <td style="">
+                                    <div style="border-bottom:1px solid black; width:550px; margin-left:20px">
+                                        <span style="margin-left:20px"><t t-esc="phone"/> </span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr style="font-size:11px">
+                                <td>STN/CNIC:</td>
+                                <td>
+                                    <div style="border-bottom:1px solid black; width:550px; margin-left:20px">
+                                        <span style="margin-left:20px">9867867878</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="font-size:11px">
+                                <td>SRTN:</td>
+                                <td>
+                                    <div style="border-bottom:1px solid black; width:550px; margin-left:20px">
+                                        <span style="margin-left:20px">097559409</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr style="font-size:11px">
+                                <td>Ship/Delivery:</td>
+                                <td>
+                                    <div style="border-bottom:1px solid black; width:550px; margin-left:20px">
+                                        <span style="margin-left:20px">Shop one at johar</span>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="footer" style="margin-top:-90px">
+
+            </div>
+        </template>
+
+    </data>
+</odoo>

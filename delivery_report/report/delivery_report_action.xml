@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+         <report
+            id="sale_delivery_report_action_id"
+            model="stock.picking"
+            report_type="qweb-pdf"
+            string="Sale Delivery Report"
+            name="delivery_report.invoice_delivery_report_template_id"
+            file="delivery_report.invoice_delivery_report_template_id"
+        />
+
+    </data>
+</odoo>

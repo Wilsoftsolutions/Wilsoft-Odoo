@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="invoice_delivery_report_template_id">
+
+			<t t-call="web.html_container" style="margin-top:150px">
+				<t t-call="delivery_report.delivery_header_id"/>
+				<t t-call="web.internal_layout">
+
+					<style>
+						.data_table_body thead td {text-align: center;}
+						.row_body td {padding-left: 10px;}
+						.tb_border{
+						border-bottom : 1px solid lightgray;
+						}
+
+					</style>
+					<t t-foreach="docs" t-as="o">
+						<div class="page">
+							<br/>
+							<br/>
+							<div class="container">
+								<div class="col-7"
+									 style="border:1px solid lightgray; padding:9px; margin-top:9px; margin-left:-15px">
+									<table style="font-size:13px; margin-top:9px" width="100%">
+										<tr style="font-size:11px">
+
+											<td>Customer:</td>
+											<td class="tb_border">
+
+												<span style="margin-left:20px; color:black">
+													<t t-esc="c_name"/>
+												</span>
+											</td>
+										</tr>
+
+										<tr style="font-size:11px">
+											<td>Address:</td>
+											<td class="tb_border">
+												<span style="margin-left:20px">
+													<t t-esc="address"/>
+												</span>
+											</td>
+										</tr>
+
+										<tr style="font-size:11px">
+											<td>Tel:</td>
+											<td class="tb_border">
+												<span style="margin-left:20px">
+													<t t-esc="phone"/>
+												</span>
+											</td>
+										</tr>
+
+										<tr style="font-size:11px">
+											<td>STN/CNIC:</td>
+											<td class="tb_border">
+												<span style="margin-left:20px">9867867878</span>
+											</td>
+										</tr>
+										<tr style="font-size:11px">
+											<td>SRTN:</td>
+											<td class="tb_border">
+												<span style="margin-left:20px">
+													<t t-esc="o.partner_id.vat"/>
+												</span>
+											</td>
+										</tr>
+										<tr style="font-size:11px">
+											<td>Ship/Delivery:</td>
+											<td class="tb_border">
+												<span style="margin-left:20px"></span>
+											</td>
+										</tr>
+
+									</table>
+								</div>
+							</div>
+							<br/>
+							<br/>
+
+
+							<table width="100%" style="font-size:12px;" class="table table-sm table-bordered">
+								<thead class="text-center">
+									<tr>
+										<th width="5%">Sr#</th>
+										<th width="15%">Product</th>
+										<th width="10%">Color</th>
+										<th width="5%">Uom</th>
+										<th width="35%">
+											<table width="100%" style="padding-left: 0px; padding-right"
+												   class="table-bordered-none">
+												<thead>
+													<tr class="text-center">
+														Sizes Ranges
+													</tr>
+													<tr>
+														<th width="12.5%">39</th>
+														<th width="12.5%">40</th>
+														<th width="12.5%">41</th>
+														<th width="12.5%">42</th>
+														<th width="12.5%">43</th>
+														<th width="12.5%">44</th>
+														<th width="12.5%">45</th>
+														<th width="12.5%">46</th>
+													</tr>
+												</thead>
+											</table>
+										</th>
+										<th width="5%">Qty</th>
+										<th width="10%">Retail Price</th>
+										<th width="15%">Total Retail Price</th>
+									</tr>
+								</thead>
+								<t t-set="count" t-value="0"/>
+								<t t-set="total_variant_amount" t-value="0"/>
+								<t t-set="total_retail_price" t-value="0"/>
+								<t t-set="sale_tax" t-value="0"/>
+
+								<t t-set="count_disc" t-value="0"/>
+								<t t-foreach="variant_values" t-as="variant">
+									<tbody class="data_table_body">
+										<t t-set="count" t-value="count+1"/>
+										<tr class="row_body">
+											<td>
+												<span t-esc="count"/>
+											</td>
+											<td>
+												<span t-esc="variant['product_name']"/>
+											</td>
+											<td>
+												<span t-esc="variant['color_name']"/>
+											</td>
+											<td>
+												<span t-esc="variant['uom']"/>
+											</td>
+											<td style="padding-left: 0px!important;">
+												<t t-if="variant['color_name'] != '-'">
+													<table width="100%" class="data_table_inside">
+														<t t-set="total_qty" t-value="0"/>
+														<t t-foreach="variant['sizes']" t-as="size">
+															<tbody>
+																<tr>
+
+																	<td width="12.5%">
+																		<span t-esc="size['39']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['39'])"/>
+																	</td>
+																	<td width="12.5%">
+																		<span t-esc="size['40']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['40'])"/>
+																	</td>
+																	<td width="12.5%">
+																		<span t-esc="size['41']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['41'])"/>
+																	</td>
+																	<td width="12.5%">
+																		<span t-esc="size['42']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['42'])"/>
+																	</td>
+																	<td width="12.5%">
+																		<span t-esc="size['43']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['43'])"/>
+																	</td>
+																	<td width="12.5%">
+																		<span t-esc="size['44']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['44'])"/>
+																	</td>
+																	<td width="12.5%">
+																		<span t-esc="size['45']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['45'])"/>
+																	</td>
+																	<td width="12.5%">
+																		<span t-esc="size['46']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['46'])"/>
+																	</td>
+																</tr>
+															</tbody>
+														</t>
+													</table>
+												</t>
+												<t t-else="">
+													<span style="padding-left: 10px;">No size set</span>
+												</t>
+											</td>
+											<td>
+												<t t-if="variant['color_name'] != '-'">
+													<span t-esc="total_qty"/>
+													<span t-set="total_retail_price"
+														  t-value="total_retail_price + (variant['retail_price']* total_qty)"/>
+												</t>
+												<t t-else="">
+													<span t-set="total_qty" t-value="variant['line_total_qty']"/>
+													<span t-esc="total_qty"/>
+													<span t-set="total_variant_amount"
+														  t-value="total_variant_amount + variant['line_total_qty']"/>
+												</t>
+											</td>
+											<!--calculate sale taxes, net amount-->
+
+											<t t-set="sale_tax" t-value="variant['taxes']"/>
+											<t t-set="net_amount" t-value="variant['net_amount']"/>
+
+											<td style="text-align:right">
+												<span t-esc="variant['retail_price']"/>
+												<span t-set="count_disc"
+													  t-value="count_disc + variant['retail_price']"  t-options='{"widget": "float", "precision": 2}'/>
+
+											</td>
+
+											<td style="text-align:right">
+												<t t-set="total_amount" t-value="variant['retail_price'] * total_qty"/>
+												<span t-esc="total_amount"
+													  t-options='{"widget": "float", "precision": 2}'/>
+											</td>
+										</tr>
+									</tbody>
+								</t>
+
+								<!--calculation summary of the report-->
+
+								<tr style="border:1px solid white; margin-top:40px padding-top:5px">
+									<td colspan="6" style="border:none; border-color:none"></td>
+									<td colspan="" style="border:1px solid #e3e8e5;">Total Value</td>
+									<td colspan="" style="border:1px solid #e3e8e5;text-align:right">
+										<span t-esc="total_retail_price"
+											  t-options='{"widget": "float", "precision": 2}'/>
+									</td>
+								</tr>
+								<!--  <tr style="border:1px solid white; margin-top:10px">
+									  <td colspan="6" style="border:none; border-color:none"></td>
+									  <td colspan="" style="border:1px solid #e3e8e5;">Total WS Value</td>
+									  <td colspan="" style=" border:1px solid #e3e8e5;">09789</td>
+								  </tr>
+								  <tr style="border:1px solid white; margin-top:10px">
+									  <td colspan="6" style="border:none; border-color:none;"></td>
+									  <td colspan="" style="border:1px solid #e3e8e5;">Sales Tax 17%</td>
+									  <td colspan="" style="border:1px solid #e3e8e5;"><span t-esc="sale_tax"/></td>
+								  </tr>
+
+								  <tr style="border:1px solid white; margin-top:10px">
+									  <td colspan="6" style="border:none; border-color:none"></td>
+									  <td colspan="" style="border:1px solid #e3e8e5;">Further Tax 3%</td>
+									  <td colspan="" style="border:1px solid #e3e8e5;">09789</td>
+								  </tr>
+								  <tr style="border:1px solid white; margin-top:10px;padding:3">
+									  <td colspan="6" style="border:none; border-color:none"></td>
+									  <td colspan="" style="border:1px solid #e3e8e5;padding:3">Net Value</td>
+									  <td colspan="" style="border:1px solid #e3e8e5;padding:3"><span t-esc="net_amount"/> </td>
+								  </tr>
+	  -->
+
+
+							</table>
+
+						</div>
+					</t>
+					<!--					<p style="border-bottom:1px solid black; margin-top:90px; margin-left:390px; font-size:13px">One-->
+					<!--						&lt;!&ndash;                    <t t-esc="o.num_words"/>&ndash;&gt;-->
+					<!--					</p>-->
+					<br/>
+					<br/>
+
+					<div class="container">
+						<div class="row">
+							<div class="col-12" style="border:1px solid lightgray; margin-left:-10px">
+								<div class="row">
+									<table style="font-size:13px; margin-top:9px; margin-left:100px">
+										<tr style="font-size:11px">
+
+											<td>Account Name:</td>
+											<td style="">
+												<div style="border-bottom:1px solid lightgray; width:550px; margin-left:20px">
+													<span style="margin-left:20px; color:black">GLANZ DESIGN
+														(SMC-PRIVATE) LIMITED
+													</span>
+												</div>
+											</td>
+										</tr>
+
+										<tr style="font-size:11px">
+											<td>Banks Name:</td>
+											<td style="">
+												<div style="border-bottom:1px solid lightgray; width:550px; margin-left:20px">
+													<span style="margin-left:20px">Soneri , HBL and Meezan Bank
+														Limited
+													</span>
+												</div>
+											</td>
+										</tr>
+
+										<tr style="font-size:11px">
+											<td>Bank Address:</td>
+											<td style="">
+												<div style="border-bottom:1px solid lightgray; width:550px; margin-left:20px">
+													<span style="margin-left:20px">Lahore , Lahore and Tricon Plaza
+														Gulberg Lahore
+													</span>
+												</div>
+											</td>
+										</tr>
+
+										<tr style="font-size:11px">
+											<td>Currency Of Account ::</td>
+											<td style="">
+												<div style="border-bottom:1px solid lightgray; width:550px; margin-left:20px">
+													<span style="margin-left:20px">PKR</span>
+												</div>
+											</td>
+										</tr>
+										<tr style="font-size:11px">
+											<td>Account Numbers IBNA :</td>
+											<td style="">
+												<div style="border-bottom:1px solid lightgray; width:550px; margin-left:20px">
+													<span style="margin-left:20px">8329185 , 15897919205503 and
+														01160010553569
+													</span>
+												</div>
+											</td>
+										</tr>
+										<tr style="font-size:11px">
+											<td>Bank Identification Code (BIC) or SWIFT Code :</td>
+											<td style="">
+												<div style="width:550px; margin-left:20px">
+													<span style="margin-left:20px">
+														----------------------------------------------------------
+													</span>
+												</div>
+											</td>
+										</tr>
+
+									</table>
+								</div>
+							</div>
+
+						</div>
+						<!-- <div class="col-4 mt-2" style="border:1px solid black">
+							 <p>
+								 Head Office: 124/1, Industrial Estate Kot
+								 <br/>
+								 Lakhpat,Lahore<br/>Phone: +92-42-35121668-9
+							 </p>
+						 </div>-->
+					</div>
+
+				</t>
+			</t>
+
+		</template>
+	</data>
+</odoo>
