@@ -1,201 +1,349 @@
 <odoo>
-  <data>
-      
-        <!-- Form View -->
-        <record id="qc_inspect_form_view" model="ir.ui.view">
-            <field name="name">qc.inspect.form.view</field>
-            <field name="model">qc.inspection</field>
-            <field name="arch" type="xml">
-                <form string="Qc Inspection">    
-                    <header>
-                        <button name ="action_status" string ="Confirm" type="object"  class="oe_highlight">
-                            </button>
-                        <field name="status" widget ="statusbar" />
-                        </header>
-                    <sheet>
-                        
-                        <div class="oe_title">
-                           
-                                <group>
-                                    <group>
-                                <field name="name" 
-                                       placeholder="Quality Control Inspector ...." attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                                        <field name="ref" 
-                                       placeholder="Ref. SR# ...." attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                                        </group>
-                                    <group>
-                                <field name="id" string="SR #"/>
-                                        <field name="bundle" />
-                                        </group>
-                                </group>
-                             <h3 style="text-decoration-line: underline">Purchase Order Details:
-                            </h3>
-                                 <group>
-                                <field name="vendor_id" 
-                                       placeholder="Vendor Name ...." attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                                      
-                                    </group>
-                                 <group>
-                                      <field name="purchase_order_id" 
-                                       placeholder="Purchase Order ...." attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                                    </group>
-                             <group>
-                                     <field name="po_item_id" 
-                                       placeholder="Article ...." attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                                    </group>
-                        </div>   
-                        <div style="    border-top-style: solid;
+	<data>
+
+		<!-- Form View -->
+		<record id="qc_inspect_form_view" model="ir.ui.view">
+			<field name="name">qc.inspect.form.view</field>
+			<field name="model">qc.inspection</field>
+			<field name="arch" type="xml">
+				<form string="Qc Inspection" duplicate="false" delete="false">
+					<header>
+						<button name="action_status" attrs="{'invisible': [('status', 'in', ['Confrimed','ready'])]}" string="Confirm" type="object" class="oe_highlight"/>
+						<button name="action_waiting_for_approval" attrs="{'invisible': [('status', 'in', ['Confrimed','waiting_for_approval'])]}" string="Send For Approval" type="object" class="oe_highlight"/>
+
+						<field name="status" widget="statusbar"/>
+<!--						<field name="status_bar" widget="statusbar"/>-->
+					</header>
+					<sheet>
+
+						<div class="oe_title">
+
+							<group>
+								<group>
+									<field name="name"
+										   placeholder="Quality Control Inspector ...."
+										   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="ref"
+										   placeholder="Ref. SR# ...."
+										   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</group>
+								<group>
+									<field name="id" string="SR #"/>
+<!--									                                        <field name="bundle" />-->
+								</group>
+							</group>
+							<h3 style="text-decoration-line: underline">Purchase Order Details:
+							</h3>
+							<group>
+								<field name="vendor_id"
+									   placeholder="Vendor Name ...."
+									   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+
+							</group>
+							<group>
+								<field name="purchase_order_id"
+									   placeholder="Purchase Order ...."
+									   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							</group>
+							<group>
+								<field name="po_item_id"
+									   placeholder="Article ...." attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							</group>
+						</div>
+						<div style="    border-top-style: solid;
                                     border-top-width: thin; 
                                     margin-bottom: 10px"></div>
-                       <table style="width:90%" >
-                        <tr class="oe_title" >
-                        <th style="text-align:center">IMAGE</th>
-                        <th style="text-align:center">Plan</th>
-                        <th style="text-align:center">39</th>
-                        <th style="text-align:center">40</th>
-                        <th style="text-align:center">41</th>
-                        <th style="text-align:center">42</th>
-                        <th style="text-align:center">43</th>
-                        <th style="text-align:center">44</th>
-                        <th style="text-align:center">45</th>
-                        <th style="text-align:center">46</th>
-                      </tr>
-                           
-                      <tr>
-                        <td><field name="image"/></td>
-                        <td style="text-align:center"><field name="plan" /></td>
-                        <td style="text-align:center"><field name="article39" /></td>
-                        <td style="text-align:center"><field name="article40" /></td>
-                        <td style="text-align:center"><field name="article41" /></td>
-                        <td style="text-align:center"><field name="article42" /></td>
-                        <td style="text-align:center"><field name="article43" /></td>
-                        <td style="text-align:center"><field name="article44" /></td>
-                        <td style="text-align:center"><field name="article45" /></td>
-                        <td style="text-align:center"><field name="article46" /></td>
-                      </tr>
-                      <tr>
-                        <td>Check</td>
-                          <td></td>
-                        <td style="text-align:center"><field name="check39" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="check40" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="check41" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="check42" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="check43" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="check44" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="check45" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="check46" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                      </tr>
-                        <tr>
-                        <td>Rework</td>
-                            <td></td>
-                        <td style="text-align:center"><field name="rework39" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="rework40" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="rework41" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="rework42" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="rework43" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="rework44" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="rework45" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="rework46" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                      </tr>
-                        <tr>
-                        <td>B.pair</td>
-                            <td></td>
-                        <td style="text-align:center"><field name="bpair39" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="bpair40" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="bpair41" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="bpair42" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="bpair43" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="bpair44" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="bpair45" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                        <td style="text-align:center"><field name="bpair46" attrs="{'readonly':[('status','=','Confrimed')]}"/></td>
-                      </tr>
-                            
-                        <tr>
-                        <td>Balance</td>
-                        <td></td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center"></td>
-                        <td style="text-align:center"></td>
-                      </tr>
-                    </table>
-                        <div style="    border-top-style: solid;
+						<table style="width:90%">
+							<tr class="oe_title">
+								<th style="text-align:center">IMAGE</th>
+								<th style="text-align:center">Plan</th>
+								<th style="text-align:center">36</th>
+								<th style="text-align:center">37</th>
+								<th style="text-align:center">38</th>
+								<th style="text-align:center">39</th>
+								<th style="text-align:center">40</th>
+								<th style="text-align:center">41</th>
+								<th style="text-align:center">42</th>
+								<th style="text-align:center">43</th>
+								<th style="text-align:center">44</th>
+								<th style="text-align:center">45</th>
+								<th style="text-align:center">46</th>
+							</tr>
+
+							<tr>
+								<td style="height:40px;width:80px;">
+									<field name="image" widget="image" force_save="True" readonly="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="plan" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article36" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article37" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article38" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article39" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article40" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article41" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article42" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article43" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article44" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article45" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="article46" force_save="True"/>
+								</td>
+							</tr>
+							<tr>
+								<td>Check</td>
+								<td></td>
+								<td style="text-align:center">
+									<field name="check36" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="check37" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="check38" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="check39" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="check40" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="check41" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="check42" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="check43" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="check44" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="check45" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="check46" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+							</tr>
+							<tr>
+								<td>Rework</td>
+								<td></td>
+								<td style="text-align:center">
+									<field name="rework36" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="rework37" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="rework38" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="rework39" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="rework40" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="rework41" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="rework42" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="rework43" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="rework44" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="rework45" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="rework46" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+							</tr>
+							<tr>
+								<td>B.pair</td>
+								<td></td>
+								<td style="text-align:center">
+									<field name="bpair36" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bpair37" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bpair38" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+
+								<td style="text-align:center">
+									<field name="bpair39" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+
+								<td style="text-align:center">
+									<field name="bpair40" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bpair41" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bpair42" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bpair43" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bpair44" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bpair45" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bpair46" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								</td>
+							</tr>
+
+							<tr>
+								<td>Balance</td>
+								<td></td>
+								<td style="text-align:center">
+									<field name="bal_36" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bal_37" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bal_38" force_save="True"/>
+								</td>
+								<td style="text-align:center">
+									<field name="bal_39" force_save="True"/>
+								</td>
+
+
+								<td style="text-align:center">
+									<field name="bal_40" force_save="True"/>
+
+								</td>
+								<td style="text-align:center">
+									<field name="bal_41" force_save="True"/>
+
+								</td>
+								<td style="text-align:center">
+									<field name="bal_42" force_save="True"/>
+
+								</td>
+								<td style="text-align:center">
+									<field name="bal_43" force_save="True"/>
+
+								</td>
+								<td style="text-align:center">
+									<field name="bal_44" force_save="True"/>
+
+								</td>
+								<td style="text-align:center">
+									<field name="bal_45" force_save="True"/>
+
+								</td>
+								<td style="text-align:center">
+									<field name="bal_46" force_save="True"/>
+
+								</td>
+							</tr>
+						</table>
+						<div style="    border-top-style: solid;
                                     border-top-width: thin; 
                                     margin-bottom: 10px;
                                     margin-top: 10px"></div>
-                        <h3 style="text-decoration-line: underline">Inspection Details:
-                            </h3>
-                        <group>
-                            <field name="upper" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                            <field name="linning" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                            <field name="mid_sole" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                            <field name="outsole" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                            <field name="finished" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                            <field name="packaging" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                            <field name="acc" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                            <field name="other" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                            </group>
-                         <div style="border-top-style: solid;
+						<h3 style="text-decoration-line: underline">Inspection Details:
+						</h3>
+						<group>
+							<field name="upper" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							<field name="linning" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							<field name="mid_sole" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							<field name="outsole" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							<field name="finished" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							<field name="packaging" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							<field name="acc" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							<field name="other" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+						</group>
+						<div style="border-top-style: solid;
                                     border-top-width: thin; 
                                     margin-bottom: 10px;
                                     margin-top: 10px"></div>
-                        <h3 style="text-decoration-line: underline">Qc Inspector Comments:
-                            </h3>
-                        <group>
-                        <field name="comment" style=' max-width: 1150px;  width: 500px' attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                        <field name="attch_ids" widget="many2many_binary" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-                   </group>
-                    </sheet>                 
-                </form>
-            </field>
-        </record>
-      
-    
-      
-      <!-- Tree View -->
-        <record id="qc_inspect_tree_view" model="ir.ui.view">
-            <field name="name">qc.inspect.tree.view</field>
-            <field name="model">qc.inspection</field>
-            <field name="arch" type="xml">
-                <tree string="QC Inpection">
-                    <field name="name"/>
-                    <field name="vendor_id"/>
-                    <field name="po_item_id"/>
-                    <field name="status" string="Status"/>
-                </tree>
-            </field>
-        </record>
-      
-      <record id="action_qc_inspect" model="ir.actions.act_window">
-            <field name="name">QC Inspection</field>
-            <field name="res_model">qc.inspection</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" eval="False"/>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">
-                   Quality Control Inspection
-                </p>
-            </field>
-        </record>
-        
-      
-      
-        <menuitem name="Quality Control" id="custom_parent_menu"
-                  />
-      
-        <menuitem name="QC Inspection" id="custom_sub_inspect_menu"
-                 parent="custom_parent_menu" />
-      
-        <menuitem name="QC Inspection" id="custom_sub_qc_inspection_menu"
-                 parent="custom_sub_inspect_menu"  
-                 action="action_qc_inspect" 
-                  />
-      
-      
-   
-  </data>
+						<h3 style="text-decoration-line: underline">Qc Inspector Comments:
+						</h3>
+						<group>
+							<field name="comment" style=' max-width: 1150px;  width: 500px'
+								   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							<field name="attch_ids" widget="many2many_binary"
+								   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+
+		<!-- Tree View -->
+		<record id="qc_inspect_tree_view" model="ir.ui.view">
+			<field name="name">qc.inspect.tree.view</field>
+			<field name="model">qc.inspection</field>
+			<field name="arch" type="xml">
+				<tree string="QC Inpection">
+					<field name="name"/>
+					<field name="vendor_id"/>
+					<field name="po_item_id"/>
+					<field name="status" string="Status"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_qc_inspect" model="ir.actions.act_window">
+			<field name="name">QC Inspection</field>
+			<field name="res_model">qc.inspection</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" eval="False"/>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Quality Control Inspection
+				</p>
+			</field>
+		</record>
+
+
+		<menuitem name="Quality Control" id="custom_parent_menu"
+		/>
+
+		<menuitem name="QC Inspection" id="custom_sub_inspect_menu"
+				  parent="custom_parent_menu"/>
+
+		<menuitem name="QC Inspection" id="custom_sub_qc_inspection_menu"
+				  parent="custom_sub_inspect_menu"
+				  action="action_qc_inspect"
+		/>
+
+
+	</data>
 </odoo>
