@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="purchase_footer_id">
+            <t t-call="web.html_container">
+                <t t-call="web.internal_layout">
+                    <!-- <t t-call="report.external_layout"> -->
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-8">
+                                <text style="font-size:12px;">Terms:
+                                    Payment terms: ….. Days Net after submission of invoice
+                                    Shipment subject to quality inspection against approved production sample and
+                                    specification sheet
+                                    Glanz not liable for loss incurred due to delayed or defective production
+                                    Carton markings and barcodes are required on all cartons as per agreed guidelines
+                                    Cartons must be sealed with vendor coded tape as per agreed guidelines
+                                    Any trademark or copyright of Glanz Design cannot be used without authorization
+                                    Purchase Order number must appear on all documents pertaining to this order
+                                </text>
+                                <br/>
+                                <br/>
+                                <strong>Approved BY HOD Merchandising
+                                </strong>
+                                <br/>
+                                <br/>
+                                <hr style="border:1px solid black;color:solid black;"></hr>
+                            </div>
+                            <div class="col-4">
+
+                                <strong>Approved BY CEO
+                                </strong>
+
+                                <hr style="border:1px solid black;color:solid black;"></hr>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+
+    </data>
+</odoo>

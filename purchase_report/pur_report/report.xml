@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="paperformat_purchase_report_custom" model="report.paperformat">
+            <field name="name">Purchase Paper Format</field>
+            <field name="default" eval="True"/>
+            <field name="format">custom</field>
+            <field name="page_height">200</field>
+            <field name="page_width">380</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">30</field>
+            <field name="margin_bottom">20</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">20</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!-- NAME & FILE_NAME should be the same -->
+        <report
+                id="purchase_report_id_custom"
+                model="purchase.order"
+                report_type="qweb-pdf"
+                string="purchase report"
+                name="purchase_report.purchase_report_id"
+                file="purchase_report.purchase_report_id"
+                paperformat="purchase_report.paperformat_purchase_report_custom"
+        />
+
+
+    </data>
+
+
+</odoo>

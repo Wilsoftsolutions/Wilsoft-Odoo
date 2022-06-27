@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+       <!-- Inherit Form View to Modify it -->
+       <record id="stock_picking_inherit_id" model="ir.ui.view">
+           <field name="name">Stock Picking</field>
+           <field name="model">stock.picking</field>
+           <field name="inherit_id" ref="stock.view_picking_form"/>
+           <field name="arch" type="xml">
+
+               <xpath expr="//field[@name='move_ids_without_package']" position="after">
+                   <!-- Add your fields or attributes here -->
+                   <group>
+                       <group><field name="total_amount"/></group>
+                   </group>
+               </xpath>
+
+           </field>
+       </record>
+
+    </data>
+</odoo>

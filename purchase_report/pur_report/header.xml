@@ -1,0 +1,90 @@
+<odoo>
+    <data>
+        <template id="purchase_header_id">
+            <t t-set="company" t-value="user.company_id"/>
+            <div class="header" width="100%">
+                <div class="container-fluid">
+                    <div class="row" style="background-color:#08194f">
+                        <div class="col-12" style="border:1px solid black; margin-left:0px">
+                            <div class="row">
+                                <div class="col-3">
+                                    <span>
+<!--                                        <img src="/purchase_report/static/glan.png" width="100%" height="100"-->
+<!--                                             style="margin-left:-14px"/>-->
+                                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="height:70px;" width="100%"/>
+                                    </span>
+                                </div>
+                                <div class="col-9">
+                                    <h4 class="text-white" style="padding-left: 15px; padding-top:20px">
+                                        <b>Purchase Order GLANZ Design Private Limtited</b>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- second section of the report -->
+                <t t-foreach="purchase" t-as="o">
+<!--                    <div class="container">-->
+<!--                        <div class="col-7" style="padding:9px; margin-left:-15px">-->
+<!--                            <p>124/1, Quaid-e-Azam Industrial Estate Kot Lakhpat, Lahore, Punjab 54700</p>-->
+<!--                        </div>-->
+<!--                        &lt;!&ndash; from and to section  &ndash;&gt;-->
+<!--                        <div class="row">-->
+<!--                            <div class="col-4 text-center">-->
+<!--                                <table>-->
+<!--                                    <tr style="font-size:13px">-->
+<!--                                        <th style="width:100px">To:</th>-->
+<!--                                        <td style="border:2px solid black; height:40px; width:250px; margin-left:40px">-->
+<!--                                            <span t-esc="o.partner_id.name"/>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                            <div class="col-4 offset-2 text-center">-->
+<!--                                <table>-->
+<!--                                    <tr style="font-size:13px">-->
+<!--                                        <th style="width:150px">Delivered To:</th>-->
+<!--                                        <td style="border:2px solid black; height:40px; width:250px; margin-left:40px">-->
+<!--                                            <span t-esc="o.partner_id.street"/>-->
+<!--                                        </td>-->
+<!--                                    </tr>-->
+<!--                                </table>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-6 mt-4">-->
+<!--                            <table>-->
+<!--                                <tr style="width:60px; font-size:13px">-->
+<!--                                    <th>Purchase Order #</th>-->
+<!--                                    <td style="width:60px; padding-left:40px">-->
+<!--                                        <span t-esc="o.name"/>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr style="width:60px; font-size:13px">-->
+<!--                                    <th>PO Date :</th>-->
+<!--                                    <td style="width:60px; padding-left:40px">-->
+<!--                                        <span t-esc="o.date_approve.date()"/>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr style="width:60px; font-size:13px">-->
+<!--                                    <th>PO Closing Date :</th>-->
+<!--                                    <td style="width:60px; padding-left:40px">-->
+<!--                                        <span t-esc="o.date_planned.date()"/>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr style="width:60px; font-size:13px">-->
+<!--                                    <th>Department :</th>-->
+<!--                                    <td style="width:60px; padding-left:40px">-->
+<!--                                        <t t-if="o.user_id.department_id">-->
+<!--                                            <span t-esc="o.user_id.department_id.name"/>-->
+<!--                                        </t>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                            </table>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                </t>
+            </div>
+        </template>
+    </data>
+</odoo>

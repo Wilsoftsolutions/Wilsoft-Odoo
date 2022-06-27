@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="delivery_header_id">
+			<t t-set="company" t-value="user.company_id"/>
+
+			<!--					<div class="header" >-->
+
+			<div class="header">
+				<!--                         header of the report-->
+				<h5 class="text-center">
+					<b>Delivery Challan/Packing List</b>
+				</h5>
+
+				<!--                       second section of the report-->
+				<div class="container">
+					<div class="row">
+						<div class="col-6" style="border:1px solid lightgray; margin-left:0px">
+							<div class="row">
+								<div class="col-4">
+									<span>
+
+										<img t-if="company.logo" t-att-src="image_data_uri(company.logo)"
+											 style="height:135px;" width="100%"/>
+
+									</span>
+								</div>
+								<div class="col-8">
+									<span>
+										<h6>
+											<b>GLANS DESIGN LIMITED</b>
+										</h6>
+										<p style="font-size:13px;margin-top:-10px">124/1, Quaid-e-Azam Industrial Estate
+											Kot Lakhpat, Lahore, Punjab
+											54700
+										</p>
+										<p style="font-size:11px; margin-top:-10px"><b>Phone :</b>Tel #
+											<t t-esc="company.phone"/>
+											<br/>
+											<b>Address :</b>
+											<t t-esc="company.street"/>
+											<br/>
+											<b>E-mail :</b>
+											<t t-esc="company.email"/>
+											<br/>
+											<b>NTN :</b>
+											<t t-esc="company.vat"/>
+											<br/>
+											<b>SRTN :</b>3277876227804
+											<br/>
+										</p>
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-4 offset-2 text-right">
+							<p style="font-size:11px">
+								<b>Printed By:</b>
+								<span style="border-bottom:1px solid lightgray; margin-left:10px">
+									<t t-esc="user.name"/>
+								</span>
+							</p>
+							<p style="font-size:11px;margin-top:-7px;">
+								<b>Printed On:</b>
+								<span style="border-bottom:1px solid lightgray; margin-left:10px">
+									<t t-esc="date"/>
+								</span>
+							</p>
+							<p style="font-size:11px;margin-top:-7px;">
+								<b>Source Document:</b>
+								<span style="border-bottom:1px solid lightgray; margin-left:10px">
+									<t t-esc="origin"/>
+								</span>
+							</p>
+							<p style="font-size:11px;margin-top:-7px;">
+								<b>DC Number:</b>
+								<span style="border-bottom:1px solid lightgray; margin-left:10px">
+									<t t-esc="name"/>
+								</span>
+							</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="footer" style="margin-top:-90px">
+
+			</div>
+		</template>
+
+	</data>
+</odoo>
