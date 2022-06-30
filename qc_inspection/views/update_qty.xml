@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="qc_update_qty" model="ir.ui.view">
+            <field name="name">QC Update QTY</field>
+            <field name="model">update.prod</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="vendor_id"/>
+                            <field name="purchase_order_id"/>
+                            <field name="purchase_line_id"/>
+                            <field name="size36"/>
+                            <field name="size37"/>
+                            <field name="size38"/>
+                            <field name="size39"/>
+                            <field name="size40"/>
+                            <field name="size41"/>
+                            <field name="size42"/>
+                            <field name="size43"/>
+                            <field name="size44"/>
+                            <field name="size45"/>
+                            <field name="size46"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="qc_update_qty_tree" model="ir.ui.view">
+            <field name="name">QC Update QTY Tree</field>
+            <field name="model">update.prod</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="vendor_id"/>
+                    <field name="purchase_order_id"/>
+                    <!--                    <field name="purchase_line_id"/>-->
+                    <field name="size36"/>
+                    <field name="size37"/>
+                    <field name="size38"/>
+                    <field name="size39"/>
+                    <field name="size40"/>
+                    <field name="size41"/>
+                    <field name="size42"/>
+                    <field name="size43"/>
+                    <field name="size44"/>
+                    <field name="size45"/>
+                    <field name="size46"/>
+                </tree>
+            </field>
+        </record>
+        <record id="qc_update_qty_tree_action" model="ir.actions.act_window">
+            <field name="name">QC UPdate Action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">update.prod</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!-- Add Text Here -->
+                </p>
+                <p>
+                    <!-- More details about what a user can do with this object will be OK -->
+                </p>
+            </field>
+        </record>
+        <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="qc_update_qty_tree_action_menu" name="QTY update" parent="custom_parent_menu"
+                  action="qc_update_qty_tree_action" sequence="8"/>
+
+    </data>
+</odoo>
