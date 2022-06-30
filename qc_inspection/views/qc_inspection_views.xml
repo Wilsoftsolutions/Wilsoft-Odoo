@@ -20,10 +20,9 @@
 
 							<group>
 								<group>
-<!--                                     <field name="name"/> -->
-<!-- 									<field name="name"
+									<field name="name"
 										   placeholder="Quality Control Inspector ...."
-										   attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/> -->
+										   attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 									<field name="ref"
 										   placeholder="Ref. SR# ...."
 										   attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
@@ -73,7 +72,7 @@
 
 							<tr>
 								<td style="height:40px;width:80px;">
-									<field name="image_po" widget='image' class="oe_avatar"/>
+									<field name="image_po" widget='image' class="oe_avatar"  force_save="True" readonly="True"/>
 								</td>
 								<td style="text-align:center">
 									<field name="plan" force_save="True"/>
@@ -313,7 +312,7 @@
 			<field name="model">qc.inspection</field>
 			<field name="arch" type="xml">
 				<tree string="QC Inpection">
-<!-- 					<field name="name"/> -->
+					<field name="name"/>
 					<field name="vendor_id"/>
 					<field name="po_item_id"/>
 					<field name="status" string="Status"/>

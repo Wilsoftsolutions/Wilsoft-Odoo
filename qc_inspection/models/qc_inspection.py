@@ -9,14 +9,13 @@ class QcInspection(models.Model):
     _name = 'qc.inspection'
     _description = 'Qc Inspection'
 
-    #name = fields.Many2one('hr.employee', string='Quality Control Inspector', domain="[('job_id', '=', 'Officer QA')]")
-#     name =fields.Many2one('hr.employee', string= 'Quality Control Inspector')
+    name = fields.Many2one('hr.employee', string='Quality Control Inspector', domain="[('job_id', '=', 'Officer QA')]")
     ref = fields.Char(string='Ref. SR# :', readonly='True')
     vendor_id = fields.Many2one('res.partner', string='Vendor Name', domain="[('category_id', '=', 'Vendor')]")
     purchase_order_id = fields.Many2one('purchase.order', string='Purchase Order',
                                         domain="[('invoice_status', '=', 'no'),('partner_id', '=', ' ')]")
     po_item_id = fields.Many2one('purchase.order.line', string='Article', domain="[('order_id', '=', ' ')]")
-    image_po = fields.Binary(string=' ')
+    image_po = fields.Image(string=' ',)
     plan = fields.Integer(string=' ', readonly='True', store=True)
     article36 = fields.Integer(string=' ', readonly='True', store=True)
     article37 = fields.Integer(string=' ', readonly='True', store=True)
