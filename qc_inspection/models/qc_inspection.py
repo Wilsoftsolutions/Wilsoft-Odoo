@@ -15,7 +15,7 @@ class QcInspection(models.Model):
     purchase_order_id = fields.Many2one('purchase.order', string='Purchase Order',
                                         domain="[('invoice_status', '=', 'no'),('partner_id', '=', ' ')]")
     po_item_id = fields.Many2one('purchase.order.line', string='Article', domain="[('order_id', '=', ' ')]")
-    image = fields.Binary(string=' ',)
+    image_po = fields.Image(string=' ',)
     plan = fields.Integer(string=' ', readonly='True', store=True)
     article36 = fields.Integer(string=' ', readonly='True', store=True)
     article37 = fields.Integer(string=' ', readonly='True', store=True)
@@ -158,7 +158,7 @@ class QcInspection(models.Model):
             articl46 = 0
             for rec in self:
                 for po in rec.po_item_id:
-                    # rec.image = po.product_id.image_1920
+                    rec.image_po = po.product_id.image_1920
                     rec.plan = po.product_qty * 12
                     for line in po.product_id.sh_bundle_product_ids:
 

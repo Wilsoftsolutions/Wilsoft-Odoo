@@ -22,10 +22,10 @@
 								<group>
 									<field name="name"
 										   placeholder="Quality Control Inspector ...."
-										   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+										   attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 									<field name="ref"
 										   placeholder="Ref. SR# ...."
-										   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+										   attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</group>
 								<group>
 									<field name="id" string="SR #"/>
@@ -37,17 +37,17 @@
 							<group>
 								<field name="vendor_id"
 									   placeholder="Vendor Name ...."
-									   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									   attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 
 							</group>
 							<group>
 								<field name="purchase_order_id"
 									   placeholder="Purchase Order ...."
-									   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									   attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 							</group>
 							<group>
 								<field name="po_item_id"
-									   placeholder="Article ...." attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									   placeholder="Article ...." attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 							</group>
 						</div>
 						<div style="    border-top-style: solid;
@@ -72,7 +72,7 @@
 
 							<tr>
 								<td style="height:40px;width:80px;">
-									<field name="image" widget="image" force_save="True" readonly="True"/>
+									<field name="image_po" widget='image' class="oe_avatar"  force_save="True" readonly="True"/>
 								</td>
 								<td style="text-align:center">
 									<field name="plan" force_save="True"/>
@@ -115,113 +115,113 @@
 								<td>Check</td>
 								<td></td>
 								<td style="text-align:center">
-									<field name="check36" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check36" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="check37" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check37" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="check38" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check38" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="check39" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check39" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="check40" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check40" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="check41" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check41" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="check42" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check42" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="check43" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check43" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="check44" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check44" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="check45" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check45" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="check46" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="check46" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 							</tr>
 							<tr>
 								<td>Rework</td>
 								<td></td>
 								<td style="text-align:center">
-									<field name="rework36" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework36" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="rework37" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework37" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="rework38" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework38" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="rework39" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework39" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="rework40" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework40" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="rework41" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework41" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="rework42" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework42" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="rework43" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework43" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="rework44" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework44" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="rework45" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework45" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="rework46" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="rework46" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 							</tr>
 							<tr>
 								<td>B.pair</td>
 								<td></td>
 								<td style="text-align:center">
-									<field name="bpair36" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="bpair36" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="bpair37" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="bpair37" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="bpair38" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-								</td>
-
-								<td style="text-align:center">
-									<field name="bpair39" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="bpair38" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 
 								<td style="text-align:center">
-									<field name="bpair40" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="bpair39" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
+								</td>
+
+								<td style="text-align:center">
+									<field name="bpair40" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="bpair41" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="bpair41" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="bpair42" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="bpair42" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="bpair43" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="bpair43" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="bpair44" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="bpair44" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="bpair45" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="bpair45" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 								<td style="text-align:center">
-									<field name="bpair46" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+									<field name="bpair46" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 								</td>
 							</tr>
 
@@ -279,14 +279,14 @@
 						<h3 style="text-decoration-line: underline">Inspection Details:
 						</h3>
 						<group>
-							<field name="upper" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-							<field name="linning" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-							<field name="mid_sole" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-							<field name="outsole" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-							<field name="finished" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-							<field name="packaging" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-							<field name="acc" attrs="{'readonly':[('status','=','Confrimed')]}"/>
-							<field name="other" attrs="{'readonly':[('status','=','Confrimed')]}"/>
+							<field name="upper" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
+							<field name="linning" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
+							<field name="mid_sole" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
+							<field name="outsole" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
+							<field name="finished" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
+							<field name="packaging" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
+							<field name="acc" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
+							<field name="other" attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 						</group>
 						<div style="border-top-style: solid;
                                     border-top-width: thin; 
@@ -296,9 +296,9 @@
 						</h3>
 						<group>
 							<field name="comment" style=' max-width: 1150px;  width: 500px'
-								   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								   attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 							<field name="attch_ids" widget="many2many_binary"
-								   attrs="{'readonly':[('status','=','Confrimed')]}"/>
+								   attrs="{'readonly':[('status','in', ['Confrimed','waiting_for_approval'])]}"/>
 						</group>
 					</sheet>
 				</form>
