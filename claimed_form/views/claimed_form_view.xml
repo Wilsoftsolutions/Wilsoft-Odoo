@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<record id="claimed_form_view_id" model="ir.ui.view">
+			<field name="name">_view_form</field>
+			<field name="model">claimed.form</field>
+			<field name="arch" type="xml">
+				<form string="_form">
+					<header>
+						<button type="object" name="sent_for_approval" string="Sent To Approval" class="oe_highlight"
+								attrs="{'invisible': [('state', '!=', 'draft')]}"/>
+						<button type="object" name="qc_approve" string="Q/C Approve" class="oe_highlight"
+								attrs="{'invisible': [('state', '!=', 'waiting_for_approval')]}"/>
+						<button type="object" name="manager_reject" string="Reject" class="oe_highlight"
+								attrs="{'invisible': [('state', '!=', 'waiting_for_approval')]}"/>
+						<button type="object" name="cancel_document" string="W/H Reject" class="oe_highlight"
+								attrs="{'invisible': [('state', '!=', 'waiting_qc_approval')]}"/>
+						<button type="object" name="wh_approval" string="W/H Approval" class="oe_highlight"
+								attrs="{'invisible': [('state', '!=', 'waiting_qc_approval')]}"/>
+						<button type="object" name="approved" string="Approve" class="oe_highlight"
+								attrs="{'invisible': [('state', '!=', 'waiting_ware_house_approval')]}"/>
+						<field name="state" widget="statusbar"/>
+					</header>
+					<sheet>
+						<group>
+							<group>
+								<field name="serial_number"/>
+
+								<field name="customer_id"/>
+							</group>
+							<group>
+								<field name="date"/>
+								<field name="city"/>
+							</group>
+
+							<group class="offset-5">
+								<field name="claimed_remark"/>
+								<field name="qc_remark"/>
+							</group>
+
+						</group>
+
+						<group>
+							<group>
+								<field name="prepared_by" readonly="1"/>
+							</group>
+							<group>
+								<field name="qc_by"/>
+							</group>
+						</group>
+
+
+						<notebook>
+							<page string="Claimed Line">
+								<field name="claimed_line_ids">
+									<tree editable="bottom">
+										<field name="p_id"/>
+										<field name="qty"/>
+										<field name="unit_price"/>
+										<field name="sub_total"/>
+									</tree>
+								</field>
+							</page>
+						</notebook>
+
+						<div class="container-fluid">
+							<div class="row">
+								<div class="col-4 offset-8 text-right">
+									<field name="total_amount" force_save="True" readonly="True" string="Total"
+										   style="border-bottom:none"/>
+								</div>
+							</div>
+						</div>
+
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="claimed_tree_view_id" model="ir.ui.view">
+			<field name="name">_view_tree</field>
+			<field name="model">claimed.form</field>
+			<field name="arch" type="xml">
+				<tree string="_tree">
+					<field name="customer_id"/>
+					<field name="serial_number"/>
+					<field name="city"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="claimed_form_action_id" model="ir.actions.act_window">
+			<field name="name">Claim Form</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">claimed.form</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<menuitem id="claimed_form_menu_item_id" name="Claim Form"
+				  web_icon="claimed_form,static/src/img/basic-cmyk-142413816.jpg" action="claimed_form_action_id"/>
+	</data>
+</odoo>

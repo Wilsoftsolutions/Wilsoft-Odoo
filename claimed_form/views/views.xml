@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="claimed_form.list">
+      <field name="name">claimed_form list</field>
+      <field name="model">claimed_form.claimed_form</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="claimed_form.action_window">
+      <field name="name">claimed_form window</field>
+      <field name="res_model">claimed_form.claimed_form</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="claimed_form.action_server">
+      <field name="name">claimed_form server</field>
+      <field name="model_id" ref="model_claimed_form_claimed_form"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="claimed_form" id="claimed_form.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="claimed_form.menu_1" parent="claimed_form.menu_root"/>
+    <menuitem name="Menu 2" id="claimed_form.menu_2" parent="claimed_form.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="claimed_form.menu_1_list" parent="claimed_form.menu_1"
+              action="claimed_form.action_window"/>
+    <menuitem name="Server to list" id="claimed_form" parent="claimed_form.menu_2"
+              action="claimed_form.action_server"/>
+-->
+  </data>
+</odoo>
