@@ -95,10 +95,13 @@ class QcInspection(models.Model):
         self.status = 'waiting_for_approval'
 
     def unlink(self):
-        res = super(QcInspection, self).unlink()
-        raise UserError(_("You have No Access to Delete this Record!!!!! "))
+        for rec in self:
+            if rec.status == 'ready':
+                return super(QcInspection, self).unlink()
+        else:
+            raise UserError(_("You have No Access to Delete this Record!!!!! "))
 
-        return
+
 
 
     @api.onchange('vendor_id')

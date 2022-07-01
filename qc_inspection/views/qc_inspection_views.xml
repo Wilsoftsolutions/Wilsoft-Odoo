@@ -6,7 +6,7 @@
 			<field name="name">qc.inspect.form.view</field>
 			<field name="model">qc.inspection</field>
 			<field name="arch" type="xml">
-				<form string="Qc Inspection" duplicate="false" delete="false">
+				<form string="Qc Inspection" duplicate="false" >
 					<header>
 						<button name="action_status" attrs="{'invisible': [('status', 'in', ['Confrimed','ready'])]}" string="Confirm" type="object" class="oe_highlight"/>
 						<button name="action_waiting_for_approval" attrs="{'invisible': [('status', 'in', ['Confrimed','waiting_for_approval'])]}" string="Send For Approval" type="object" class="oe_highlight"/>
