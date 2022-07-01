@@ -331,11 +331,8 @@ class SaleOrder(models.Model):
                 continue
 
             pos_order = order_response.get("source_name", "") == "pos"
-            # partner, delivery_address, invoice_address = self.prepare_shopify_customer_and_addresses(
-            #     order_response, pos_order, instance, order_data_line, log_book)
-            partner = instance.partner_id
-            delivery_address = instance.partner_id
-            invoice_address = instance.partner_id
+            partner, delivery_address, invoice_address = self.prepare_shopify_customer_and_addresses(
+                order_response, pos_order, instance, order_data_line, log_book)
             if not partner:
                 continue
 
