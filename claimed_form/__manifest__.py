@@ -24,7 +24,8 @@
         'views/views.xml',
         'views/templates.xml',
         'views/claimed_form_view.xml',
-        'data/credit_note_sequence.xml'
+        'data/claim_sequence.xml',
+
     ],
 
 }

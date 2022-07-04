@@ -8,7 +8,7 @@ class PlannedFormModel(models.Model):
     _rec_name = 'customer_id'
 
     date = fields.Date("Date")
-    serial_number = fields.Char("Sr #")
+    serial_number = fields.Char("Sr #",  default='Sr', readonly=True)
     customer_id = fields.Many2one("res.partner", "Customer Name #")
     city = fields.Char(related='customer_id.city', string='City')
     claimed_remark = fields.Char("Claim Remark")
@@ -33,6 +33,7 @@ class PlannedFormModel(models.Model):
 
     def sent_for_approval(self):
         self.state = 'waiting_for_approval'
+        self.claimed_line_ids.check = True
 
     def qc_approve(self):
         self.state = 'waiting_qc_approval'
@@ -40,19 +41,16 @@ class PlannedFormModel(models.Model):
     def manager_reject(self):
         self.state = 'cancelled'
 
-    def cancel_document(self):
-        pass
-
     def wh_approval(self):
         self.state = 'waiting_ware_house_approval'
 
     def approved(self):
-        self.state = 'approved'
         for rec in self:
             current_user = rec.env.uid
             # if picking_id.picking_type_id.code == 'incoming':
             customer_journal_id = rec.env['ir.config_parameter'].sudo().get_param(
-                'stock_move_invoice.customer_journal_id') or False
+                'stock_move_invoice.customer_journal_id')
+            journal_id = rec.env['account.journal'].search([('name', '=', 'Customer Invoices')], limit=1)
             if not customer_journal_id:
                 invoice_line_list = []
                 for i in rec.claimed_line_ids:
@@ -74,11 +72,12 @@ class PlannedFormModel(models.Model):
                     'narration': rec.serial_number,
                     'partner_id': rec.customer_id.id,
                     'currency_id': rec.env.user.company_id.currency_id.id,
-                    'journal_id': int(1),
+                    'journal_id': int(journal_id),
                     'payment_reference': rec.serial_number,
                     # 'picking_id': picking_id.id,
                     'invoice_line_ids': invoice_line_list
                 })
+                self.state = 'approved'
                 return credit_note_create
 
 
@@ -94,6 +93,12 @@ class PlannedFormModel(models.Model):
                 total += line.unit_price * line.qty
                 self.total_amount = total
 
+    @api.model
+    def create(self, vals_list):
+        vals_list['serial_number']= self.env['ir.sequence'].next_by_code('claim_sequence')
+        res = super(PlannedFormModel, self).create(vals_list)
+        return res
+
 
 class ClaimedLineModel(models.Model):
     _name = 'claimed.form.line'
@@ -103,3 +108,4 @@ class ClaimedLineModel(models.Model):
     p_id = fields.Many2one("product.product", "Article")
     sub_total = fields.Float("Sub Total")
     unit_price = fields.Float("Price Unit")
+    check = fields.Boolean(default=False)
