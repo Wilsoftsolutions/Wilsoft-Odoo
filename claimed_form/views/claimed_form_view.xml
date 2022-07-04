@@ -8,14 +8,14 @@
 			<field name="arch" type="xml">
 				<form string="_form">
 					<header>
-						<button type="object" name="sent_for_approval" string="Send To Approval" class="oe_highlight"
+						<button type="object" name="sent_for_approval" string="Send For Approval" class="oe_highlight"
 								attrs="{'invisible': [('state', '!=', 'draft')]}"/>
 						<button type="object" name="qc_approve" string="Q/C Approve" class="oe_highlight"
 								attrs="{'invisible': [('state', '!=', 'waiting_for_approval')]}"/>
 						<button type="object" name="manager_reject" string="Reject" class="oe_highlight"
 								attrs="{'invisible': [('state', '!=', 'waiting_for_approval')]}"/>
 <!--						<button type="object" name="cancel_document" string="W/H Reject" class="oe_highlight"-->
-								attrs="{'invisible': [('state', '!=', 'waiting_qc_approval')]}"/>
+<!--								attrs="{'invisible': [('state', '!=', 'waiting_qc_approval')]}"/>-->
 						<button type="object" name="wh_approval" string="W/H Approval" class="oe_highlight"
 								attrs="{'invisible': [('state', '!=', 'waiting_qc_approval')]}"/>
 						<button type="object" name="approved" string="Approve" class="oe_highlight"

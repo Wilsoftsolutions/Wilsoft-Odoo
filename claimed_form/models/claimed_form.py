@@ -51,6 +51,7 @@ class PlannedFormModel(models.Model):
             customer_journal_id = rec.env['ir.config_parameter'].sudo().get_param(
                 'stock_move_invoice.customer_journal_id')
             journal_id = rec.env['account.journal'].search([('name', '=', 'Customer Invoice')], limit=1)
+            account_id = rec.env['account.account'].search([('name', '=', 'Sales Return')], limit=1)
             if not customer_journal_id:
                 invoice_line_list = []
                 for i in rec.claimed_line_ids:
@@ -58,6 +59,7 @@ class PlannedFormModel(models.Model):
                         # 'name': i.description_picking,
                         'product_id': i.p_id.id,
                         'price_unit': i.unit_price,
+                        'account_id': account_id,
                         # 'account_id': i.product_id.property_account_income_id.id if i.product_id.property_account_income_id
                         # else move_ids_without_package.product_id.categ_id.property_account_income_categ_id.id,
                         # 'tax_ids': [(6, 0, [picking_id.company_id.account_sale_tax_id.id])],
