@@ -50,7 +50,7 @@ class PlannedFormModel(models.Model):
             # if picking_id.picking_type_id.code == 'incoming':
             customer_journal_id = rec.env['ir.config_parameter'].sudo().get_param(
                 'stock_move_invoice.customer_journal_id')
-            journal_id = rec.env['account.journal'].search([('name', '=', 'Customer Invoices')], limit=1)
+            journal_id = rec.env['account.journal'].search([('name', '=', 'Customer Invoice')], limit=1)
             if not customer_journal_id:
                 invoice_line_list = []
                 for i in rec.claimed_line_ids:
@@ -74,13 +74,10 @@ class PlannedFormModel(models.Model):
                     'currency_id': rec.env.user.company_id.currency_id.id,
                     'journal_id': int(journal_id),
                     'payment_reference': rec.serial_number,
-                    # 'picking_id': picking_id.id,
                     'invoice_line_ids': invoice_line_list
                 })
                 self.state = 'approved'
                 return credit_note_create
-
-
 
     @api.onchange('claimed_line_ids')
     def _onchange_line_id(self):
