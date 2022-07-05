@@ -10,4 +10,6 @@ class SaleInherit(models.Model):
 	def onchange_method(self):
 		for rec in self:
 			for i in rec.order_line:
-				i.tax_id = rec.partner_id.sale_tax_ids
+				if rec.partner_id.sale_tax_ids:
+					i.tax_id = rec.partner_id.sale_tax_ids
+				

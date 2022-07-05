@@ -10,4 +10,5 @@ class PurchaseInherit(models.Model):
 	def onchange_method(self):
 		for rec in self:
 			for i in rec.order_line:
-				i.taxes_id = rec.partner_id.purchase_tax_ids
+				if rec.partner_id.purchase_tax_ids:
+					i.taxes_id = rec.partner_id.purchase_tax_ids
