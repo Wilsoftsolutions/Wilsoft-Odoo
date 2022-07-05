@@ -24,6 +24,9 @@
         'views/views.xml',
         'views/templates.xml',
         'views/claimed_form_view.xml',
+        'views/qc_remark.xml',
+        'views/claim_remark.xml',
+     
         'data/claim_sequence.xml',
 
     ],

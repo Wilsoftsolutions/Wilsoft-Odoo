@@ -1,3 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_claimed_form_claimed_form,claimed_form.claimed_form,model_claimed_form,base.group_user,1,1,1,1
 access_claimed.form.line,claimed.form.line,model_claimed_form_line,base.group_user,1,1,1,1
+access_qc.remark,qc.remark,model_qc_remark,base.group_user,1,1,1,1
+access_claim.remark,claim.remark,model_claim_remark,base.group_user,1,1,1,1

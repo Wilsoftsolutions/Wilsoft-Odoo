@@ -11,16 +11,15 @@ class PlannedFormModel(models.Model):
     serial_number = fields.Char("Sr #",  default='Sr', readonly=True)
     customer_id = fields.Many2one("res.partner", "Customer Name #")
     city = fields.Char(related='customer_id.city', string='City')
-    claimed_remark = fields.Char("Claim Remark")
-    qc_remark = fields.Char("QC Remark")
+    claimed_remark = fields.Many2one('claim.remark','Claim Remark')
+    qc_remark = fields.Many2one("qc.remark")
     prepared_by = fields.Many2one("res.users", string="Prepared By", default=lambda self: self.env.user )
-    qc_by = fields.Char("QC By")
+    qc_by = fields.Many2one('res.users',"QC By", readonly=True)
     total_amount = fields.Float("Total" , store=True)
 
     state = fields.Selection([
         ('draft', 'Draft'),
         ('waiting_for_approval', 'Waiting For Approval'),
-        ('waiting_qc_approval', 'Waiting QC Approval'),
         ('waiting_ware_house_approval', 'Waiting W/H Approval'),
         ('approved', 'Approved'),
         # ('reject', 'Rejected'),
@@ -36,13 +35,21 @@ class PlannedFormModel(models.Model):
         self.claimed_line_ids.check = True
 
     def qc_approve(self):
-        self.state = 'waiting_qc_approval'
+        self.state = 'waiting_ware_house_approval'
+        self.qc_by = self.env.user.id
 
     def manager_reject(self):
         self.state = 'cancelled'
+        
+    def unlink(self):
+        if self.state == 'draft':
+            return super(PlannedFormModel, self).unlink()
+        else:
+            raise UserError(_("You have no Access to delete this record!!! you can delete this record in draft state"))
+            
 
-    def wh_approval(self):
-        self.state = 'waiting_ware_house_approval'
+    # def wh_approval(self):
+    #     self.state = 'waiting_ware_house_approval'
 
     def approved(self):
         for rec in self:
@@ -50,8 +57,8 @@ class PlannedFormModel(models.Model):
             # if picking_id.picking_type_id.code == 'incoming':
             customer_journal_id = rec.env['ir.config_parameter'].sudo().get_param(
                 'stock_move_invoice.customer_journal_id')
-            journal_id = rec.env['account.journal'].search([('name', '=', 'Customer Invoice')], limit=1)
-            account_id = rec.env['account.account'].search([('name', '=', 'Sales Return')], limit=1)
+            journal_id = rec.env['account.journal'].sudo().search([('name', '=', 'Customer Invoice')], limit=1)
+            # account_id = rec.env['account.account'].sudo().search([('code', '=', '30.01.004')], limit=1)
             if not customer_journal_id:
                 invoice_line_list = []
                 for i in rec.claimed_line_ids:
@@ -59,7 +66,7 @@ class PlannedFormModel(models.Model):
                         # 'name': i.description_picking,
                         'product_id': i.p_id.id,
                         'price_unit': i.unit_price,
-                        'account_id': account_id,
+                        # 'account_id': int(account_id),
                         # 'account_id': i.product_id.property_account_income_id.id if i.product_id.property_account_income_id
                         # else move_ids_without_package.product_id.categ_id.property_account_income_categ_id.id,
                         # 'tax_ids': [(6, 0, [picking_id.company_id.account_sale_tax_id.id])],
