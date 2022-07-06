@@ -171,7 +171,7 @@
 											</table>
 										</th>
 										<th width="8%">Qty</th>
-										<th width="10%">W.Sale Price</th>
+										<th width="10%">Retail Price</th>
 										<!--                                    <th width=".5%" style="background-color:white;">.</th>-->
 										<!--										<th width="7%">Unit Rate Cost</th>-->
 										<th width="10%">Total Retail
@@ -313,14 +313,14 @@
 												</t>
 											</td>
 											<td>
-												<span t-esc="variant['retail_price']"
+												<span t-esc="variant['pair_price']"
 													  t-options='{"widget": "float", "precision": 2}'/>
 											</td>
 											<!--                                         <td>-->
 											<!--                                             -->
 											<!--                                        </td>-->
 											<td>
-												<span t-esc="variant['line_subtotal']"
+												<span t-esc="variant['pair_price'] * total_qty"
 													  t-options='{"widget": "float", "precision": 2}'/>
 											</td>
 										</tr>

@@ -10,7 +10,7 @@
     the product regarding size
     """,
 
-    'author': "sadnan khan",
+    'author': "Muhammad Ismail",
     'website': "http://www.yourcompany.com",
 
     'category': 'Uncategorized',
