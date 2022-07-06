@@ -93,6 +93,6 @@ class PartnerXlsx(models.AbstractModel):
             sheet.write(row, col + 12, stock.quantity, style0)
             sheet.merge_range(row, col + 13, row, col + 14,
                               stock.location_id.warehouse_id.name if stock.location_id.warehouse_id else '-', style0)
-            sheet.merge_range(row, col + 15, row, col + 15, stock.product_id.lst_price, style0)
+            sheet.write(row, col + 15, stock.product_id.list_price, style0)
             row += 1
             count += 1
