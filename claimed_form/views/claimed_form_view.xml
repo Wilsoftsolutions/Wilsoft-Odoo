@@ -35,8 +35,8 @@
 							</group>
 
 							<group class="offset-5">
-								<field name="claimed_remark" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-								<field name="qc_remark" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+								<field name="claimed_remark" attrs="{'readonly': [('state', '!=', 'draft')]}"  options="{'no_create': True, 'no_create_edit':True}" />
+								<field name="qc_remark" attrs="{'readonly': [('state', '!=', 'draft')]}"  options="{'no_create': True, 'no_create_edit':True}" />
 							</group>
 
 						</group>

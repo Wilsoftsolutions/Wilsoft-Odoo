@@ -27,9 +27,6 @@ class PlannedFormModel(models.Model):
 
     ], default='draft')
     claimed_line_ids = fields.One2many("claimed.form.line", 'claimed_id')
-
-    # state changing button are there
-
     def sent_for_approval(self):
         self.state = 'waiting_for_approval'
         self.claimed_line_ids.check = True
@@ -89,15 +86,13 @@ class PlannedFormModel(models.Model):
                 return credit_note_create
 
     @api.onchange('claimed_line_ids')
-    def _onchange_line_id(self):
+    def _onchange_claimed_line_ids(self):
         for rec in self:
             total = 0
             for line in rec.claimed_line_ids:
-                line.unit_price = line.p_id.lst_price
-                line.sub_total = line.unit_price * line.qty
-
                 total += line.unit_price * line.qty
-                self.total_amount = total
+                line.sub_total = line.unit_price * line.qty
+            self.total_amount = total
 
     @api.model
     def create(self, vals_list):
@@ -112,6 +107,18 @@ class ClaimedLineModel(models.Model):
     claimed_id = fields.Many2one("claimed.form")
     qty = fields.Integer("Qty")
     p_id = fields.Many2one("product.product", "Article")
-    sub_total = fields.Float("Sub Total")
+    sub_total = fields.Float("Subtotal", compute='subtotal_line', store=True)
     unit_price = fields.Float("Price Unit")
     check = fields.Boolean(default=False)
+
+    @api.onchange('p_id')
+    def onchange_p_id(self):
+        for rec in self:
+            rec.unit_price = rec.p_id.list_price
+            
+    @api.depends('p_id', 'unit_price', 'qty')
+    def subtotal_line(self):
+        for rec in self:
+            rec.sub_total = rec.unit_price * rec.qty
+        
+      
