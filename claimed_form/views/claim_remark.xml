@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+       <record id="claim_remark_form_id" model="ir.ui.view">
+           <field name="name">Claim Remark Form</field>
+           <field name="model">claim.remark</field>
+           <field name="arch" type="xml">
+               <form string="_form">
+                   <sheet>
+                       <group>
+                           <field name="name"/>
+                       </group>
+                   </sheet>
+               </form>
+           </field>
+       </record>
+
+        <record id="claim_remark_tree_id" model="ir.ui.view">
+            <field name="name">Claim Remark Tree</field>
+            <field name="model">claim.remark</field>
+            <field name="arch" type="xml">
+                <tree string="_tree" editable="bottom">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="claim_remark_action_id" model="ir.actions.act_window">
+            <field name="name">Claim Remark</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">claim.remark</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+        <menuitem id="claim_remark_menu_item_id" name="Claim Remark" action="claim_remark_action_id" parent="remarks_menu_id"/>
+
+    </data>
+</odoo>

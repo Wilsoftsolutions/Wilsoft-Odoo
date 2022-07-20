@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+       <record id="qc_remark_form_view_id" model="ir.ui.view">
+           <field name="name">QC Remark View</field>
+           <field name="model">qc.remark</field>
+           <field name="arch" type="xml">
+               <form string="QC Remark Form">
+                   <sheet>
+                       <group>
+                           <group><field name="qc_remark"/> </group>
+                       </group>
+                   </sheet>
+               </form>
+           </field>
+       </record>
+
+        <record id="qc_remark_tree_view_id" model="ir.ui.view">
+            <field name="name">QC Remark Tree</field>
+            <field name="model">qc.remark</field>
+            <field name="arch" type="xml">
+                <tree string="_tree" editable="bottom">
+                    <field name="qc_remark"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="qc_remark_action_id" model="ir.actions.act_window">
+            <field name="name">QC And Claim</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">qc.remark</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem id="remarks_menu_id"  name="Remarks" parent="claimed_form_menu_item_id"/>
+        <menuitem id="qc_remark_menu_item_id" action="qc_remark_action_id" name="QC Remark" parent="remarks_menu_id"/>
+
+    </data>
+</odoo>
