@@ -58,7 +58,7 @@ class PartnerXlsx(models.AbstractModel):
         # Header row
         sheet.set_column(0, 5, 18)
         sheet.merge_range(row, col, row + 1, col, 'Item Id', header_row_style)
-        sheet.merge_range(row, col + 1, row + 1, col + 1, 'Store Name', header_row_style)
+        sheet.merge_range(row, col + 1, row + 1, col + 1, 'Brand', header_row_style)
         sheet.merge_range(row, col + 2, row + 1, col + 2, 'Item Category', header_row_style)
         sheet.merge_range(row, col + 3, row + 1, col + 3, 'Item Code', header_row_style)
         sheet.merge_range(row, col + 4, row + 1, col + 5, 'Item Desc', header_row_style)
@@ -82,7 +82,7 @@ class PartnerXlsx(models.AbstractModel):
             )
 
             sheet.write(row, col, count, style0)
-            sheet.write(row, col + 1, stock.location_id.name, style0)
+            sheet.write(row, col + 1, stock.product_id.categ_id.complete_name.split('/')[0], style0)
             sheet.write(row, col + 2, stock.product_id.categ_id.name, style0)
             sheet.write(row, col + 3, stock.product_id.default_code if stock.product_id.default_code else '-', style0)
             sheet.merge_range(row, col + 4, row, col + 5, stock.product_id.display_name, style0)
