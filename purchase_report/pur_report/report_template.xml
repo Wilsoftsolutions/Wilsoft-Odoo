@@ -134,6 +134,7 @@
                                 <t t-set="total_45" t-value="0"/>
                                 <t t-set="total_46" t-value="0"/>
                                 <t t-set="total_values" t-value="0"/>
+                                <t t-set="sub_total" t-value="0"/>
 
 
                                 <t t-foreach="product_data" t-as="variant">
@@ -180,21 +181,21 @@
                                                                         <span t-esc="size['36']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['36'])"
-                                                                         t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
 
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['37']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['37'])"
-                                                                        t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
 
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['38']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['38'])"
-                                                                        t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
 
                                                                     </td>
 
@@ -202,50 +203,50 @@
                                                                         <span t-esc="size['39']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['39'])"
-                                                                        t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
 
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['40']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['40'])"
-                                                                        t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['41']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['41'])"
-                                                                        t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['42']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['42'])"
-                                                                        t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['43']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['43'])"
-                                                                        t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['44']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['44'])"
-                                                                        t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['45']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['45'])"
-                                                                        t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="10%">
                                                                         <span t-esc="size['46']"/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['46'])"
-                                                                        t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -260,12 +261,16 @@
                                                 <t t-if="variant['color'] != '-'">
                                                     <span t-esc="total_qty"/>
                                                     <t t-set="total_values"
-                                                       t-value="total_values + (variant['price_unit']* total_qty)"/>
+                                                       t-value="(variant['price_unit']* total_qty)"/>
+<!--                                                    <t t-set="sub_total"-->
+<!--                                                       t-value="sub_total + (variant['price_unit']* total_qty)"/>-->
                                                 </t>
 
                                                 <t t-else="">
                                                     <span t-set="total_qty" t-value="variant['line_total_qty']"/>
                                                     <span t-esc="total_qty"/>
+                                                    <t t-set="total_values"
+                                                       t-value="(variant['price_unit']* total_qty)"/>
                                                 </t>
                                             </td>
                                             <td>
@@ -287,8 +292,10 @@
                                                       t-options='{"widget": "float", "precision": 2}'/>
                                             </td>
                                             <td>
-                                                <span t-esc="variant['line_subtotal']"
-                                                      t-options='{"widget": "float", "precision": 2}'/>
+                                                <span t-esc="total_values" t-options='{"widget": "float", "precision": 2}'/>
+
+<!--                                                <span t-esc="variant['line_subtotal']"-->
+<!--                                                      t-options='{"widget": "float", "precision": 2}'/>-->
                                             </td>
                                         </tr>
 
