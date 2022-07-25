@@ -179,62 +179,73 @@
                                                                     <td width="9%">
                                                                         <span t-esc="size['36']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['36'])"/>
+                                                                              t-value="(total_qty + size['36'])"
+                                                                         t-options='{"widget": "integer",}'/>
 
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['37']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['37'])"/>
+                                                                              t-value="(total_qty + size['37'])"
+                                                                        t-options='{"widget": "integer",}'/>
 
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['38']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['38'])"/>
+                                                                              t-value="(total_qty + size['38'])"
+                                                                        t-options='{"widget": "integer",}'/>
 
                                                                     </td>
 
                                                                     <td width="9%">
                                                                         <span t-esc="size['39']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['39'])"/>
+                                                                              t-value="(total_qty + size['39'])"
+                                                                        t-options='{"widget": "integer",}'/>
 
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['40']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['40'])"/>
+                                                                              t-value="(total_qty + size['40'])"
+                                                                        t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['41']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['41'])"/>
+                                                                              t-value="(total_qty + size['41'])"
+                                                                        t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['42']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['42'])"/>
+                                                                              t-value="(total_qty + size['42'])"
+                                                                        t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['43']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['43'])"/>
+                                                                              t-value="(total_qty + size['43'])"
+                                                                        t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['44']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['44'])"/>
+                                                                              t-value="(total_qty + size['44'])"
+                                                                        t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="9%">
                                                                         <span t-esc="size['45']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['45'])"/>
+                                                                              t-value="(total_qty + size['45'])"
+                                                                        t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                     <td width="10%">
                                                                         <span t-esc="size['46']"/>
                                                                         <span t-set="total_qty"
-                                                                              t-value="(total_qty + size['46'])"/>
+                                                                              t-value="(total_qty + size['46'])"
+                                                                        t-options='{"widget": "integer",}'/>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -249,7 +260,7 @@
                                                 <t t-if="variant['color'] != '-'">
                                                     <span t-esc="total_qty"/>
                                                     <t t-set="total_values"
-                                                       t-value="total_values + (variant['retail_price']* total_qty)"/>
+                                                       t-value="total_values + (variant['price_unit']* total_qty)"/>
                                                 </t>
 
                                                 <t t-else="">
