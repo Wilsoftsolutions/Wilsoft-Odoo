@@ -193,7 +193,8 @@ class InvoiceInheritReport(models.AbstractModel):
         for col in split_res:
             if color_name.upper() == col.upper():
                 product_color = col
+                product_name = product_name[:-1]
                 break
             else:
-                product_name += col
+                product_name += col + '-'
         return size_range, assortment, product_color, product_name
