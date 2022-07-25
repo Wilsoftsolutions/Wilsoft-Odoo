@@ -50,7 +50,7 @@ class InvoiceInheritReport(models.AbstractModel):
                                 size = product_attribute.filtered(
                                     lambda attribute: attribute.attribute_id.name.upper() == 'SIZE'
                                 )
-                                new_dict['sizes'][0][size.name] += i.product_qty * line.sh_qty
+                                new_dict['sizes'][0][size.name] += int(i.product_qty * line.sh_qty)
                             product_data.append(new_dict)
                         else:
                             for line in i.product_id.product_tmpl_id.sh_bundle_product_ids:
@@ -58,7 +58,7 @@ class InvoiceInheritReport(models.AbstractModel):
                                 size = product_attribute.filtered(
                                     lambda attribute: attribute.attribute_id.name.upper() == 'SIZE'
                                 )
-                                dict_exist['sizes'][0][size.name] += i.product_qty * line.sh_qty
+                                dict_exist['sizes'][0][size.name] += int(i.product_qty * line.sh_qty)
                     else:
                         self.create_variant_line(rec, i, product_data)
                 except Exception as e:
