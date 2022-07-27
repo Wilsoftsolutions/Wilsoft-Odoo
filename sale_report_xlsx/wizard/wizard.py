@@ -103,7 +103,7 @@ class PartnerXlsx(models.AbstractModel):
                 sheet.write(row, col + 16, size.name if size else '-', style0)
                 sheet.write(row, col + 17, inv.state, style0)
                 sheet.write(row, col + 18, inv.team_id.name, style0)
-                sheet.merge_range(row, col + 19, row, col + 20, line.price_subtotal, num_fmt)
+                sheet.merge_range(row, col + 19, row, col + 20, -1 * line.price_subtotal if inv.move_type == 'out_refund' else line.price_subtotal, num_fmt)
                 grand_total += line.price_subtotal
 
                 row += 1
