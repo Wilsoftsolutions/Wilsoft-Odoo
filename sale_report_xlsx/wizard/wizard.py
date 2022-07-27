@@ -96,7 +96,7 @@ class PartnerXlsx(models.AbstractModel):
                 sheet.merge_range(row, col + 6, row, col + 7, line.product_id.categ_id.complete_name.split('/')[
                     0] if line.product_id.categ_id else '-', style0)
                 sheet.write(row, col + 8, line.quantity, style0)
-                sheet.merge_range(row, col + 9, row, col + 10, -line.price_subtotal, num_fmt)
+                sheet.merge_range(row, col + 9, row, col + 10, -1 * line.price_subtotal if inv.move_type == 'out_refund' else line.price_subtotal, num_fmt)
                 sheet.merge_range(row, col + 11, row, col + 12, inv.partner_id.city, style0)
                 sheet.merge_range(row, col + 13, row, col + 14, inv.partner_id.street, style0)
                 sheet.write(row, col + 15, color_id.name if color_id else '-', style0)
