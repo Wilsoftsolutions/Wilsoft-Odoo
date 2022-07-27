@@ -42,7 +42,11 @@
             </field>
         </record>
 
+
         <!-- This Menu Item must have a parent and an action -->
+        <menuitem id="purchase_xlsx_menu_action_id" parent="purchase.purchase_report"
+                  action="sale_reports_xlsx_action_id"/>
+
         <menuitem id="sale_reports_xlsx_menu_action_id" parent="sale.menu_sale_report"
                   action="sale_reports_xlsx_action_id"/>
 

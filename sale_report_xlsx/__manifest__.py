@@ -14,7 +14,7 @@ This report is design for Sale Xlsx Repor    """,
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale'],
+    'depends': ['base', 'sale', 'report_xlsx', 'purchase'],
 
     # always loaded
     'data': [

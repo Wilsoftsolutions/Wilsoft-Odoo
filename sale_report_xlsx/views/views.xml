@@ -1,6 +1,6 @@
 <odoo>
-  <data>
-     <report
+    <data>
+        <report
                 id="sale_def_reports_xlsx_id"
                 model="reports.xlsx"
                 string="Sale Xlsx Report"
@@ -9,5 +9,5 @@
                 file="sale_report_xlsx.sale_def_reports_xlsx_id"
                 attachment_use="False"
         />
-  </data>
+    </data>
 </odoo>

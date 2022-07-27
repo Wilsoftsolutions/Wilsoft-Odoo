@@ -40,7 +40,7 @@ class PartnerXlsx(models.AbstractModel):
 
         domain if not data['data']['sale_team_ids'] else domain.append(
             ('team_id', 'in', data['data']['sale_team_ids']))
-        sales = self.env['account.move'].search(domain)
+        sales = self.env['account.move'].sudo().search(domain)
 
         sheet = workbook.add_worksheet('Sale xlsx Report')
         bold = workbook.add_format({'bold': True, 'align': 'center', 'bg_color': '#fffbed', 'border': True})
@@ -49,9 +49,10 @@ class PartnerXlsx(models.AbstractModel):
             {'bold': True, 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'bg_color': '#f2eee4',
              'border': True})
         header_row_style = workbook.add_format({'bold': True, 'align': 'center', 'border': True, 'valign': 'vcenter', })
+        num_fmt = workbook.add_format({'num_format': '#,####','align': 'left', 'border': True})
         row = 0
         col = 0
-        sheet.merge_range(row, col, row + 3, col + 19, 'Sale xlsx Report', title)
+        sheet.merge_range(row, col, row + 3, col + 20, 'Sale xlsx Report', title)
 
         row += 4
         # Header row
@@ -70,7 +71,8 @@ class PartnerXlsx(models.AbstractModel):
         sheet.merge_range(row, col + 15, row + 1, col + 15, 'Color', header_row_style)
         sheet.merge_range(row, col + 16, row + 1, col + 16, ' Size', header_row_style)
         sheet.merge_range(row, col + 17, row + 1, col + 17, ' Status', header_row_style)
-        sheet.merge_range(row, col + 18, row + 1, col + 19, ' Invoice Balance', header_row_style)
+        sheet.merge_range(row, col + 18, row + 1, col + 18, 'Sale Team', header_row_style)
+        sheet.merge_range(row, col + 19, row + 1, col + 20, ' Invoice Balance', header_row_style)
 
         row += 2
         count = 1
@@ -85,7 +87,7 @@ class PartnerXlsx(models.AbstractModel):
                     lambda attribute: attribute.attribute_id.name.upper() == 'SIZE'
                 )
 
-                sheet.write(row, col, inv.name, style0)
+                sheet.write(row, col, inv.ref if inv.ref else '-', style0)
                 sheet.write(row, col + 1, inv.partner_id.name, style0)
                 sheet.write(row, col + 2, line.product_id.default_code, style0)
                 sheet.write(row, col + 3, line.product_id.name if line.product_id.name else '-', style0)
@@ -94,17 +96,18 @@ class PartnerXlsx(models.AbstractModel):
                 sheet.merge_range(row, col + 6, row, col + 7, line.product_id.categ_id.complete_name.split('/')[
                     0] if line.product_id.categ_id else '-', style0)
                 sheet.write(row, col + 8, line.quantity, style0)
-                sheet.merge_range(row, col + 9, row, col + 10, line.price_subtotal, style0)
-                sheet.merge_range(row, col + 11, row, col + 12, 'shipping city', style0)
-                sheet.merge_range(row, col + 13, row, col + 14, 'Billing City', style0)
+                sheet.merge_range(row, col + 9, row, col + 10, -line.price_subtotal, num_fmt)
+                sheet.merge_range(row, col + 11, row, col + 12, inv.partner_id.city, style0)
+                sheet.merge_range(row, col + 13, row, col + 14, inv.partner_id.street, style0)
                 sheet.write(row, col + 15, color_id.name if color_id else '-', style0)
                 sheet.write(row, col + 16, size.name if size else '-', style0)
                 sheet.write(row, col + 17, inv.state, style0)
-                sheet.merge_range(row, col + 18, row, col + 19, line.price_subtotal, style0)
+                sheet.write(row, col + 18, inv.team_id.name, style0)
+                sheet.merge_range(row, col + 19, row, col + 20, line.price_subtotal, num_fmt)
                 grand_total += line.price_subtotal
 
                 row += 1
                 count += 1
 
-        sheet.merge_range(row, col + 16, row + 1, col + 17, 'Grand Total', header_row_style)
-        sheet.merge_range(row, col + 18, row + 1, col + 19, grand_total, header_row_style)
+        sheet.merge_range(row, col + 17, row + 1, col + 18, 'Grand Total', header_row_style)
+        sheet.merge_range(row, col + 19, row + 1, col + 20, grand_total, num_fmt)
