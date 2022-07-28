@@ -292,10 +292,10 @@
                                                       t-options='{"widget": "float", "precision": 2}'/>
                                             </td>
                                             <td>
-                                                <span t-esc="total_values" t-options='{"widget": "float", "precision": 2}'/>
+<!--                                                <span t-esc="total_values" t-options='{"widget": "float", "precision": 2}'/>-->
 
-<!--                                                <span t-esc="variant['line_subtotal']"-->
-<!--                                                      t-options='{"widget": "float", "precision": 2}'/>-->
+                                                <span t-esc="variant['line_subtotal']"
+                                                      t-options='{"widget": "float", "precision": 2}'/>
                                             </td>
                                         </tr>
 
