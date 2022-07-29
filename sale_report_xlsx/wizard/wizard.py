@@ -40,9 +40,9 @@ class PartnerXlsx(models.AbstractModel):
     def generate_xlsx_report(self, workbook, data, docs):
         domain = [('move_type', 'in', ('out_invoice', 'out_refund')), ('state', '=', 'posted')]
         if data['data']['date_from']:
-            domain.append(('create_date', '>=', data['data']['date_from']))
+            domain.append(('invoice_date', '>=', data['data']['date_from']))
         if data['data']['date_to']:
-            domain.append(('create_date', '<=', data['data']['date_to']))
+            domain.append(('invoice_date', '<=', data['data']['date_to']))
 
         domain if not data['data']['sale_team_ids'] else domain.append(
             ('team_id', 'in', data['data']['sale_team_ids']))
