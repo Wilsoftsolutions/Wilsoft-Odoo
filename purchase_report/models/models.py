@@ -119,7 +119,7 @@ class InvoiceInheritReport(models.AbstractModel):
                 'size_range': None,
                 'assortment': '-',
                 'retail_price': 0,
-                'price_unit': i.price_unit,
+                'price_unit': i.price_unit/12 if i.product_uom.name.upper() == "CARTON" else i.price_unit,
                 'line_total_qty': i.product_qty,
                 'line_qty': i.product_qty,
                 'line_subtotal': i.price_subtotal,
