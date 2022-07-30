@@ -29,7 +29,7 @@ class InvoiceInheritReport(models.AbstractModel):
                                 'line_total_qty': i.product_qty,
                                 'line_qty': i.product_qty,
                                 'retail_price': 0,
-                                'price_unit': i.price_unit,
+                                'price_unit': i.price_unit/12 if i.product_uom.name.upper() == "CARTON" else i.price_unit,
                                 'line_subtotal': i.price_subtotal,
                                 'sizes': [{
                                     '36': 0,
@@ -167,7 +167,7 @@ class InvoiceInheritReport(models.AbstractModel):
                     'line_total_qty': inv_line.product_qty,
                     'line_qty': inv_line.product_qty,
                     'retail_price': 0,
-                    'price_unit': inv_line.price_unit,
+                    'price_unit': inv_line.price_unit/12 if inv_line.product_uom.name.upper() == "CARTON" else inv_line.price_unit,
                     'line_subtotal': inv_line.price_subtotal,
                     'sizes': [{
                         '36': 0,
