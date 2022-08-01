@@ -34,7 +34,7 @@ class PartnerXlsx(models.AbstractModel):
     def get_tax(self, line=None):
         line_tax = 0
         for tax in line.tax_ids:
-            line_tax += tax.amount/100
+            line_tax += tax.amount
         return line_tax
 
     def generate_xlsx_report(self, workbook, data, docs):
