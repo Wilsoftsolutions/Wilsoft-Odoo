@@ -262,8 +262,8 @@
                                                     <span t-esc="total_qty"/>
                                                     <t t-set="total_values"
                                                        t-value="(variant['price_unit']* total_qty)"/>
-                                                    <!--                                                    <t t-set="sub_total"-->
-                                                    <!--                                                       t-value="sub_total + (variant['price_unit']* total_qty)"/>-->
+<!--                                                    <t t-set="sub_total"-->
+<!--                                                       t-value="sub_total + (variant['price_unit']* total_qty)"/>-->
                                                 </t>
 
                                                 <t t-else="">
@@ -292,11 +292,10 @@
                                                       t-options='{"widget": "float", "precision": 2}'/>
                                             </td>
                                             <td>
-                                                <span t-esc="total_values"
-                                                      t-options='{"widget": "float", "precision": 2}'/>
+                                                <span t-esc="total_values" t-options='{"widget": "float", "precision": 2}'/>
 
-                                                <!--                                                <span t-esc="variant['line_subtotal']"-->
-                                                <!--                                                      t-options='{"widget": "float", "precision": 2}'/>-->
+<!--                                                <span t-esc="variant['line_subtotal']"-->
+<!--                                                      t-options='{"widget": "float", "precision": 2}'/>-->
                                             </td>
                                         </tr>
 
