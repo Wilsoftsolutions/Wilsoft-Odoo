@@ -240,8 +240,6 @@
 								<td style="text-align:center">
 									<field name="bal_39" force_save="True"/>
 								</td>
-
-
 								<td style="text-align:center">
 									<field name="bal_40" force_save="True"/>
 

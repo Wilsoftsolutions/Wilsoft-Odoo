@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_qc__inspection,access.qc.inspection,model_qc_inspection,base.group_user,1,1,1,1
 access_update_prod,update.prod,model_update_prod,base.group_user,1,1,1,1
+base.access_ir_attachment_group_,base ir_attachment group_user,base.model_ir_attachment,base.group_user,1,1,1,1
