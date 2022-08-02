@@ -97,9 +97,9 @@ class PartnerXlsx(models.AbstractModel):
             sheet.write(row, col + 10, color_id.name if color_id else '-', style0)
             sheet.write(row, col + 11, size.name if size else '-', style0)
             if stock.location_id.name != 'Shopify-001':
-                sheet.write(row, col + 12, 0, style0)
-            else:
                 sheet.write(row, col + 12, stock.quantity, style0)
+            else:
+                sheet.write(row, col + 12, 0, style0)
 
             if stock.quantity > 0:
                 sheet.merge_range(row, col + 13, row, col + 14,
