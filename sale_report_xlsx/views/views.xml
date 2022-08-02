@@ -2,7 +2,7 @@
     <data>
         <report
                 id="sale_def_reports_xlsx_id"
-                model="reports.xlsx"
+                model="reports.sale.xlsx"
                 string="Sale Xlsx Report"
                 report_type="xlsx"
                 name="sale_report_xlsx.sale_def_reports_xlsx_id"
