@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -- coding: utf-8 --
 
 
 from odoo import models, fields, api
@@ -33,7 +33,7 @@ class InvoiceInheritReport(models.AbstractModel):
                         if not dict_exist:
                             new_dict = {
                                 'product_id': i.product_id.id,
-                                'product_name': product_name.capitalize(),
+                                'product_name': product_name.upper(),
                                 'color': product_color,
                                 'color_id': None,
                                 'size_range': size_range,
@@ -76,7 +76,7 @@ class InvoiceInheritReport(models.AbstractModel):
                     else:
                         self.create_variant_line(rec, i, product_data)
                 except Exception as e:
-                    self.create_line_without_qty(product_data, i)
+                    self.create_line_without_qty(product_data, i, product_data)
 
         return {
             'doc_model': 'account.move',
@@ -120,35 +120,43 @@ class InvoiceInheritReport(models.AbstractModel):
             else:
                 return assortment, size_range
 
-    def create_line_without_qty(self, variant_values=None, i=None):
-        variant_values.append({
-            'product_id': i.product_id.id,
-            'product_name': i.product_id.name,
-            'color': '-',
-            'color_id': '',
-            'size_range': None,
-            'assortment': '-',
-            'retail_price': i.price_unit,
-            'price_unit': i.price_unit,
-            'line_total_qty': i.quantity,
-            'line_qty': i.quantity,
-            'line_subtotal': i.price_subtotal,
-            'pair_price': i.product_id.x_studio_pair_price,
-            'uom': i.product_uom_id.name if i.product_uom_id else None,
-            'sizes': [{
-                '36': 0,
-                '37': 0,
-                '38': 0,
-                '39': 0,
-                '40': 0,
-                '41': 0,
-                '42': 0,
-                '43': 0,
-                '44': 0,
-                '45': 0,
-                '46': 0,
-            }]
-        })
+    def create_line_without_qty(self, variant_values=None, i=None, product_data=None):
+        dict_exist = next(
+            (item for item in product_data if item['product_id'] ==
+             i.product_id.id), None)
+        if not dict_exist:
+            variant_values.append({
+                'product_id': i.product_id.id,
+                'product_name': i.product_id.name.upper(),
+                'color': '-',
+                'color_id': '',
+                'size_range': None,
+                'assortment': '-',
+                'retail_price': i.price_unit,
+                'price_unit': i.price_unit,
+                'line_total_qty': i.quantity,
+                'line_qty': i.quantity,
+                'line_subtotal': i.price_subtotal,
+                'pair_price': i.product_id.x_studio_pair_price,
+                'uom': i.product_uom_id.name if i.product_uom_id else None,
+                'sizes': [{
+                    '36': 0,
+                    '37': 0,
+                    '38': 0,
+                    '39': 0,
+                    '40': 0,
+                    '41': 0,
+                    '42': 0,
+                    '43': 0,
+                    '44': 0,
+                    '45': 0,
+                    '46': 0,
+                }]
+            })
+        else:
+            dict_exist['line_total_qty'] += i.product_qty
+            dict_exist['line_qty'] += i.product_qty
+            dict_exist['line_subtotal'] += i.price_subtotal
         return variant_values
 
     def create_variant_line(self, invoice=None, inv_line=None, product_data=None):
@@ -166,7 +174,7 @@ class InvoiceInheritReport(models.AbstractModel):
             if not dict_exist:
                 new_dict = {
                     'product_id': inv_line.product_id.id,
-                    'product_name': inv_line.product_id.name,
+                    'product_name': inv_line.product_id.name.upper(),
                     'color': color_id.name,
                     'color_id': color_id.id,
                     'size_range': '(36-46)',
@@ -198,7 +206,7 @@ class InvoiceInheritReport(models.AbstractModel):
                 dict_exist['sizes'][0][size.name] += inv_line.quantity
 
         else:
-            self.create_line_without_qty(product_data, inv_line)
+            self.create_line_without_qty(product_data, inv_line, product_data)
 
     def product_name_size_range(self, invoice_line=None):
         # get product_name , color, size_range, Assortment
@@ -211,7 +219,8 @@ class InvoiceInheritReport(models.AbstractModel):
         for col in split_res:
             if color_name.upper() == col.upper():
                 product_color = col
+                product_name = product_name[:-1]
                 break
             else:
-                product_name += col
-        return size_range, assortment, product_color, product_name
+                product_name += col + '-'
+        return size_range, assortment, product_color, product_name.upper()
