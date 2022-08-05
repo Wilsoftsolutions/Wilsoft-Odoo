@@ -29,23 +29,8 @@ class PartnerXlsx(models.AbstractModel):
     _description = "Inventory XLSX Report"
 
     def generate_xlsx_report(self, workbook, data, docs):
-        # if data['data']['category_id'] and data['data']['location_id']:
-        #     stock = self.env['stock.quant'].search(
-        #         [('product_id.categ_id.id', '=', data['data']['category_id']),
-        #          ('location_id.id', '=', data['data']['location_id'])])
-        #
-        # elif data['data']['category_id'] and not data['data']['location_id']:
-        #     stock = self.env['stock.quant'].search(
-        #         [('product_id.categ_id.id', '=', data['data']['category_id'])])
-        #
-        # elif data['data']['location_id'] and not data['data']['category_id']:
-        #     stock = self.env['stock.quant'].search(
-        #         [('location_id.id', '=', data['data']['location_id'])])
-        # else:
-        all_stock = self.env['stock.quant'].search([('location_id.usage','=', 'internal',)])
-
+        all_stock = self.env['stock.quant'].search([('location_id.usage', '=', 'internal',)])
         sheet = workbook.add_worksheet('Inventory xlsx Report')
-        bold = workbook.add_format({'bold': True, 'align': 'center', 'bg_color': '#fffbed', 'border': True})
         style0 = workbook.add_format({'align': 'left', 'border': True})
         title = workbook.add_format(
             {'bold': True, 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'bg_color': '#f2eee4',
@@ -53,8 +38,8 @@ class PartnerXlsx(models.AbstractModel):
         header_row_style = workbook.add_format({'bold': True, 'align': 'center', 'border': True, 'valign': 'vcenter', })
         row = 0
         col = 0
-        sheet.merge_range(row, col, row + 3, col + 16, 'All Inventory xlsx Report', title)
-
+        all_internal_loc = self.env['stock.location'].search([('usage', '=', 'internal')])
+        sheet.merge_range(row, col, row + 3, col + 12 + (len(all_internal_loc) * 2), 'All Inventory xlsx Report', title)
         row += 4
         # Header row
         sheet.set_column(0, 5, 18)
@@ -67,13 +52,18 @@ class PartnerXlsx(models.AbstractModel):
         sheet.merge_range(row, col + 8, row + 1, col + 9, 'Color Description', header_row_style)
         sheet.merge_range(row, col + 10, row + 1, col + 10, 'Color', header_row_style)
         sheet.merge_range(row, col + 11, row + 1, col + 11, 'Size', header_row_style)
-        sheet.merge_range(row, col + 12, row + 1, col + 12, 'Qty', header_row_style)
-        sheet.merge_range(row, col + 13, row + 1, col + 14, 'Locator', header_row_style)
-        sheet.merge_range(row, col + 15, row + 1, col + 15, 'Shopify Loc', header_row_style)
-        sheet.merge_range(row, col + 16, row + 1, col + 16, 'Price', header_row_style)
+        loc_col = 12
+        for loc in all_internal_loc:
+            sheet.merge_range(row, loc_col, row + 1, loc_col + 1, loc.warehouse_id.name + '\n' + loc.name,
+                              header_row_style)
+            loc_col += 2
+        sheet.merge_range(row, loc_col, row + 1, loc_col, 'Price', header_row_style)
         row += 2
         count = 1
+        done_ids = []
+        location_grand_total = []
         for stock in all_stock:
+            if stock.product_id.id not in done_ids:
                 product_attribute = stock.product_id.product_template_attribute_value_ids
                 color_id = product_attribute.filtered(
                     lambda attribute: attribute.attribute_id.name.upper() == 'COLOR'
@@ -86,26 +76,73 @@ class PartnerXlsx(models.AbstractModel):
                 sheet.write(row, col + 1, 'new', style0)
                 if stock.product_id.qty_available > 0:
                     sheet.write(row, col + 1, stock.location_id.name if stock.location_id else '-',
-                                      style0)
+                                style0)
                 else:
-                    sheet.write(row, col + 1, 'Shopify-001',style0)
-                sheet.write(row, col + 2, stock.product_id.categ_id.name, style0)
-                sheet.write(row, col + 3, stock.product_id.default_code if stock.product_id.default_code else '-', style0)
+                    sheet.write(row, col + 1, 'Shopify-001', style0)
+                sheet.write(row, col + 2, stock.product_id.categ_id.complete_name.split('/')[0], style0)
+                sheet.write(row, col + 3, stock.product_id.default_code if stock.product_id.default_code else '-',
+                            style0)
                 sheet.merge_range(row, col + 4, row, col + 5, stock.product_id.display_name, style0)
                 sheet.merge_range(row, col + 6, row, col + 7, stock.product_id.name, style0)
                 sheet.merge_range(row, col + 8, row, col + 9, color_id.name if color_id else '-', style0)
                 sheet.write(row, col + 10, color_id.name if color_id else '-', style0)
                 sheet.write(row, col + 11, size.name if size else '-', style0)
-                sheet.write(row, col + 12, stock.quantity, style0)
-                if stock.quantity > 0:
-                    sheet.merge_range(row, col + 13, row, col + 14,
-                                      stock.location_id.name if stock.location_id else '-',
-                                      style0)
-                else:
-                    sheet.merge_range(row, col + 13, row, col + 13, 'Shopify-001',
-                                      style0)
-
-                sheet.write(row, col + 15, stock.quantity if stock.location_id.name == 'Shopify-001' else 0, style0)
-                sheet.write(row, col + 16, stock.product_id.list_price, style0)
+                loc_location = 12
+                i = 0
+                for loc in all_internal_loc:
+                    qty = stock.product_id.with_context(to_date=fields.Datetime.now(),
+                                                        location=loc.id).qty_available
+                    sheet.merge_range(row, loc_location, row, loc_location + 1, qty, style0)
+                    loc_location += 2
+                    if len(location_grand_total) < len(all_internal_loc):
+                        location_grand_total.append(int(qty))
+                    else:
+                        location_grand_total[i] += int(qty)
+                    i += 1
+                sheet.write(row, loc_location, stock.product_id.list_price, style0)
                 row += 1
                 count += 1
+                done_ids.append(stock.product_id.id)
+
+        sheet.merge_range(row, col + 10, row + 1, col + 11, 'Grand Total', header_row_style)
+        grand_col = 12
+        for grand_total in location_grand_total:
+            sheet.merge_range(row, grand_col, row + 1, grand_col + 1, grand_total, header_row_style)
+            grand_col += 2
+        sheet.merge_range(row, 0, row + 2, col + 12 + (len(all_internal_loc) * 2), 'Products With Zero Quantity',
+                          header_row_style)
+        remaining_products = self.env['product.product'].search([('id', 'not in', tuple(done_ids))])
+        row += 3
+        new_count = count
+        for prod in remaining_products:
+            product_attribute = prod.product_template_attribute_value_ids
+            color_id = product_attribute.filtered(
+                lambda attribute: attribute.attribute_id.name.upper() == 'COLOR'
+            )
+            size = product_attribute.filtered(
+                lambda attribute: attribute.attribute_id.name.upper() == 'SIZE'
+            )
+
+            sheet.write(row, col, new_count, style0)
+            sheet.write(row, col + 1, 'new', style0)
+            if prod.qty_available > 0:
+                sheet.write(row, col + 1, stock.location_id.name if stock.location_id else '-',
+                            style0)
+            else:
+                sheet.write(row, col + 1, 'Shopify-001', style0)
+            sheet.write(row, col + 2, prod.categ_id.complete_name.split('/')[0], style0)
+            sheet.write(row, col + 3, prod.default_code if prod.default_code else '-',
+                        style0)
+            sheet.merge_range(row, col + 4, row, col + 5, stock.product_id.display_name, style0)
+            sheet.merge_range(row, col + 6, row, col + 7, stock.product_id.name, style0)
+            sheet.merge_range(row, col + 8, row, col + 9, color_id.name if color_id else '-', style0)
+            sheet.write(row, col + 10, color_id.name if color_id else '-', style0)
+            sheet.write(row, col + 11, size.name if size else '-', style0)
+            loc_location = 12
+            for loc in all_internal_loc:
+                qty = 0
+                sheet.merge_range(row, loc_location, row, loc_location + 1, qty, style0)
+                loc_location += 2
+            sheet.write(row, loc_location, prod.list_price, style0)
+            row += 1
+            new_count += 1
