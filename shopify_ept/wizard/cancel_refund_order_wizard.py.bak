@@ -14,10 +14,6 @@ class ShopifyCancelRefundOrderWizard(models.TransientModel):
     message = fields.Selection([('customer', 'Customer changed/cancelled order'),
                                 ('inventory', 'Fraudulent order'),
                                 ('fraud', 'Items unavailable'),
-                                ('fraud', 'Fake Order'),
-                                ('fraud', 'Duplicate Order'),
-                                ('other', 'Cancel on customer request / Out of city'),
-                                ('other', 'Test Order'),
                                 ('other', 'Other'),
                                 ], default="other", help="The reason for the order cancellation.")
     notify_by_email = fields.Boolean("Notify By Email ?", default=True,

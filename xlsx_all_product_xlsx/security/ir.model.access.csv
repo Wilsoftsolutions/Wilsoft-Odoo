@@ -1,2 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_xlsx_inventory_report_xlsx_inventory_reports,all_xlsx_inventory_report_reports.xlsx,model_reports_xlsx_all,base.group_user,1,1,1,1
