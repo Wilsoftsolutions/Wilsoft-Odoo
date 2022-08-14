@@ -23,7 +23,7 @@ _logger = logging.getLogg
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
 
-class ir.attachment(models.Model):
+class IrAttachment(models.Model):
     _inherit = 'ir.attachment'
     @api.constrains('type', 'url')
     def _check_serving_attachments(self):
