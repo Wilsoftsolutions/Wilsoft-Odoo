@@ -18,7 +18,6 @@ from odoo.tools import config, human_size, ustr, html_escape, ImageProcess, str2
 from odoo.tools.mimetypes import guess_mimetype
 from odoo.osv import expression
 
-_logger = logging.getLogg
 
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError, UserError
