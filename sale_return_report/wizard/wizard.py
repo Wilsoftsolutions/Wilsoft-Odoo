@@ -30,7 +30,7 @@ class PartnerXlsx(models.AbstractModel):
     def get_tax(self, line=None):
         line_tax = 0
         for tax in line.tax_ids:
-            line_tax += tax.amount
+            line_tax += line.price_subtotal * (tax.amount / 100)
         return line_tax
 
     def generate_xlsx_report(self, workbook, data, docs):
@@ -103,6 +103,7 @@ class PartnerXlsx(models.AbstractModel):
                 sheet.write(row, col + 16, size.name if size else '-', style0)
                 sheet.merge_range(row, col + 17, row, col + 18, line.price_subtotal, num_fmt)
                 sheet.merge_range(row, col + 19, row, col + 20, line_tax + line.price_subtotal, num_fmt)
+                # sheet.merge_range(row, col + 19, row, col + 20, ret.amount_residual, num_fmt)
                 grand_total += 1
 
                 row += 1

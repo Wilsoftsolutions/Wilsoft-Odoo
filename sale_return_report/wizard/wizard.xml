@@ -44,7 +44,7 @@
         <!-- wizard code ended here -->
 
         <!-- menu code started here -->
-        <menuitem id="sale_return_report_menu_id" parent="account.menu_finance_reports"
+        <menuitem id="sale_return_report_menu_id" parent="sale.menu_sale_report"
                   action="sale_return_report_action_id"/>
         <!-- menu code ended -->
 
