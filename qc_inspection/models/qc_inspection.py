@@ -181,9 +181,6 @@ class QcInspection(models.Model):
         else:
             raise UserError(_("You have No Access to Delete this Record!!!!! "))
 
-
-
-
     @api.onchange('vendor_id')
     def onchange_vendor_id(self):
         self.purchase_order_id = ''
@@ -250,11 +247,11 @@ class QcInspection(models.Model):
                             lambda attribute: attribute.attribute_id.name.upper() == 'SIZE'
                         )
                         if size.name == '36':
-                            articl39 += line.sh_qty * po.product_qty
+                            articl36 += line.sh_qty * po.product_qty
                         if size.name == '37':
-                            articl39 += line.sh_qty * po.product_qty
+                            articl37 += line.sh_qty * po.product_qty
                         if size.name == '38':
-                            articl39 += line.sh_qty * po.product_qty
+                            articl38 += line.sh_qty * po.product_qty
                         if size.name == '39':
                             articl39 += line.sh_qty * po.product_qty
                         if size.name == '40':
