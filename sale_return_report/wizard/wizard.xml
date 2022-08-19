@@ -1,0 +1,52 @@
+<odoo>
+    <data>
+        <!-- report menu started here -->
+        <report
+                id="sale_return_report_id"
+                model="reports.xlsx"
+                string="Sale Xlsx Report"
+                report_type="xlsx"
+                name="sale_return_report.sale_return_report"
+                file="sale_return_report.sale_return_report"
+                attachment_use="False"
+        />
+        <!-- Report menu ended here -->
+
+
+        <!-- wizard code started here -->
+        <record id="sale_return_report_wizard" model="ir.ui.view">
+            <field name="model">sale.return.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                            </group>
+                            <group>
+                                <field name="date_to"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="get_print_data" type="object" string="Print"/>
+                        <button string="Cancel" type="cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="sale_return_report_action_id" model="ir.actions.act_window">
+            <field name="name">Sale Return Report</field>
+            <field name="res_model">sale.return.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <!-- wizard code ended here -->
+
+        <!-- menu code started here -->
+        <menuitem id="sale_return_report_menu_id" parent="sale.menu_sale_report"
+                  action="sale_return_report_action_id"/>
+        <!-- menu code ended -->
+
+    </data>
+</odoo>
