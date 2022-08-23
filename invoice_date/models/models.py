@@ -154,8 +154,8 @@ class InvoiceInheritReport(models.AbstractModel):
                 }]
             })
         else:
-            dict_exist['line_total_qty'] += i.product_qty
-            dict_exist['line_qty'] += i.product_qty
+            dict_exist['line_total_qty'] += i.quantity
+            dict_exist['line_qty'] += i.quantity
             dict_exist['line_subtotal'] += i.price_subtotal
         return variant_values
 
