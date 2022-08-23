@@ -1,4 +1,4 @@
-M-gl-sl-0052# -- coding: utf-8 --
+# -- coding: utf-8 --
 
 from odoo import models
 
