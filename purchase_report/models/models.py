@@ -206,4 +206,4 @@ class InvoiceInheritReport(models.AbstractModel):
                 break
             else:
                 product_name += col + '-'
-        return size_range, assortment, product_color, product_name
+        return size_range, assortment, product_color, product_name.upper()
