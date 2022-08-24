@@ -21,7 +21,7 @@ class InvoiceInheritReport(models.AbstractModel):
                         if not dict_exist:
                             new_dict = {
                                 'product_id': i.product_id.id,
-                                'product_name': product_name.capitalize(),
+                                'product_name': product_name.upper(),
                                 'color': product_color,
                                 'color_id': None,
                                 'size_range': size_range,
@@ -113,7 +113,7 @@ class InvoiceInheritReport(models.AbstractModel):
         if not dict_exist:
             variant_values.append({
                 'product_id': i.product_id.id,
-                'product_name': i.product_id.name,
+                'product_name': i.product_id.name.upper(),
                 'color': '-',
                 'color_id': '',
                 'size_range': None,
@@ -159,14 +159,14 @@ class InvoiceInheritReport(models.AbstractModel):
             if not dict_exist:
                 new_dict = {
                     'product_id': inv_line.product_id.id,
-                    'product_name': inv_line.product_id.name,
+                    'product_name': inv_line.product_id.name.upper(),
                     'color': color_id.name,
                     'color_id': color_id.id,
                     'size_range': '(36-46)',
                     'assortment': '-',
                     'line_total_qty': inv_line.product_qty,
                     'line_qty': inv_line.product_qty,
-                    'retail_price': inv-line.product_id.list_price,
+                    'retail_price': inv_line.product_id.list_price,
                     'price_unit': inv_line.price_unit/12 if inv_line.product_uom.name.upper() == "CARTON" else inv_line.price_unit,
                     'line_subtotal': inv_line.price_subtotal,
                     'sizes': [{
