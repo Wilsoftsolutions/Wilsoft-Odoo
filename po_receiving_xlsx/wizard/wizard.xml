@@ -1,0 +1,55 @@
+<odoo>
+    <data>
+        <!-- report menu started here -->
+        <report
+                id="po_receiving_report_id"
+                model="reports.xlsx"
+                string="PO Receiving Report"
+                report_type="xlsx"
+                name="po_receiving_xlsx.po_receiving_report"
+                file="po_receiving_xlsx.po_receiving_report"
+                attachment_use="False"
+        />
+        <!-- Report menu ended here -->
+
+
+        <!-- wizard code started here -->
+        <record id="po_receiving_report_wizard" model="ir.ui.view">
+            <field name="model">po.receiving.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                            </group>
+                            <group>
+                                <field name="date_to"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="vendor_ids" widget="many2many_tags"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="get_print_data" type="object" string="Print"/>
+                        <button string="Cancel" type="cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="po_receiving_report_action_id" model="ir.actions.act_window">
+            <field name="name">PO Receiving Report</field>
+            <field name="res_model">po.receiving.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <!-- wizard code ended here -->
+
+        <!-- menu code started here -->
+        <menuitem id="po_receiving_menu_id" parent="stock.menu_warehouse_report"
+                  action="po_receiving_report_action_id"/>
+        <!-- menu code ended -->
+
+    </data>
+</odoo>
