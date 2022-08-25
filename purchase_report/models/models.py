@@ -28,7 +28,7 @@ class InvoiceInheritReport(models.AbstractModel):
                                 'assortment': assortment,
                                 'line_total_qty': i.product_qty,
                                 'line_qty': i.product_qty,
-                                'retail_price': i.product_id.list_price,
+                                'retail_price': i.product_id.x_studio_pair_price,
                                 'price_unit': i.price_unit/12 if i.product_uom.name.upper() == "CARTON" else i.price_unit,
                                 'line_subtotal': i.price_subtotal,
                                 'sizes': [{
@@ -118,7 +118,7 @@ class InvoiceInheritReport(models.AbstractModel):
                 'color_id': '',
                 'size_range': None,
                 'assortment': '-',
-                'retail_price': i.product_id.list_price,
+                'retail_price': i.product_id.x_studio_pair_price,
                 'price_unit': i.price_unit/12 if i.product_uom.name.upper() == "CARTON" else i.price_unit,
                 'line_total_qty': i.product_qty,
                 'line_qty': i.product_qty,
@@ -166,7 +166,7 @@ class InvoiceInheritReport(models.AbstractModel):
                     'assortment': '-',
                     'line_total_qty': inv_line.product_qty,
                     'line_qty': inv_line.product_qty,
-                    'retail_price': inv_line.product_id.list_price,
+                    'retail_price': inv_line.product_id.x_studio_pair_price,
                     'price_unit': inv_line.price_unit/12 if inv_line.product_uom.name.upper() == "CARTON" else inv_line.price_unit,
                     'line_subtotal': inv_line.price_subtotal,
                     'sizes': [{
