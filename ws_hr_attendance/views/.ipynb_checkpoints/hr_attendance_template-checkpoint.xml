@@ -1,0 +1,1406 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    
+      <template id="portal_rectify_layout" name="Portal layout: Rectify menu entry" inherit_id="portal.portal_breadcrumbs" priority="25">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'rectify' or rectify" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not rectify else ''}">
+                <a t-if="rectify" t-attf-href="/hr/rectify/attendances?{{ keep_query() }}">Attendance Commitments</a>
+                <t t-else="">Attendance Commitments</t>
+            </li>
+
+        </xpath>
+    </template>
+
+    <template id="portal_rectify_home" name="Show Rectify / Payroll" customize_show="True" inherit_id="portal.portal_my_home" priority="25">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Attendance Commitments</t>
+                <t t-set="url" t-value="'/hr/rectify/attendances'"/>
+                <t t-set="placeholder_count" t-value="'rectify_count'"/>
+            </t>
+        </xpath>  
+    </template>
+
+    <template id="portal_hr_rectify_attendances" name="hr_rectify_attendance">
+         <t t-set="foo" t-value="2 + 1"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Attendance Rectification</t>
+            </t>
+            <t t-if="not grouped_rectify_attendances">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no Attendance Rectification.
+                </div>
+            </t>
+            <t t-if="grouped_rectify_attendances">
+                <t t-call="portal.portal_table">
+                    <t t-foreach="grouped_rectify_attendances" t-as="rectification">
+                        <thead>
+                            <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                                <th class="text-left">Employee</th>
+                                <th class="text-left">Approver</th>
+                                <th class="text-left">Check In</th>
+                                <th class="text-left">Check Out</th>
+                                <th class="text-left">Type</th>
+                                <th class="text-left">Reason</th>
+                                <th class="text-left">Status</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="rectification" t-as="rectify"> 
+                                <t t-if="rectify.employee_id.user_id.id == uid">
+                                <tr>
+                                    
+                                     <td>
+                                      <span t-field="rectify.employee_id.name"/>
+                                    </td>
+                                    <td>
+                                      <!--<span t-field="rectify.employee_id.parent_id.name"/> -->
+                                    </td>
+                                     <td class="text-left">
+                                        <t t-if="rectify.check_in"> 
+                                          <span t-esc="rectify.check_in"  t-options='{"widget": "datetime"}'/>                                                 </t>
+                                    </td>
+                                    <td class="text-left">
+                                        <t t-if="rectify.check_out"> 
+                                          <span t-esc="rectify.check_out"  t-options='{"widget": "datetime"}'/>     
+                                        </t>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="rectify.partial" />
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="rectify.reason" />
+                                    </td>
+                                    <td class="text-left">
+                                        <t t-if="rectify.state == 'draft'">
+                                            <i class="badge badge-pill badge-info" >Draft</i>
+                                        </t>
+                                        <t t-if="rectify.state == 'submitted'">
+                                            <i class="badge badge-pill badge-info" >To Approve</i>
+                                        </t>
+                                        <t t-if="rectify.state == 'approved'">
+                                            <i class="badge badge-pill badge-info" >Approved</i>
+                                        </t>
+                                         <t t-if="rectify.state == 'refused'">
+                                            <i class="badge badge-pill badge-info" >Refused</i>
+                                        </t>
+                                        
+                                    </td>
+                                    <td class="text-left">
+                                          <t t-if = "rectify.state == 'submitted'">
+                                             <a t-attf-href="/hr/attendance/cancel/#{rectify.id}?" title="Cancel"><div class="btn btn-warning"><i class="fa fa-times"></i></div></a>
+                                             
+                                           </t>
+                                    </td>
+                                  
+
+                                </tr>
+                            </t>
+                            </t>  
+                             <tr>
+                                <div>
+                                    <t class="col-lg-7 col-md-8" >
+                                        <a href="/hr/attendance/rectify/" > <div class="btn btn-primary pull-left" style="height:30px; line-height:100%; ">Create</div> </a> 
+                                    </t>
+                                 </div>
+                                 
+                            </tr> 
+                           
+                        </tbody>
+                    </t>
+                </t>
+            </t>   
+        </t>
+    </template>
+    
+    
+    
+    
+    <template id="portal_attendance_layout" name="Portal layout: attendance menu entry" inherit_id="portal.portal_breadcrumbs" priority="25">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'attendance' or attendance" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not attendance else ''}">
+                <a t-if="attendance" t-attf-href="/hr/attendances?{{ keep_query() }}">Attendances</a>
+                <t t-else="">Attendances</t>
+            </li>
+
+        </xpath>
+    </template>
+
+    <template id="portal_ayttendance_home" name="Show attendance / Payroll" customize_show="True" inherit_id="portal.portal_my_home" priority="25">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Attendance</t>
+                <t t-set="url" t-value="'/hr/attendances'"/>
+                <t t-set="placeholder_count" t-value="'attendance_count'"/>
+            </t>
+        </xpath>  
+    </template>
+
+    <template id="portal_hr_attendances" name="hr_attendance">
+         <t t-set="foo" t-value="2 + 1"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Attendance</t>
+            </t>
+            <t t-if="not grouped_attendances">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no Attendance.
+                </div>
+            </t>
+            <t t-if="grouped_attendances">
+                <t t-call="portal.portal_table">
+                    <t t-foreach="grouped_attendances" t-as="attendances">
+                        <thead>
+                            <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                                <th class="text-left">No#</th>
+                                <th class="text-left">Employee</th>
+                                <th class="text-left">Check In</th>
+                                <th class="text-left">Check Out</th>
+                                <th class="text-left">Worked Hours</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="attendances" t-as="attendance"> 
+                                <t t-if="attendance.employee_id.user_id.id == uid">
+                                <tr>
+                                    <td class="text-left">
+                                          <a t-attf-href="/hr/attendance/#{attendance.id}?{{ keep_query() }}">#<span t-field="attendance.id"/></a>
+                                    </td>
+                                     <td>
+                                        <a t-attf-href="/hr/attendance/#{attendance.id}?{{ keep_query() }}"><span t-field="attendance.employee_id.name"/></a>
+                                    </td>
+                                     <td class="text-left">
+                                        <t t-if="attendance.check_in"> 
+                                        <span t-esc="attendance.check_in"  t-options='{"widget": "datetime"}' />                             </t>
+                                    </td>
+                                    <td class="text-left">
+                                        <t t-if="attendance.check_out"> 
+                                        <span t-esc="attendance.check_out"  t-options='{"widget": "datetime"}' />     </t>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="round(attendance.worked_hours,2)" />
+                                    </td>
+                                   <td>  
+                                       
+                                        <t t-if = "attendance.worked_hours == 0">
+                                             <t t-set="is_commitment_present" t-value='0'/>
+                                          <t t-foreach="request.env['hr.attendance.rectify'].sudo().search([ ('attendance_id','=',attendance.id),('employee_id','=',attendance.employee_id.id),('state','=','submitted') ], limit=1)" t-as="att">
+                                                <t t-set="is_commitment_present" t-value='1'/>
+                                               <t t-if='att.state=="submitted" '>
+                                                   Comitment Slip(<span t-esc='att.partial'/>)
+                                               </t>
+                                            </t>
+                                           
+                                              <t t-if='is_commitment_present==0'>
+                                             <a t-attf-href="/hr/attendance/rectify/#{attendance.id}?" title="Rectify"><div class="btn btn-warning"><i class="fa fa-wrench"></i></div></a> 
+                                           </t>
+                                            </t>  
+                                    </td>
+
+                                </tr>
+                            </t>
+                            </t>  
+                             <tr>
+                                <div>
+                                    <t class="col-lg-7 col-md-8" >
+                                        <a href="/hr/attendance/rectify/" > <div class="btn btn-primary pull-left" style="height:30px; line-height:100%; ">Create</div> </a> 
+                                    </t>
+                                </div>
+                                 <div>
+<!--                                     <t class="col-lg-7 col-md-8" >
+                                        <a href="/hr/attendance/print/" > <div class="btn btn-primary pull-right" style="height:30px; line-height:100%; ">print</div> </a> 
+                                    </t> -->
+                                </div>
+                            </tr> 
+                           
+                        </tbody>
+                    </t>
+                </t>
+            </t>   
+        </t>
+    </template>
+    
+    
+    
+    
+    
+       <template id="attendance_create_rectify" name="Create Attendance">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+                  
+                   
+                   
+                            <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[1]">
+                                <section class="s_title parallax s_parallax_is_fixed bg-white-100 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
+                                    <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_banner_default_image'); background-position: 50% 0;"></span>
+                                    <div class="o_we_bg_filter bg-white-50"></div>
+                                    <div class="container">
+                                        <h1 style="margin-left:10px">Attendance Commitment</h1>
+                                    </div>
+                                </section>
+                            </div>
+                                            
+                            <div class="container mt-4 mb-5">
+                                <div class="row">
+                                    <div class="col-lg-7 col-xl-6 mr-lg-auto">
+                                        <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+                                            <section class="s_text_block" data-snippet="s_text_block">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <p>
+                                                               Partial/Full Rectify Your Attendance From Here.
+                                                            </p>
+                                                                   
+                                                            
+                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <span class="hidden" data-for="contactus_form" data-oe-id="2822" data-oe-xpath="/data/xpath/span" data-oe-model="ir.ui.view" data-oe-field="arch" data-values="{'employee_id': '', 'check_in': '', 'date_partial': '', 'description': ''}"></span>
+            <div id="leave_section" data-oe-id="3374" data-oe-xpath="/data/xpath[2]/div" data-oe-model="ir.ui.view" data-oe-field="arch">
+                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                        <div class="container">
+                            <form id="portal_expense_form" data-toggle="validator" action="/hr/attendance/rectify/save">
+
+                                
+                                
+                                
+                         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                        <script>
+                              $(function () {
+                                
+                                var partial = $( "#partial" ).val();
+                               
+                                    $("#check_in_time").hide();
+                                    $("#check_out_time").hide();
+                                     $("#date_partial").hide();
+                                    $("#check_in").show();
+                                    $("#check_out").show(); 
+                              
+                            });
+                              $(document).ready(function(){
+                              $("#partial").change(function(){
+                                var partial = $( "#partial" ).val();
+                                if($(this).is(":checked")){
+                                    $("#check_in").hide();
+                                    $("#check_out").hide();
+                                    $("#date_partial").show();
+                                    $("#check_in_time").show();
+                                    $("#check_out_time").show();
+                                }
+                                else if($(this).is(":not(:checked)")){
+                                    $("#check_in_time").hide();
+                                    $("#date_partial").hide();
+                                    $("#check_out_time").hide();
+                                    $("#check_in").show();
+                                    $("#check_out").show(); 
+                                }
+                                
+                              });
+                              
+                            }); 
+                        </script>
+                                <div class="s_website_form_rows row s_col_no_bgcolor">
+                                   
+                                    <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance1">
+                                                <span class="s_website_form_label_content">Employee</span>
+                                                <span class="s_website_form_mark"> *</span>
+
+                                            </label>
+                                            <div class="col-sm">
+                                            
+                                             <t t-esc="employee_name.name"    />
+                                               <input type="hidden" class="form-control s_website_form_input" name="employee_id"   t-att-value='employee_name.id' />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance1manager">
+                                                <span class="s_website_form_label_content">Manager</span>
+                                                <span class="s_website_form_mark"> *</span>
+
+                                            </label>
+                                            <div class="col-sm">
+                                            
+                                             <t t-esc="managers"    />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                     
+                                
+                                    
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance_rectify">
+                                                <span class="s_website_form_label_content">Partial</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="checkbox" class="form-control s_website_form_input" name="partial"  id='partial'  />
+
+                                            </div>
+                                        </div>
+                                     </div>
+                                    
+                                    
+                                   
+                                     <div id='check_in' class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="check_in">
+                                                <span class="s_website_form_label_content">Date From</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="check_in"    />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                   
+                                    
+                                     <div id='check_out' class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div  class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="check_out">
+                                                <span class="s_website_form_label_content">Date To</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="check_out"     />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                     <div id='date_partial' class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="date_partial">
+                                                <span class="s_website_form_label_content">Date</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="date_partial"    />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                      <div id='check_in_time' class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance2">
+                                                <span class="s_website_form_label_content">Time In</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="time" class="form-control s_website_form_input" name="check_in_time"    />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                    
+                                     <div id='check_out_time' class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="rectify_timeout">
+                                                <span class="s_website_form_label_content">Time Out</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="time" class="form-control s_website_form_input" name="check_out_time"     />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                                                         
+                                   
+                                    <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="text" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="desc5">
+                                                <span class="s_website_form_label_content">Description</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+                                                <textarea id="description" class="form-control s_website_form_input"  name="description" required="1"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                        <div style="width: 200px;" class="s_website_form_label"></div>
+                                        <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                                        <span id="s_website_form_result"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+			</div>
+                                    <div class="col-lg-4 mt-4 mt-lg-0">
+                                   <div class='section-custom col-md-12'>
+                                                   <a class="mb-5" id="submit-leave" t-attf-href="/hr/attendances">
+                                                        <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">View  Attendance</button>
+                                                    </a>
+                                                </div>      
+                                        
+                                        
+                                        
+    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+        <div data-oe-model="res.company" data-oe-id="1" data-oe-field="partner_id" data-oe-type="contact" data-oe-expression="res_company.partner_id" data-oe-many2one-id="1" data-oe-many2one-model="res.partner" data-oe-contact-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;email&quot;], &quot;tagName&quot;: &quot;div&quot;, &quot;expression&quot;: &quot;res_company.partner_id&quot;, &quot;type&quot;: &quot;contact&quot;, &quot;inherit_branding&quot;: true, &quot;translate&quot;: false}" data-oe-field-xpath="/t[1]/address[1]/div[1]">
+    <address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
+        
+        
+            
+    <div>
+        
+        
+        
+        
+    </div>
+
+        
+        <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+           
+            
+          
+            
+           
+        </div>
+        <div>
+             
+            
+
+        </div>
+    
+        
+        
+    </address>
+</div>
+        
+          
+    </address>
+        
+            
+        
+    
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_structure mt-2" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[3]"></div>
+                        </div>
+                            
+                            
+                            
+            
+            
+         
+        </t>
+    </template>
+    
+    
+    
+      <template id="print_attendance_report" name="print Attendance report">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+                            <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[1]">
+                                <section class="s_title parallax s_parallax_is_fixed bg-white-100 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
+                                    <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_banner_default_image'); background-position: 50% 0;"></span>
+                                    <div class="o_we_bg_filter bg-white-50"></div>
+                                    <div class="container">
+                                        <h1 style="margin-left:10px">Attendance Report</h1>
+                                    </div>
+                                </section>
+                            </div>
+                                            
+                            <div class="container mt-4 mb-5">
+                                <div class="row">
+                                    <div class="col-lg-7 col-xl-6 mr-lg-auto">
+                                        <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+                                            <section class="s_text_block" data-snippet="s_text_block">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <p>
+                                                               
+                                                            </p>
+                                                                   
+                                                            
+                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <span class="hidden" data-for="contactus_form" data-oe-id="2822" data-oe-xpath="/data/xpath/span" data-oe-model="ir.ui.view" data-oe-field="arch" data-values="{'employee_id': '', 'manager': '', 'date_end': '', 'description': ''}"></span>
+            <div id="report_section" data-oe-id="3374" data-oe-xpath="/data/xpath[2]/div" data-oe-model="ir.ui.view" data-oe-field="arch">
+                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                        <div class="container">
+                            <form id="portal_expense_form" data-toggle="validator" action="/hr/attendance/print/report">
+
+                                <div class="s_website_form_rows row s_col_no_bgcolor">
+                                   
+                                    <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance1">
+                                                <span class="s_website_form_label_content">Employee</span>
+                                                <span class="s_website_form_mark"> *</span>
+
+                                            </label>
+                                            <div class="col-sm">
+                                            
+                                             <t t-esc="employee_name.name"    />
+                                               <input type="hidden" class="form-control s_website_form_input" name="employee_id"   t-att-value='employee_name.id' />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                     
+                                    
+                                   
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance2">
+                                                <span class="s_website_form_label_content">Date From</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="check_in"   required="1"/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                    
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance2">
+                                                <span class="s_website_form_label_content">Date To</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="check_out"  required="1"  />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                                                         
+                                   
+                                   
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                        <div style="width: 200px;" class="s_website_form_label"></div>
+                                        <button type="submit" class="btn btn-primary pull-left">Print</button>
+                                        <span id="s_website_form_result"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+			</div>
+                                    <div class="col-lg-4 mt-4 mt-lg-0">
+                                   <div class='section-custom col-md-12'>
+                                                   <a class="mb-5" id="submit-leave" t-attf-href="/hr/attendances">
+                                                        <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">View  Attendance</button>
+                                                    </a>
+                                                </div>      
+                                        
+                                        
+                                        
+    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+        <div data-oe-model="res.company" data-oe-id="1" data-oe-field="partner_id" data-oe-type="contact" data-oe-expression="res_company.partner_id" data-oe-many2one-id="1" data-oe-many2one-model="res.partner" data-oe-contact-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;email&quot;], &quot;tagName&quot;: &quot;div&quot;, &quot;expression&quot;: &quot;res_company.partner_id&quot;, &quot;type&quot;: &quot;contact&quot;, &quot;inherit_branding&quot;: true, &quot;translate&quot;: false}" data-oe-field-xpath="/t[1]/address[1]/div[1]">
+    <address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
+        
+        
+            
+    <div>
+        
+        
+        
+        
+    </div>
+
+        
+        <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+           
+            
+          
+            
+           
+        </div>
+        <div>
+             
+            
+
+        </div>
+    
+        
+        
+    </address>
+</div>
+        
+          
+    </address>
+        
+            
+        
+    
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_structure mt-2" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[3]"></div>
+                        </div>
+                            
+                            
+                            
+            
+            
+         
+        </t>
+    </template>
+    
+
+    
+    
+    
+    
+    
+     <template id="attendance_rectify" name="Edit Attendance">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+                            <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[1]">
+                                <section class="s_title parallax s_parallax_is_fixed bg-white-100 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
+                                    
+                                    <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_banner_default_image'); background-position: 50% 0;"></span>
+                                    <div class="o_we_bg_filter bg-white-50"></div>
+                                    <div class="container">
+                                        <h1 style="margin-left:10px">Attendance Commitment</h1>
+                                    </div>
+                                </section>
+                            </div>
+                         
+                   
+                   
+                   
+                   
+                   
+                   
+                            <div class="container mt-4 mb-5">
+                                <div class="row">
+                                    <div class="col-lg-7 col-xl-6 mr-lg-auto">
+                                        <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+                                            <section class="s_text_block" data-snippet="s_text_block">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <p>
+                                                            </p>
+                                                                   
+                                                            
+                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <span class="hidden" data-for="contactus_form" data-oe-id="2822" data-oe-xpath="/data/xpath/span" data-oe-model="ir.ui.view" data-oe-field="arch" data-values="{'employee_id': '', 'manager': '', 'date_end': '', 'description': ''}"></span>
+            <div id="leave_section" data-oe-id="3374" data-oe-xpath="/data/xpath[2]/div" data-oe-model="ir.ui.view" data-oe-field="arch">
+                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                        <div class="container">
+                            <form id="portal_expense_form" data-toggle="validator" action="/hr/attendance/rectify/save">
+
+                                <div class="s_website_form_rows row s_col_no_bgcolor">
+                                   
+                                    <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance1">
+                                                <span class="s_website_form_label_content">Employee</span>
+                                                <span class="s_website_form_mark"> *</span>
+
+                                            </label>
+                                            <div class="col-sm">
+                                            
+                                             <t t-esc="employee_name.name"    />
+                                               <input type="hidden" class="form-control s_website_form_input" name="employee_id"   t-att-value='employee_name.id' />   
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Fieldmanager">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance1">
+                                                <span class="s_website_form_label_content">Manager</span>
+                                                <span class="s_website_form_mark"> *</span>
+
+                                            </label>
+                                            <div class="col-sm">
+                                            
+                                             <t t-esc="managers"    />   
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                 
+                                    
+                                      <t t-if="not exist_attendance.check_in">
+                                      <t t-if="exist_attendance.check_out">
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance2">
+                                                <span class="s_website_form_label_content">Check In</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="time" class="form-control s_website_form_input" name="check_in"   t-att-value="date_processing_in"/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </t>    
+                                    </t>    
+                                    <t t-if="not exist_attendance.check_out">
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance2">
+                                                <span class="s_website_form_label_content">Check Out</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="time" class="form-control s_website_form_input" name="check_out"   t-att-value="date_processing_out"/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </t>
+                                      
+                                    <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="hidden" class="form-control s_website_form_input" name="id" required="True" t-att-value="exist_attendance.id"/>
+                                                
+                                        <t t-if="not exist_attendance.check_in">
+                                               <input type="hidden" class="form-control s_website_form_input" name="check_in_date" required="True" t-att-value="exist_attendance.check_in"/>  
+                                        </t>
+                                        <t t-if="not exist_attendance.check_out">
+                                               <input type="hidden" class="form-control s_website_form_input" name="check_out_date" required="True" t-att-value="exist_attendance.check_out"/>  
+                                        </t>          
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+<!--                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance_rectify">
+                                                <span class="s_website_form_label_content">Night Shift</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="checkbox" class="form-control s_website_form_input" name="night_shift"   />
+
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    
+                                    
+                                   
+                                    <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="text" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="expense5">
+                                                <span class="s_website_form_label_content">Description</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+                                                <textarea id="description" class="form-control s_website_form_input"  name="description" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                        <div style="width: 200px;" class="s_website_form_label"></div>
+                                        <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                                        <span id="s_website_form_result"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+			</div>
+                                    <div class="col-lg-4 mt-4 mt-lg-0">
+                                   <div class='section-custom col-md-12'>
+                                                   <a class="mb-5" id="submit-leave" t-attf-href="/hr/attendances">
+                                                        <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">View Attendance</button>
+                                                    </a>
+                                                </div>      
+                                   <div class='section-custom col-md-12'>
+                                        <a class="mb-5" id="submit-leave" t-attf-href="/hr/attendance/rectify/reverse/#{exist_attendance.id}?">
+                                        <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">IN/OUT Rectification</button>
+                                        </a>
+                                  </div>         
+                                        
+                                        
+    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+        <div data-oe-model="res.company" data-oe-id="1" data-oe-field="partner_id" data-oe-type="contact" data-oe-expression="res_company.partner_id" data-oe-many2one-id="1" data-oe-many2one-model="res.partner" data-oe-contact-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;email&quot;], &quot;tagName&quot;: &quot;div&quot;, &quot;expression&quot;: &quot;res_company.partner_id&quot;, &quot;type&quot;: &quot;contact&quot;, &quot;inherit_branding&quot;: true, &quot;translate&quot;: false}" data-oe-field-xpath="/t[1]/address[1]/div[1]">
+    <address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
+        
+        
+            
+    <div>
+        
+        
+        
+        
+    </div>
+
+        
+        <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+           
+            
+          
+            
+           
+        </div>
+        <div>
+             
+            
+
+        </div>
+    
+        
+        
+    </address>
+</div>
+        
+          
+    </address>
+        
+            
+        
+    
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_structure mt-2" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[3]"></div>
+                        </div>
+                            
+                            
+                            
+            
+            
+         
+        </t>
+    </template>
+
+
+
+            <template id="attendance_rectify_reverse" name="Edit Attendance reverse">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+                            <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[1]">
+                                <section class="s_title parallax s_parallax_is_fixed bg-white-100 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
+                                    
+                                    <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_banner_default_image'); background-position: 50% 0;"></span>
+                                    <div class="o_we_bg_filter bg-white-50"></div>
+                                    <div class="container">
+                                        <h1 style="margin-left:10px">Attendance Rectification</h1>
+                                    </div>
+                                </section>
+                            </div>
+                           
+                            <div class="container mt-4 mb-5">
+                                <div class="row">
+                                    <div class="col-lg-7 col-xl-6 mr-lg-auto">
+                                        <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+                                            <section class="s_text_block" data-snippet="s_text_block">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <p>
+                                                            </p>
+                                                                   
+                                                            
+                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <span class="hidden" data-for="contactus_form" data-oe-id="2822" data-oe-xpath="/data/xpath/span" data-oe-model="ir.ui.view" data-oe-field="arch" data-values="{'employee_id': '', 'manager': '', 'date_end': '', 'description': ''}"></span>
+            <div id="leave_section" data-oe-id="3374" data-oe-xpath="/data/xpath[2]/div" data-oe-model="ir.ui.view" data-oe-field="arch">
+                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                        <div class="container">
+                            <form id="portal_expense_form" data-toggle="validator" action="/attendance/rectify/reverse/save">
+
+                                <div class="s_website_form_rows row s_col_no_bgcolor">
+                                   
+                                    <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance1">
+                                                <span class="s_website_form_label_content">Employee</span>
+                                                <span class="s_website_form_mark"> *</span>
+
+                                            </label>
+                                            <div class="col-sm">
+                                            
+                                             <t t-esc="employee_name.name"    />
+                                               <input type="hidden" class="form-control s_website_form_input" name="employee_id"   t-att-value='employee_name.id' />   
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Fieldmanager">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance1">
+                                                <span class="s_website_form_label_content">Manager</span>
+                                                <span class="s_website_form_mark"> *</span>
+
+                                            </label>
+                                            <div class="col-sm">
+                                            
+                                             <t t-esc="managers"    />   
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                 
+                                    
+                                      <t t-if="exist_attendance.check_in">
+                                      <t t-if="not exist_attendance.check_out">
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance2">
+                                                <span class="s_website_form_label_content">Check In</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="time" class="form-control s_website_form_input" name="check_in"   t-att-value="date_processing_in"/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </t>    
+                                    </t>    
+                                    <t t-if="exist_attendance.check_out">
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance2">
+                                                <span class="s_website_form_label_content">Check Out</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="time" class="form-control s_website_form_input" name="check_out"   t-att-value="date_processing_out"/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </t>
+                                      
+                                    <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="hidden" class="form-control s_website_form_input" name="id" required="True" t-att-value="exist_attendance.id"/>
+                                                
+                                        <t t-if="exist_attendance.check_in">
+                                               <input type="hidden" class="form-control s_website_form_input" name="check_in_date" required="True" t-att-value="exist_attendance.check_in"/>  
+                                        </t>
+                                        <t t-if="exist_attendance.check_out">
+                                               <input type="hidden" class="form-control s_website_form_input" name="check_out_date" required="True" t-att-value="exist_attendance.check_out"/>  
+                                        </t>          
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+<!--                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="attendance_rectify">
+                                                <span class="s_website_form_label_content">Night Shift</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="checkbox" class="form-control s_website_form_input" name="night_shift"   />
+
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    
+                                    
+                                   
+                                    <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="text" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="expense5">
+                                                <span class="s_website_form_label_content">Description</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+                                                <textarea id="description" class="form-control s_website_form_input"  name="description" ></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    
+                                    <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                        <div style="width: 200px;" class="s_website_form_label"></div>
+                                        <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                                        <span id="s_website_form_result"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+			</div>
+                                    <div class="col-lg-4 mt-4 mt-lg-0">
+                                   <div class='section-custom col-md-12'>
+                                                   <a class="mb-5" id="submit-leave" t-attf-href="/hr/attendances">
+                                                        <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">View Attendance</button>
+                                                    </a>
+                                                </div>      
+                                        
+                                        
+                                        
+    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+        <div data-oe-model="res.company" data-oe-id="1" data-oe-field="partner_id" data-oe-type="contact" data-oe-expression="res_company.partner_id" data-oe-many2one-id="1" data-oe-many2one-model="res.partner" data-oe-contact-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;email&quot;], &quot;tagName&quot;: &quot;div&quot;, &quot;expression&quot;: &quot;res_company.partner_id&quot;, &quot;type&quot;: &quot;contact&quot;, &quot;inherit_branding&quot;: true, &quot;translate&quot;: false}" data-oe-field-xpath="/t[1]/address[1]/div[1]">
+    <address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
+        
+        
+            
+    <div>
+        
+        
+        
+        
+    </div>
+
+        
+        <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+           
+            
+          
+            
+           
+        </div>
+        <div>
+             
+            
+
+        </div>
+    
+        
+        
+    </address>
+</div>
+        
+          
+    </address>
+        
+            
+        
+    
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_structure mt-2" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[3]"></div>
+                        </div>
+                            
+                            
+                            
+            
+            
+         
+        </t>
+    </template>
+    
+    
+    
+    
+    <template id="portal_hr_attendance" name="hr_attendance_home">
+        <t t-call="portal.portal_layout">
+             
+          
+            <div id="optional_placeholder"></div>
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_header">
+                    <div id="optional_placeholder"></div>
+                    <div class="container">
+                      <div class="card">
+                        <div class="card-header">
+                                <div class="row">
+                                    <div class="col-lg-11">
+                                        <h5 class="d-flex mb-1 mb-md-0 row">
+                                            <span t-field="attendance.employee_id.name" class="col-8 text-truncate"/>
+                                            <small class="text-muted d-none d-md-inline"> (#<span t-field="attendance.id"/>)</small>
+                                            
+                                        </h5>
+                                    </div>
+                                    <t t-set="prev_record" t-value="1" /> 
+                                    <t t-set="next_record" t-value="2" /> 
+                                    <div style="float:right; text-align:right; width:0ox; margin-right:0px;" class=" btn-group col-lg-1" role="group">
+                                    <h5>  
+                                        <t t-if="pre_id">
+                                            <a role="button"  t-attf-href="/attendance/pre/#{attendance.id}?" ><i style="margin-right:10px; align:right" class="fa fa-chevron-left" role="img" aria-label="Previous" title="Previous"></i></a>
+                                        </t>
+                                        <t t-else="">
+                                            <a role="button"  t-att-class="disabled"  ><i style="margin-right:10px; align:right; color:#B8B7B0" class="fa fa-chevron-left" aria-label="Previous" title="Previous"></i></a>
+
+                                        </t>
+                                        <t t-if="next_id">
+                                            <a role="button" t-attf-href="/attendance/next/#{attendance.id}?" ><i class="fa fa-chevron-right" role="img" aria-label="Next" title="Next"></i></a>
+                                        </t>
+                                        <t t-else="">
+                                            <a role="button"  t-att-class="disabled"  ><i style="color:#B8B7B0" class="fa fa-chevron-right" aria-label="Next" title="Next"></i></a>
+                                        </t>
+                                    </h5>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </t>
+               <t t-set="card_body">          
+                    <div class="row mb-5">
+                        <div class="col-12 col-md-6 mb-1">
+                            <span t-field="attendance.employee_id.name" />
+                        </div>
+                        <div class="col-12 col-md-6" t-if="attendance.id">
+                            <strong>Employee:</strong> <span t-field="attendance.employee_id.name" />
+                        </div>
+                    </div>
+                     <div class="row mb-12">
+                         <div class="col-12 col-md-12 pb-2">
+                            <div class="row">
+                                <div class="col-md-5"> <strong>Check In : </strong>
+                                    <t t-if="attendance.check_in">
+                                        <span t-esc="attendance.check_in"  t-options='{"widget": "datetime"}' />
+                                    </t>
+                                </div>
+                                <div class="col-md-7"> <strong>Check Out : </strong>
+                                    <t t-if="attendance.check_out">
+                                        <span t-esc="attendance.check_out"  t-options='{"widget": "datetime"}'/> 
+                                    </t>
+                                   
+                                </div>
+                            </div>
+                         </div>
+                         
+                            <div class="col-12 col-md-12 pb-2">
+                            <div class="row">
+                               
+                                <div class="col-md-7"> <strong>Worked Hours : </strong>
+                                    <t t-if="attendance.worked_hours">
+                                        <span t-esc="round(attendance.worked_hours,2)"/> 
+                                    </t>
+                                   
+                                </div>
+                            </div>  
+                           
+                        </div>
+                       
+                    </div> 
+                   
+                  
+                   
+                        
+                    <div class="row"> 
+                        <div t-attf-class="col-12 col-lg-12  mb-md-0 ">
+                            <hr class="mb-1"/>
+                            <div class="d-flex my-2">
+                                <strong>Attendance#</strong>
+                            </div>
+                            <t t-if="attendance.id">                                        
+                                <div class="py-1 px-2 bg-100 small" t-field="attendance.id"/>
+                            </t>
+                        </div> 
+                    </div>
+                   <div class="row">
+                        <t t-if = "not attendance.check_out">
+                    
+                              
+                              <t t-if="attendance.state == 'submitted'" >    
+                              <div class="offset-md-10 col-md-1" style="margin-top:20px;">
+                                <a t-attf-href="/hr/attendance/cancel/#{timeoff.id}?"><i  class="btn btn-primary">Cancel</i></a>
+                            </div>                  
+                            
+                              </t>       
+                              
+                         
+                           <div class="offset-md-10 col-md-1" style="margin-top:20px;">
+                             <a t-attf-href="/hr/attendance/rectify/#{attendance.id}?"><i  class="btn btn-primary">Rectify</i></a>
+                            </div>  
+                        </t> 
+                    <t t-if = "not attendance.check_in">
+                        <div class="col-md-1" style="margin-top:20px;">
+                             <a t-attf-href="/hr/attendance/rectify/#{attendance.id}?"><i  class="btn btn-primary">Rectify</i></a>     
+                        </div>
+                                   
+                       </t>
+                    </div>
+
+                </t> 
+            </t>
+            
+        </t>
+    </template>
+    
+    
+       <template id="ws_hr_attendance.rectification_submited" name="Attendance Received">
+        <t t-call="portal.portal_layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <div class="row">
+                        <t t-if="request.session.get('form_builder_model_model', '') == 'hr.expense'">
+                            <t t-set="attendance" t-value="request.portal._website_form_last_record().sudo()"/>
+                        </t>
+                        <h1 class="text-center"><i class="fa fa-check-circle fa-2x text-success" role="img" aria-label="Success" title="Success"/></h1>
+                        <t t-if="attendance">
+                            <h1 class="text-center">Your Attendance Rectification Request Number is <a t-if="request.session.uid" t-attf-href="#">#<span t-field="attendance.id"/></a><t t-if="not request.session.get('uid')">#<span t-field="expense.id"/></t>.</h1>
+                        </t>
+                        <h1 class="text-center">Thank you for Submitting your Attendance Rectification request!</h1>
+                    </div>
+                </div>
+            </div>
+         </t>
+    </template>
+    
+    
+             <template id="ws_hr_attendance.rectification_cancel" name="Leave Cancel">
+        <t t-call="portal.portal_layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <div class="row">
+                        <t t-if="request.session.get('form_builder_model_model', '') == 'hr.leave'">
+                            <t t-set="leave" t-value="request.portal._website_form_last_record().sudo()"/>
+                        </t>
+                        <h1 class="text-center"><i class="fa fa-check-circle fa-2x text-success" role="img" aria-label="Success" title="Success"/></h1>
+                        <t t-if="leave">
+                            <h1 class="text-center">Your Attendance Request Number is <a t-if="request.session.uid" t-attf-href="/my/timeoff/page/#{leave.id}">#<span t-field="leave.id"/></a><t t-if="not request.session.get('uid')">#<span t-field="leave.id"/></t>.</h1>
+                        </t>
+                        <h1 class="text-center">Attendance Rectification request Cancelled!</h1>
+                    </div>
+                </div>
+            </div>
+         </t>
+    </template>
+    
+    
+    
+    
+    <template id="cannot_submit_future_days_commitment_msg" name="Cannot Submit Future Commitment">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+	               <div class="container mt-4 mb-5">
+	                   <div class="row">
+	                       <div class="col-lg-7 col-xl-6 mr-lg-auto">
+	                           <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+	                               <section class="s_text_block" data-snippet="s_text_block">
+	                                   <div class="container">
+	                                       <div class="row">
+	                                       		<div class="row">
+			                                       <h1 class="text-center"><i class="fa fa-times fa-2x text-fail" role="img" aria-label="Fail" title="fail"/></h1>
+			                                       <h5>You Are Not Allowed to Submit Future Commitment Request!</h5>		
+			                                           
+		                                           <div class='section-custom col-md-12'>
+						                              <a class="mb-5" id="checkin-rectify-back" t-attf-href="/hr/attendance/rectify">
+						                                   <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">Go Back</button>
+						                               </a>
+						                           </div>
+			                                     </div>
+	                                       </div>
+	                                   </div>
+	                               </section>
+	                           </div>
+	                      </div>
+	                  </div>
+	              	</div>
+	            </div>
+	         </t>
+
+    </template>
+    
+    
+
+    
+
+</odoo>
+
+
+

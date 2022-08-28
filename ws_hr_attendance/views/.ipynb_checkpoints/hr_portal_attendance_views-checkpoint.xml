@@ -1,0 +1,212 @@
+<!--  <?xml version="1.0" encoding="utf-8"?>
+ -->
+<odoo>  
+	<!-- show path/name -->    
+    <template id="portal_layout_resignation" name="Portal layout: resignation menu entry" inherit_id="portal.portal_breadcrumbs" priority="21">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'Kiosk Attendance' or kattendance" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not kttendance else ''}">
+                <a t-if="kattendance" t-attf-href="/my/kattendance?{{ keep_query() }}">Kiosk Attendance</a>
+                <t t-else="">Work From Home Attendance</t>
+            </li>
+            <li t-if="kattendance" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                <t t-esc="kattendance.employee_id.name"/>
+            </li>
+        </xpath>
+    </template> 
+
+
+    
+    <template id="portal_my_home_kisok" name="Attendance Kiosk" customize_show="True" inherit_id="portal.portal_my_home" priority="42">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry" >
+                <t t-set="title">Check-In &amp; Check-Out (Work From Home/Site)</t>
+                <t t-set="url" t-value="'/my/kattendance'"/>
+                <t t-set="placeholder_count" t-value="'kattendance_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    
+    
+    
+    
+    <template id="portal_my_kattendances" name="My Kiosk Attendance">
+        <t t-call="portal.portal_layout">
+        
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Kiosk Attendance</t>
+            </t>
+            <t t-if="not grouped_kattendances">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no attendances.
+                </div>
+            </t>
+            
+            <t t-if="grouped_kattendances">
+                <t t-call="portal.portal_table">
+                    <t t-foreach="grouped_kattendances" t-as="all_kattendances">
+                        <thead>
+                            <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                                <th class="text-left">Employee</th>
+                                <th class="text-left">Check In</th>
+                                <th class="text-left">Check Out</th>
+                               	<th class="text-left">Worked Hours</th>
+                            </tr>
+                        </thead>
+                         <tbody>
+                            <t t-foreach="all_kattendances" t-as="_kattendances_">
+                             
+                               <t t-if="_kattendances_.employee_id.user_id.id == uid">  
+                                <tr>
+                                    <td class="text-left">
+                                        <span t-esc="_kattendances_.employee_id.name" />
+                                    </td>
+                                    <td class="text-left">
+                                    	<t t-if="_kattendances_.check_in"> 
+                                        <span t-esc="datetime.datetime.strptime(str(_kattendances_.check_in), '%Y-%m-%d %H:%M:%S')+ relativedelta(hours =+ 5)" />                             </t>
+                                    </td>
+                                    <td class="text-left">
+                                    	<t t-if="_kattendances_.check_out"> 
+                                        <span t-esc="datetime.datetime.strptime(str(_kattendances_.check_out), '%Y-%m-%d %H:%M:%S')+ relativedelta(hours =+ 5)" />                             </t>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="round(_kattendances_.worked_hours,2)" />
+                                    </td>
+                                </tr>
+                               </t>     
+                            </t>
+                            <tr>
+                            	<div class='row'>
+		                        	<div class='section-checkin col-md-2'>
+			                        	<a class="mb-5" id="checkin-back" t-attf-href="/kattendance/create/checkin">
+			                            	<button class="btn" style="background-color: #4CAF50; border: none;
+  												color: white;padding: 15px 32px;text-align: center;
+  												text-decoration: none;display: inline-block;font-size: 14px;">
+  												<i class="fa fa-sign-in fa-1x"></i> Check-In</button>
+			                          	</a>
+			                       	</div>
+			                       	<div class='section-checkout col-md-2'>
+			                        	<a class="mb-5" id="checkin-back" t-attf-href="/kattendance/create/checkout">
+			                            	<button class="btn" style="background-color: #4CAF50; border: none;
+  												color: white;padding: 15px 32px;text-align: center;
+  												text-decoration: none;display: inline-block;font-size: 14px;">
+  												<i class="fa fa-sign-out fa-1x"></i> Check-Out</button></a>
+			                       	</div>
+		                       	</div>
+					                           
+                            </tr>  
+                        </tbody> 
+                    </t>
+                </t>
+            </t>   
+            
+        </t>
+        
+    </template>
+
+    
+    
+     <template id="kattendance_checkin_template" name="CheckIn Request">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+	               <div class="container mt-4 mb-5">
+	                   <div class="row">
+	                       <div class="col-lg-7 col-xl-6 mr-lg-auto">
+	                           <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+	                               <section class="s_text_block" data-snippet="s_text_block">
+	                                   <div class="container">
+	                                       <div class="row">
+		                                       <h1 class="text-center"><i class="fa fa-check-circle fa-2x text-success" role="img" aria-label="Success" title="Success"/></h1>
+		                                       <h3>You Have Successfully Marked Attendance.</h3>	
+		                                       
+	                                           <div class='section-custom col-md-12'>
+					                              <a class="mb-5" id="checkin-back" t-attf-href="/my/kattendance">
+					                                   <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">Go Back</button>
+					                               </a>
+					                           </div>
+	                                       </div>
+	                                   </div>
+	                               </section>
+	                           </div>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+         
+        </t>
+    </template>
+    
+    
+    
+    <template id="already_checkin_exists" name="CheckIn Request">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+	               <div class="container mt-4 mb-5">
+	                   <div class="row">
+	                       <div class="col-lg-7 col-xl-6 mr-lg-auto">
+	                           <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+	                               <section class="s_text_block" data-snippet="s_text_block">
+	                                   <div class="container">
+	                                       <div class="row">
+	                                       		<div class="row">
+			                                       <h1 class="text-center"><i class="fa fa-times fa-2x text-fail" role="img" aria-label="Fail" title="fail"/></h1>
+			                                       <h5>Already in Check-In mode, Please go back and Check-Out first!</h5>		
+			                                           
+		                                           <div class='section-custom col-md-12'>
+						                              <a class="mb-5" id="checkin-back" t-attf-href="/my/kattendance">
+						                                   <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">Go Back</button>
+						                               </a>
+						                           </div>
+			                                     </div>
+	                                       </div>
+	                                   </div>
+	                               </section>
+	                           </div>
+	                      </div>
+	                  </div>
+	              	</div>
+	            </div>
+	         </t>
+
+    </template>
+    
+    
+    <template id="no_checkin_exists" name="No CheckIn Exists">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+	               <div class="container mt-4 mb-5">
+	                   <div class="row">
+	                       <div class="col-lg-7 col-xl-6 mr-lg-auto">
+	                           <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+	                               <section class="s_text_block" data-snippet="s_text_block">
+	                                   <div class="container">
+	                                       <div class="row">
+	                                       		<div class="row">
+			                                       <h1 class="text-center"><i class="fa fa-times fa-2x text-fail" role="img" aria-label="Fail" title="fail"/></h1>
+			                                       <h5>First You Need to Check-In!</h5>		
+			                                           
+		                                           <div class='section-custom col-md-12'>
+						                              <a class="mb-5" id="checkin-back" t-attf-href="/my/kattendance">
+						                                   <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">Go Back</button>
+						                               </a>
+						                           </div>
+			                                     </div>
+	                                       </div>
+	                                   </div>
+	                               </section>
+	                           </div>
+	                      </div>
+	                  </div>
+	              	</div>
+	            </div>
+	         </t>
+
+    </template>
+    
+    
+    
+
+</odoo>
+
+

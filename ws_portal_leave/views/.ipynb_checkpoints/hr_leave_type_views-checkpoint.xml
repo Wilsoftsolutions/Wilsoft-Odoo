@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<odoo>   
+    
+  <record id="hr_leave_type_form_view_portal" model="ir.ui.view">
+			<field name="name">hr.leave.type.form.view.portal</field>
+			<field name="model">hr.leave.type</field>
+			<field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='request_unit']" position="after">
+                    <field name="is_publish"  />
+                    <field name="fiscal_year"  />
+                    <field name="category_id"  />
+				</xpath>
+				
+			</field>
+		</record>
+
+</odoo>
+
+

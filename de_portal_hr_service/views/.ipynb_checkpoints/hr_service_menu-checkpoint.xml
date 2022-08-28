@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data noupdate="0">
+        
+        <menuitem
+            id="menu_emp_books_config_hr_service"
+            name="HR Service"
+            parent="hr.menu_human_resources_configuration"
+            sequence="20"
+           />
+        
+    </data>
+</odoo>

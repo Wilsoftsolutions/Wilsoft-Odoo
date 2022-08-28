@@ -1,0 +1,127 @@
+<odoo>
+    <data>
+        <template id="portal_layout" name="Portal layout: project menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+                <li t-if="page_name == 'service' or service" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not service else ''}">
+                    <a t-if="service" t-attf-href="/my/services?{{ keep_query() }}">Services</a>
+                    <t t-else="">Services</t>
+                </li>
+                <li t-if="service" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                    <a t-if="service" t-attf-href="/my/service/{{service.id}}"><span t-esc="service.header_model_id.name" /></a>
+                    <t t-else=""><span t-esc="service.header_model_id.name" /></t>
+                </li>
+            </xpath>
+        </template>
+
+    <template id="portal_my_home" name="Show Types / Services" customize_show="True" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Services</t>
+                <t t-set="url" t-value="'/my/services'"/>
+                <t t-set="placeholder_count" t-value="'service_count'"/>
+            </t>
+           
+        </xpath>
+    </template>
+    
+    <!-- ======================================== -->
+    <!-- ===== Portal menu Items Template ======= -->
+    <!-- ======================================== -->
+    
+    <template id="portal_my_hr_services" name="My Self Services">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Services</t>
+            </t>
+            <t t-if="not services">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no services.
+                </div>
+            </t>
+            <t t-if="services" t-call="portal.portal_table">
+                <tbody>
+                    <tr t-foreach="services" t-as="service">
+                        <td>
+                            <a t-attf-href="/my/service/{{service.id}}"><span t-field="service.name"/>
+                            
+                            </a>
+                            <br/>
+                            
+                        </td>
+                        <td class="text-left">
+                            <em><span t-esc="service.description" /></em>
+                        </td>
+                        <td class="text-right">
+                            <span class="badge badge-secondary badge-pill" data-oe-model="ir.ui.view" data-oe-id="service.get_record_count( user_id)" data-oe-field="arch" data-placeholder_count="service.get_record_count(user_id)"><t t-esc="service.get_record_count(user_id)" /></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </t>
+        </t>
+    </template>
+        
+    <template id="portal_my_hr_service" name="My Service">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title"><span t-field="service.name"/></t>
+            </t>
+            <t t-call="portal.portal_table">
+                <t t-call="de_portal_hr_service.hr_service_portal_content"/>
+            </t>
+        </t>
+    </template>
+    
+    <!-- ======================================== -->
+    <!-- ===== Portal Record List Templates ======= -->
+    <!-- ======================================== -->
+    <template id="portal_my_hr_service_record" name="My Service: Records" >
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_header">
+                    <div class="row no-gutters">
+                        <div class="col-12">
+                            <h5 class="d-flex mb-1 mb-md-0 row">
+                                <span t-if="title" t-esc="title" class="col-8 text-truncate"/>
+                                <small t-if="title" class="text-muted d-none d-md-inline"> (#<span t-field="record_id.sudo().id"/>)</small>
+                                <div t-if="state" class="col-2 col-md-2 text-right">
+                                    <small class="text-right">Status:</small>
+                                    <span t-esc="state" class=" badge badge-pill badge-info" title="Current stage of this entry"/>
+                                </div>
+                                <div class="col-1 text-right">
+                                    <a t-if="record_editable" t-attf-href="/my/service/{{service.id}}/{{service.header_model_id.id}}/{{record_id.id}}/1"><i class="fa fa-edit"></i></a>
+                                </div>
+                            </h5>
+                        </div>
+                    </div>
+                </t>
+                <t t-set="card_body">
+                    <t t-call="de_portal_hr_service.hr_service_record_portal_content"/>
+                </t>
+            </t>
+            <div t-if="allow_messages" class="mt32">
+                <h4><strong>Message and communication history</strong></h4>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="record_id"/>
+                    <t t-set="pid" t-value="pid"/>
+                    <t t-set="hash" t-value="hash"/>
+                </t>
+            </div>
+        </t>
+    </template>
+        
+   
+        
+    <!-- Callable Template -->
+    
+    <template id="hr_service_portal_content" name="Service Portal Content">
+        <t t-raw="portal_hr_service_dyanmic_page_template"/>
+    </template>
+        
+    <template id="hr_service_record_portal_content" name="Service Records Portal Content">
+        <t t-raw="portal_hr_service_record_dyanmic_page_template"/>
+    </template>
+        
+    </data>
+</odoo>

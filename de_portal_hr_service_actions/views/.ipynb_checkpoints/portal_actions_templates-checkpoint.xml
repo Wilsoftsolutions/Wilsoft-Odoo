@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="de_portal_hr_service_actions.portal_my_hr_service_record_actions" inherit_id="de_portal_hr_service.portal_my_hr_service_record" >
+        <xpath expr="//t[@t-set='card_header']/div[hasclass('row')]" position="before">
+            <t t-call="de_portal_hr_service_actions.hr_service_record_actions"/>
+        </xpath>
+    </template>
+    
+    
+    <template id="hr_service_record_actions" name="Service Record:- Actions">
+        <t t-raw="portal_hr_service_record_actions_template"/>
+    </template>
+    
+    
+    <template id="portal_actions_success" name="Actions Success">
+        <t t-call="portal.portal_layout">
+            <div class="oe_structure">
+                <div class="contain">
+                    <div id="wrap">
+                        <div class="oe_structure" id="oe_structure_website_form_contact_us_thanks_1"/>
+                        <div class="container pt-3">
+                            <h1>Thanks!</h1>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <div class="alert alert-success" role="status">
+                                        Your <span t-field="service_id.name"/> <strong><a t-attf-href="/my/service/{{service_id.id}}/{{ model_id}}/{{record_id.id}}"><span t-field="record_id.name"/></a>
+</strong>has been <span t-field="action_id.name"/> successfully.
+                                        <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                                    </div>
+                                    
+                                    
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="oe_structure" id="oe_structure_website_form_contact_us_thanks_2"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+	
+	
+</odoo>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--Loan Tree view-->
+    
+        <record id="hr_loan_type_tree_view" model="ir.ui.view">
+        <field name="name">hr.loan.type.tree</field>
+        <field name="model">hr.loan.type</field>
+        <field name="arch" type="xml">
+            <tree string="Loan Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Loan Form view-->
+    <record id="hr_loan_type_form_view" model="ir.ui.view">
+        <field name="name">hr.loan.type.form</field>
+        <field name="model">hr.loan.type</field>
+        <field name="arch" type="xml">
+            <form string="Loan Type">
+                
+
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="0"/>
+                        </h1>
+                    </div>
+                    <group >
+                        <group>
+                           <field name="installment" readonly="0"/>
+                        </group>
+                        <group>    
+                           <field name="code" readonly="0"/>
+                        </group>
+                        
+                    </group>
+                   
+                    
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+    
+    
+    
+    
+    
+    <record id="action_hr_loan_type" model="ir.actions.act_window">
+        <field name="name">Loan Type</field>
+        <field name="res_model">hr.loan.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+         <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new Loan Type.
+            </p><p>
+                Use this menu to create loan Type.
+            </p>
+        </field>
+    </record>
+
+    
+    <menuitem name="Loan Type"
+        parent="menu_base_hr_loan_request"
+        id="menu_hr_loan_type"
+        action="action_hr_loan_type"/>
+    
+    
+   
+</odoo>

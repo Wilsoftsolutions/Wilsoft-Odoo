@@ -1,0 +1,44 @@
+<odoo>
+  <data>
+      <template id="portal_service_record_form" name="My Entries">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <div id="wrap">
+                <div class="container pt16 bg-o-color-3" >
+                    <div class="align-items-center" style="padding:16px;">
+                <form action="/my/model/record/submit" method="post" enctype="multipart/form-data" class="o_mark_required row" data-mark="*" data-success-page="">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+
+                        <div class="col-lg-6" style="border-right: 1px solid #cccccc;">
+                                <div class="s_website_form_rows row s_col_no_bgcolor">
+                                    <div class="form-group s_website_form_field col-12 " data-type="char" data-name="Field">
+                                        <input type="hidden" class="form-control s_website_form_input" id="service_id" name="service_id" t-att-value="service_id.id" />
+                                        <input type="hidden" class="form-control s_website_form_input" id="model_id" name="model_id" t-att-value="model_id" />
+
+                                        <input type="hidden" class="form-control s_website_form_input" id="record_id" name="record_id" t-att-value="record_id" />
+                                        <input type="hidden" class="form-control s_website_form_input" id="edit_mode" name="edit_mode" t-att-value="edit_mode" />
+                                    </div>
+                                    <t t-raw="template_primary_fields"/>
+                                    
+                                    
+                                <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                        <div style="width: 200px;" class="s_website_form_label"/>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                            <span id="s_website_form_result"/>
+                                        </div>
+                                 </div>
+                           
+                        </div>
+                        <div class="col-lg-6 pt8 pb8 ">
+                            <t t-raw="template_extra_fields"/>
+                        </div>
+                         </form>    
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+      
+      
+  </data>
+</odoo>

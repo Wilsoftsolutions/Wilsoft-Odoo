@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="portal_layout" name="Portal layout: approval menu entry" inherit_id="portal.portal_breadcrumbs" priority="25">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'approval' or approval" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not approval else ''}">
+                <a t-if="approval" t-attf-href="/my/approvals?{{ keep_query() }}">Approval Notification</a>
+                <t t-else="">Approval Notification</t>
+            </li>
+
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_ap" name="Show Approvals / fifty" customize_show="True" inherit_id="portal.portal_my_home" priority="25">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry" >
+                <t t-set="title">Approval Notification</t>
+                <t t-set="url" t-value="'/my/approvals'"/>
+                <t t-set="placeholder_count" t-value="'approval_count'"/>
+            </t>
+        </xpath>  
+    </template>
+
+    <template id="portal_my_approvals" name="My Approvals">
+         <t t-set="foo" t-value="2 + 1"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Approval Notification</t>
+            </t>
+            <t t-if="not grouped_approvals">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no Approval Notification.
+                </div>
+            </t>
+            <t t-if="grouped_approvals">
+                <t t-call="portal.portal_table">
+                    
+                        <thead>
+                            <tr t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}">
+                                <th class="text-left">Requested By</th>
+                                <th class="text-left">Remarks</th>
+                                <th class="text-left">Category</th>
+                                <th class="text-center">Approver Status</th>
+                                <th class="text-center">Action</th>
+                                <th class="text-center">Detail</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="grouped_approvals" t-as="all_approvals">
+                        <tbody>
+                            
+                            <t t-foreach="all_approvals" t-as="_approval_">  
+                               <t t-foreach="_approval_.approver_ids" t-as="lines">
+                               <t t-if="lines.user_id.id == uid">
+                                <t t-if="lines.user_status == 'pending'"> 
+                                <tr>
+                                    <td class="text-left">
+                                          <a t-attf-href="/my/approval/#{_approval_.id}?{{ keep_query() }}"><span t-field="_approval_.user_id.name"/></a>
+                                    </td>
+                                     <td>
+                                        <a t-attf-href="/my/approval/#{_approval_.id}?{{ keep_query() }}"><span t-field="_approval_.name"/></a>
+                                    </td>
+                                     
+                                      
+                                   
+                                    <td class="text-left">
+                                        <span t-esc="_approval_.category_id.name"/>
+                                    </td>
+                                    
+                                   
+                                  
+                                    <td class="text-center">
+                                         <t t-foreach="_approval_.approver_ids" t-as="lines">
+                                            <t t-if="lines.user_id.id == uid">
+                                                <t t-if="lines.user_status == 'new'">
+                                                    <i class="badge badge-pill badge-info" >New</i>
+                                                </t>
+                                                <t t-if="lines.user_status == 'pending'">
+                                                    <i class="badge badge-pill badge-info" >To Approve</i>
+                                                </t>
+                                                <t t-if="lines.user_status == 'approved'">
+                                                    <i class="badge badge-pill badge-info" >Approved</i>
+                                                </t>
+                                                <t t-if="lines.user_status == 'refused'">
+                                                    <i class="badge badge-pill badge-info" >Refused</i>
+                                                </t>
+                                                <t t-if="lines.user_status == 'cancel'">
+                                                    <i class="badge badge-pill badge-info" >Cancel</i>
+                                                </t>
+                                             </t>
+                                        </t>
+                                    </td>	
+                                   <td>  
+                                 <t t-foreach="_approval_.approver_ids" t-as="lines">
+                                    <t t-if="lines.user_id.id == uid">
+                                        <t t-if = "lines.user_status == 'pending'">
+                                             <a t-attf-href="/app/approval/accept/#{_approval_.id}?" title="Approve"><div class="btn btn-primary"><i class="fa fa-check"></i></div></a>
+                                             <a t-attf-href="/request/refuse/#{_approval_.id}?" title="Refuse"><div class="btn btn-warning"><i class="fa fa-times"></i></div></a> 
+                                           </t>
+                                         </t>   
+                                        </t>
+                                              
+                                    </td>
+                                    <td>
+                                      <t t-if="_approval_.model_id">
+                                       <t t-if="request.env['hr.service'].sudo().search([('header_model_name','=',_approval_.model_id),('state','=','publish')], limit=1)"    >
+                                    
+                                        <a t-attf-href="/my/model/record/{{request.env['hr.service'].sudo().search([('header_model_name','=',_approval_.model_id),('state','=','publish')], limit=1).id}}/{{request.env['ir.model'].sudo().search([('model','=',_approval_.model_id)], limit=1).id}}/{{_approval_.record_id}}" > <div class="btn btn-primary pull-left" style="height:30px; line-height:100%; ">View</div> </a> 
+                                    </t>
+                                 
+                                 </t>    
+                                    </td>
+                                </tr>
+                                    </t>
+                                    </t>
+                                </t>
+                            </t>
+                            <tr>
+                                
+                            </tr>   
+                        </tbody>
+                    </t>
+                </t>
+            </t>   
+        </t>
+    </template>
+    
+      <template id="portal_my_approval" name="My Approval">
+        <t t-call="portal.portal_layout">
+             
+          
+            <div id="optional_placeholder"></div>
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_header">
+                    <div id="optional_placeholder"></div>
+                    <div class="container">
+                      <div class="card">
+                        <div class="card-header">
+                            
+                                 <t class="col-lg-7 col-md-8" >
+                                     <a t-attf-href="/app/approval/approve/#{approval.id}?"><i  class="btn btn-primary pull-left" style="height:30px; line-height:100%; ">Approve</i></a>
+                                    </t>
+                                 <t class="col-lg-7 col-md-8" >
+                                        <a t-attf-href="/app/approval/refuse/#{approval.id}?"><i class="btn btn-warning pull-left" style="height:30px; line-height:100%;margin-left:5px;margin-right:5px;">Refuse</i></a>           
+                                    </t>
+                                 
+                                    <t class="col-lg-7 col-md-8" >
+                                        <t t-if="approval.model_id">
+                                       <t t-if="request.env['hr.service'].sudo().search([('header_model_name','=',approval.model_id),('state','=','publish')], limit=1)"    >
+                                    
+                                        <a t-attf-href="/my/model/record/{{request.env['hr.service'].sudo().search([('header_model_name','=',approval.model_id),('state','=','publish')], limit=1).id}}/{{request.env['ir.model'].sudo().search([('model','=',approval.model_id)], limit=1).id}}/{{approval.record_id}}" > <div class="btn btn-primary pull-left" style="height:30px; line-height:100%; ">View</div> </a> 
+                                    </t>
+                                 
+                                 </t>   
+                                    </t>
+                                 
+                                <div class="row">
+                                    <div class="col-lg-11">
+                                        <h5 class="d-flex mb-1 mb-md-0 row">
+                                            <span t-field="approval.name" class="col-8 text-truncate"/>
+                                            <small class="text-muted d-none d-md-inline"> (#<span t-field="approval.id"/>)</small>
+                                            <div class="col-3 col-md-3 text-left">
+                                              <small class="text-right">State:</small>
+                                              <t t-foreach="approval.approver_ids" t-as="lines">
+                                                  <t t-if="lines.user_id.id == uid">
+                                                    <span t-field="lines.user_status" class=" badge badge-pill badge-info" title="Current stage of this Approval"/>
+                                                  </t>
+                                             </t>
+                                            </div>
+                                        </h5>
+                                    </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </t>
+               <t t-set="card_body"> 
+                  
+                   
+                   
+                   <div class="s_website_form_rows row s_col_no_bgcolor">
+                             <div class="form-group col-6 s_website_form_field" data-type="char" data-name="Field">
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="employee_objective">
+                                        <span class="s_website_form_label_content" >Requested By</span>
+                                    </label>
+                                    <div class="col-sm" style='color:#666666;'>
+                                        <t t-if="approval.user_id">
+                                          <span t-esc="approval.user_id.name"/>
+                                        </t>
+                                </div>
+                             </div>
+                            </div>
+                                    
+                           <div class="form-group col-6 s_website_form_field" data-type="char" data-name="Field">
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                              <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="manager_Employeee">
+                                        <span class="s_website_form_label_content"  >Email</span>
+                              </label>
+                              <div class="col-sm" style='color:#666666;'>
+                                  <span t-field="request.env['hr.employee'].sudo().search([('user_id','=',approval.user_id.id)], limit=1).work_email" />
+                              </div>
+                             </div>
+                           </div>
+                      
+                      
+                       
+                    </div>
+                   
+                     <div class="s_website_form_rows row s_col_no_bgcolor">
+                     <div class="form-group col-6 s_website_form_field" data-type="char" data-name="Field">
+                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="employee_objective">
+                                <span class="s_website_form_label_content" >Date</span>
+                            </label>
+                            <div class="col-sm" style='color:#666666;'>
+                                <span t-field="approval.create_date" t-options='{"widget": "date"}'/>
+                        </div>
+                     </div>
+                    </div>
+                                    
+                   <div class="form-group col-6 s_website_form_field" data-type="char" data-name="Field">
+                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                      <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="manager_Employeee">
+                                <span class="s_website_form_label_content" >Category</span>
+                      </label>
+                      <div class="col-sm" style='color:#666666;'>
+                            <span t-field="approval.category_id.name" />
+                      </div>
+                     </div>
+                   </div>
+                 </div>
+                   
+                    
+                   
+                  
+                     <h3><p style='color:blue;'>Details</p></h3>
+                     <br/>
+                    
+                    <div class="row"> 
+                        <div t-attf-class="col-12 col-lg-12  mb-md-0 ">
+                            <hr class="mb-1"/>
+                            <div class="d-flex my-2">
+                                <strong></strong>
+                            </div>
+                            <t t-if="approval.description">                                        
+                                <div class="py-1 px-2 bg-100 small" t-field="approval.description"/>
+                            </t>
+                        </div> 
+                    </div>
+                   </t> 
+               </t>
+            
+            <div class="mt32">
+                <h4><strong>Message and communication history</strong></h4>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="approval"/>
+                    <t t-set="pid" t-value="pid"/>
+                    <t t-set="hash" t-value="hash"/>
+                </t>
+            </div>
+        </t>
+    </template>
+
+   
+    
+    <template id="de_portal_hr_service.approval_submited" name="Approval Received">
+        <t t-call="portal.portal_layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                        <h1 class="text-center">Thank You!</h1>
+                        <div class="pb16 pt16 s_hr" data-snippet="s_hr" data-name="Separator">
+                            <hr class="mx-auto border-top w-50 border-dark text-center"/>
+                        </div>
+                    <h5 class="text-center">
+                         <span class="fa fa-check-circle"></span>
+                        <span>Approval Request has been Approved <b>successfully</b></span>
+                    </h5>
+            </div>
+            </div>
+         </t>
+    </template>
+    
+      <template id="de_portal_hr_service.approval_refused" name="Approval Received">
+        <t t-call="portal.portal_layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                        <h1 class="text-center">Thank You!</h1>
+                        <div class="pb16 pt16 s_hr" data-snippet="s_hr" data-name="Separator">
+                            <hr class="mx-auto border-top w-50 border-dark text-center"/>
+                        </div>
+                    <h5 class="text-center">
+                         <span class="fa fa-check-circle"></span>
+                        <span>Approval Request has been Refused.</span>
+                    </h5>
+            </div>
+            </div>
+         </t>
+    </template>
+    
+    
+    
+    
+
+</odoo>
+
+
+

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_service_actions, access.hr.service.actions,model_hr_service_actions,,1,1,1,1
+access_hr_service_approvers,access.hr.service.approvers,model_hr_service_approvers,,1,1,1,1
+
