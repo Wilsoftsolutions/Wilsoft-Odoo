@@ -18,7 +18,7 @@
     
     <template id="portal_my_home_kisok" name="Attendance Kiosk" customize_show="True" inherit_id="portal.portal_my_home" priority="42">
         <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
-            <t t-call="portal.portal_docs_entry" >
+            <t t-call="portal.portal_docs_entry" groups='ws_hr_attendance.group_work_from_home'>
                 <t t-set="title">Check-In &amp; Check-Out (Work From Home/Site)</t>
                 <t t-set="url" t-value="'/my/kattendance'"/>
                 <t t-set="placeholder_count" t-value="'kattendance_count'"/>

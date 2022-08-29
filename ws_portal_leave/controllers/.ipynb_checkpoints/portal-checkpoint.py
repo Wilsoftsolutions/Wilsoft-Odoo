@@ -183,7 +183,7 @@ class CreateTimeOff(http.Controller):
                 for gazetted_day in shift.global_leave_ids:
                         gazetted_date_from = gazetted_day.date_from + relativedelta(hours=+5)
                         gazetted_date_to = gazetted_day.date_to + relativedelta(hours=+5)
-                        if str(shift_line.date.strftime('%y-%m-%d')) >= str(gazetted_date_from.strftime('%y-%m-%d')) and str(shift_line.date.strftime('%y-%m-%d')) <= str(gazetted_date_to.strftime('%y-%m-%d')):
+                        if str(dddate_from.strftime('%y-%m-%d')) >= str(gazetted_date_from.strftime('%y-%m-%d')) and str(dddate_to.strftime('%y-%m-%d')) <= str(gazetted_date_to.strftime('%y-%m-%d')):
                             
                             gazetted_days_count += 1 
                                                     

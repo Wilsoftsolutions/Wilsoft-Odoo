@@ -1,0 +1,8 @@
+<odoo>
+  <data>
+       <record id="group_work_from_home" model="res.groups">
+	        <field name="name">Allow Work From Home</field>
+	    </record>
+      
+  </data>
+</odoo>
