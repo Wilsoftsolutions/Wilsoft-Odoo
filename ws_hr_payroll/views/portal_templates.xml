@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="portal_layout" name="Portal layout: payslip menu entry" inherit_id="portal.portal_breadcrumbs" priority="25">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'payslip' or payslip" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not payslip else ''}">
+                <a t-if="payslip" t-attf-href="/my/payslips?{{ keep_query() }}">Payslip</a>
+                <t t-else="">Payroll Reports</t>
+            </li>
+            <li t-if="payslip" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                <t t-esc="payslip.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home" name="Show Payslips / Payroll" customize_show="True" inherit_id="portal.portal_my_home" priority="25">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry" >
+                <t t-set="title">Payroll Reports</t>
+                <t t-set="url" t-value="'/my/payslips'"/>
+                <t t-set="placeholder_count" t-value="'payslip_count'"/>
+            </t>
+        </xpath>  
+    </template>
+
+    <template id="portal_my_payslips" name="My Payslips">
+         <t t-set="foo" t-value="2 + 1"/>
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Payroll Reports</t>
+            </t>
+            <t t-if="not grouped_payslips">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no Payroll Reports.
+                </div>
+            </t>
+            <t t-if="grouped_payslips">
+                <t t-call="portal.portal_table">
+                    <t t-foreach="grouped_payslips" t-as="payslips">
+                        <thead>
+                            <tr style='background-color:#875A7B; color:white;'>
+                               
+                                <th class="text-left">Reference</th>
+                                <th class="text-left">Period</th>
+                                <th class="text-left">Base Salary</th>
+                                <th class="text-center">Net Salary</th>
+                                <th class="text-center">Status</th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="payslips" t-as="payslip">
+                                <t t-if="payslip.employee_id.user_id.id == uid">         
+                                <tr>
+                                    <td>
+                                        <span t-esc="payslip.number" />
+                                    </td>
+                                     <td class="text-left">
+                                        <span t-esc="payslip.date_to.strftime('%b')" />-<span t-esc="payslip.date_to.strftime('%Y')" />
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="'{0:,}'.format(int(round(payslip.basic_wage)))" />
+                                    </td>
+                                    
+                                    <td class="text-left">
+                                        <span t-esc="'{0:,}'.format(int(round(payslip.net_wage)))" />
+                                    </td>
+                                    <td class="text-center">
+                                        <t t-if="payslip.state == 'draft'">
+                                            <i class="badge badge-pill badge-info" >Draft</i>
+                                        </t>
+                                        <t t-if="payslip.state == 'verify'">
+                                            <i class="badge badge-pill badge-info" >Waiting</i>
+                                        </t>
+                                        <t t-if="payslip.state == 'done'">
+                                            <i class="badge badge-pill badge-info" >Done</i>
+                                        </t>
+                                        <t t-if="payslip.state == 'cancel'">
+                                            <i class="badge badge-pill badge-info" >Rejected</i>
+                                        </t>
+                                    </td>
+	
+                                    <td><a t-attf-href="/payslip/print/report/#{payslip.id}?{{ keep_query() }}" title="Download"><i class="fa fa-download"></i></a></td>
+
+                                </tr>
+                              </t>
+                            </t>
+                             <tr>
+                                 
+                                <div>
+                                   
+                                 </div>
+                                 
+                            </tr> 
+                            
+                        </tbody>
+                    </t>
+                </t>
+            </t>   
+        </t>
+    </template>
+    
+    
+        
+      
+    
+</odoo>
+
+
+

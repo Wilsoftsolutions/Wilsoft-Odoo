@@ -26,7 +26,10 @@
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'wizard/hr_attendance_wizard.xml',
         'views/hr_attendance_rectify_views.xml',
+        'reports/hr_attendance_report.xml',
+        'reports/hr_attendance_report_template.xml',
         'views/hr_attendance_template.xml',
         'views/hr_portal_attendance_views.xml',
     ],

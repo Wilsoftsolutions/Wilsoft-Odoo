@@ -520,7 +520,7 @@ class CustomerPortal(CustomerPortal):
         employee = request.env['hr.employee'].sudo().search([('id','=',int(kw.get('employee_id')))]).id
         start_date = kw.get('check_in')
         end_date = kw.get('check_out')
-        return self._show_report_portal(model=order_sudo, report_type=report_type,employee=employee, start_date=start_date, end_date=end_date, report_ref='de_hr_attendance_report.open_hr_report_wizard_action_portal', download=download)
+        return self._show_report_portal(model=order_sudo, report_type=report_type,employee=employee, start_date=start_date, end_date=end_date, report_ref='ws_hr_attendance.open_hr_report_wizard_action', download=download)
     
     
     @http.route(['/hr/attendance/cancel/<int:attendance_id>'], type='http', auth="public", website=True)
