@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<odoo>   
+    
+  <record id="hr_leave_form_view_portal" model="ir.ui.view">
+			<field name="name">hr.leave.form.view.portal</field>
+			<field name="model">hr.leave</field>
+			<field name="inherit_id" ref="hr_holidays.hr_leave_view_form_manager"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='holiday_type']" position="after">
+                    <field name="fiscal_year"  invisible='1' />
+                    <field name="category_id"  invisible='1' />
+                    <field name="leave_category"  invisible='1' />
+                    <field name="leave_period_half"  invisible='1' />
+                    <field name="short_start_time"  invisible='1' />
+                    <field name="approval_request_id"  />
+                    <field name="attachment_id"   widget="many2many_binary"></field>
+				</xpath>
+				
+			</field>
+		</record>
+
+</odoo>
+
+

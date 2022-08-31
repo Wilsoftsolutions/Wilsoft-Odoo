@@ -54,8 +54,9 @@ class PartnerXlsx(models.AbstractModel):
         sheet.merge_range(row, col + 11, row + 1, col + 11, 'Size', header_row_style)
         loc_col = 12
         for loc in all_internal_loc:
+            warehouse = loc.warehouse_id.name if loc.warehouse_id else ''
             sheet.merge_range(row, loc_col, row + 1, loc_col + 1,
-                              loc.warehouse_id.name if loc.warehouse_id else '' + '\n' + loc.name,
+                               warehouse + '\n' + loc.name,
                               header_row_style)
             loc_col += 2
         sheet.merge_range(row, loc_col, row + 1, loc_col, 'Price', header_row_style)

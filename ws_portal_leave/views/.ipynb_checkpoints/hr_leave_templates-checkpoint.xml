@@ -1,0 +1,1044 @@
+<!--  <?xml version="1.0" encoding="utf-8"?>
+ -->
+<odoo>  
+    
+    
+    
+    <template id="portal_layout" name="Portal layout: timeoff menu entry" inherit_id="portal.portal_breadcrumbs" priority="20">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'timeoffs' or timeoff" class="col-lg-2" t-attf-class="breadcrumb-item #{'active ' if not timeoff else ''}">
+                <a t-if="timeoff" t-attf-href="/my/timeoffs?{{ keep_query() }}">Leaves</a>
+                <t t-else="">Leaves</t>
+            </li>
+            <li t-if="timeoff" class="breadcrumb-item active text-truncate col-8 col-lg-10">
+                <t t-esc="timeoff.name"/>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home" name="Show timeoffs / fifty" customize_show="True" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry" >
+                <t t-set="title">Leaves</t>
+                <t t-set="url" t-value="'/my/timeoffs'"/>
+                <t t-set="placeholder_count" t-value="'timeoff_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_my_timeoffs" name="My timeoffs">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Leaves</t>
+            </t>
+            <t t-if="not grouped_timeoffs">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no Leaves.
+                </div>
+            </t>
+            
+            <t t-if="grouped_timeoffs">
+                <t t-call="portal.portal_table">
+                    <t t-foreach="grouped_timeoffs" t-as="all_timeoffs">
+                        <thead>
+                            <tr style='background-color:#875A7B; color:white;'>
+                                <th class="text-left">Employee</th>
+                                <th class="text-left">Time off Type</th>
+                                <th class="text-left">Start Date</th>
+                                <th class="text-left">End Date</th>
+                                <th class="text-left">Number Of Days</th>
+                               <th class="text-left">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="all_timeoffs" t-as="_timeoff_">
+                                <tr>
+                                     <td>
+                                        <a t-attf-href="/my/timeoff/#{_timeoff_.id}?{{ keep_query() }}"><span t-field="_timeoff_.employee_id.name"/></a>
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="_timeoff_.holiday_status_id.name" />
+                                    </td>
+                                    
+                                    <td class="text-left">
+                                       <t t-if="_timeoff_.date_from"> 
+                                         <span t-esc="_timeoff_.request_date_from"   t-options='{"widget": "date"}'/>
+                                       </t>
+                                       </td>
+                                    <td class="text-left">
+                                        <t t-if="_timeoff_.date_to"> 
+                                         <span t-esc="_timeoff_.request_date_to" t-options='{"widget": "date"}'/>
+                                       </t>  
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="_timeoff_.number_of_days"/>
+                                    </td> 
+                                    <td class="text-left">
+                                        <t t-if="_timeoff_.state == 'draft'">
+                                            <i class="badge badge-pill badge-info" >To Submit</i>
+                                        </t>
+                                        <t t-if="_timeoff_.state == 'cancel'">
+                                            <i class="badge badge-pill badge-info" >Cancelled</i>
+                                        </t>
+                                        <t t-if="_timeoff_.state == 'confirm'">
+                                            <i class="badge badge-pill badge-warning" >To Approve</i>
+                                        </t>
+                                        <t t-if="_timeoff_.state == 'refuse'">
+                                            <i class="badge badge-pill badge-danger" >Refused</i>
+                                        </t>
+                                        <t t-if="_timeoff_.state == 'validate1'">
+                                            <i class="badge badge-pill badge-info" >Second Approved</i>
+                                        </t>
+                                        <t t-if="_timeoff_.state == 'validate'">
+                                            <i class="badge badge-pill badge-success" >Approved</i>
+                                        </t>                                                                               
+                                    </td> 
+                                </tr>
+                            </t>
+                            <tr>
+                                <div>
+                                    <t class="col-lg-7 col-md-8" >
+                                        <a href="/timeoff/create/" > <div class="btn btn-primary pull-left" style="height:30px; line-height:100%; ">Create</div> </a> 
+                                    </t>
+                                    <t class="col-lg-7 col-md-8" >
+                                        <a href="/leave/balance" > <div class="btn btn-primary pull-right" style="height:30px; line-height:100%; ">Leave Balance</div> </a> 
+                                    </t>
+<!--                                     <t class="col-lg-7 col-md-8" >
+                                        <a href="/leave/ledger/print/" > <div class="btn btn-primary pull-right" style="height:30px; line-height:100%;margin-right:5px;">Leave Ledger Report</div> </a> 
+                                    </t> -->
+                                </div>
+                            </tr>   
+                        </tbody>
+                    </t>
+                </t>
+            </t>   
+            
+        </t>
+    </template>
+    
+    
+    <template id="portal_leave_balances" name="Leave Balance">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Leave Balance</t>
+            </t>
+            <t t-if="not grouped_allocations">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no Leave Balance.
+                </div>
+            </t>
+            
+            <t t-if="grouped_allocations">
+                <t t-call="portal.portal_table">
+                    <t t-foreach="grouped_allocations" t-as="all_allocations">
+                        <thead>
+                            <tr style='background-color:#875A7B; color:white;'>
+                                <th class="text-left">Time off Type</th>
+                                <th class="text-left">Total</th>
+                                <th class="text-left">Availed</th>
+                                <th class="text-left">To Approve</th>
+                               <th class="text-left">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="all_allocations" t-as="alloc">
+                                <tr>
+                                    <td class="text-left">
+                                        <span t-esc="alloc.holiday_status_id.name" />
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="round((alloc.max_leaves),2)"/>
+                                    </td>
+                                    <td class="text-left">
+                                         <span t-esc="alloc.leaves_taken" />
+                                    </td>
+                                     
+                                    <td class="text-left">
+                                        <t t-set='leave_balance' t-value='0'/>
+                                        <t t-foreach="request.env['hr.leave'].sudo().search([('employee_id.user_id','=',uid),('holiday_status_id','=',alloc.holiday_status_id.id),('state','=','confirm')])" t-as="leave">
+                                            <t t-set='leave_balance' t-value='leave_balance+leave.number_of_days'/>
+                                        </t>    
+                                         <span t-esc="round(leave_balance,2)" />
+                                    </td>
+                                    <td class="text-left">
+                                        <span t-esc="round((alloc.max_leaves-alloc.leaves_taken-leave_balance),2)"/>
+                                    </td> 
+                                </tr>
+                            </t>
+                            <tr>
+                                <div>
+                                    <t class="col-lg-7 col-md-8" >
+                                        <a href="/timeoff/create/" > <div class="btn btn-primary pull-left" style="height:30px; line-height:100%; ">Create</div> </a> 
+                                    </t>
+                                </div>
+                            </tr>   
+                        </tbody>
+                    </t>
+                </t>
+            </t>   
+            
+        </t>
+    </template>
+    
+    
+    
+        
+    
+      <template id="print_leave_ledger_report" name="Print Leave Ledger">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+                            <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[1]">
+                                <section class="s_title parallax s_parallax_is_fixed bg-white-100 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
+                                    <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_banner_default_image'); background-position: 50% 0;"></span>
+                                    <div class="o_we_bg_filter bg-white-50"></div>
+                                    <div class="container">
+                                        <h1 style="margin-left:10px">Leave Ledger Report</h1>
+                                    </div>
+                                </section>
+                            </div>
+                                            
+                            <div class="container mt-4 mb-5">
+                                <div class="row">
+                                    <div class="col-lg-7 col-xl-6 mr-lg-auto">
+                                        <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+                                            <section class="s_text_block" data-snippet="s_text_block">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <p>
+                                                               
+                                                            </p>
+                                                                   
+                                                            
+                                                          
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <span class="hidden" data-for="contactus_form" data-oe-id="2822" data-oe-xpath="/data/xpath/span" data-oe-model="ir.ui.view" data-oe-field="arch" data-values="{'employee_id': '', 'manager': '', 'date_end': '', 'description': ''}"></span>
+            <div id="report_section" data-oe-id="3374" data-oe-xpath="/data/xpath[2]/div" data-oe-model="ir.ui.view" data-oe-field="arch">
+                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                        <div class="container">
+                            <form id="portal_leave_ledger_form" data-toggle="validator" action="/leave/ledger/print/report">
+
+                                <div class="s_website_form_rows row s_col_no_bgcolor">
+                                   
+                                    <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="ledger1">
+                                                <span class="s_website_form_label_content">Employee</span>
+                                                <span class="s_website_form_mark"> *</span>
+
+                                            </label>
+                                            <div class="col-sm">
+                                            
+                                             <t t-esc="employee_name.name"    />
+                                               <input type="hidden" class="form-control s_website_form_input" name="employee_id"   t-att-value='employee_name.id' />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                     
+                                    
+                                   
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="ledgerdate2">
+                                                <span class="s_website_form_label_content">Date From</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="date_from"   required="1"  t-att-value='req_date_from'/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                   
+                                    
+                                     <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="ledgerdate2">
+                                                <span class="s_website_form_label_content">Date To</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="date_to"  required="1"  t-att-value='req_date_to' />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                                                
+                                    <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                        <div style="width: 200px;" class="s_website_form_label"></div>
+                                        <button type="submit" class="btn btn-primary pull-left">Print</button>
+                                        <span id="s_website_form_result"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+			</div>
+                                    <div class="col-lg-4 mt-4 mt-lg-0">
+                                   <div class='section-custom col-md-12'>
+                                                   <a class="mb-5" id="submit-leave" t-attf-href="/my/timeoffs">
+                                                        <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">View  Leaves</button>
+                                                    </a>
+                                                </div>      
+                                        
+                                        
+                                        
+    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+        <div data-oe-model="res.company" data-oe-id="1" data-oe-field="partner_id" data-oe-type="contact" data-oe-expression="res_company.partner_id" data-oe-many2one-id="1" data-oe-many2one-model="res.partner" data-oe-contact-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;email&quot;], &quot;tagName&quot;: &quot;div&quot;, &quot;expression&quot;: &quot;res_company.partner_id&quot;, &quot;type&quot;: &quot;contact&quot;, &quot;inherit_branding&quot;: true, &quot;translate&quot;: false}" data-oe-field-xpath="/t[1]/address[1]/div[1]">
+    <address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
+        
+        
+            
+    <div>
+        
+        
+        
+        
+    </div>
+
+        
+        <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+           
+            
+          
+            
+           
+        </div>
+        <div>
+             
+            
+
+        </div>
+    
+        
+        
+    </address>
+</div>
+        
+          
+    </address>
+        
+            
+        
+    
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_structure mt-2" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[3]"></div>
+                        </div>
+                            
+                            
+                            
+            
+            
+         
+        </t>
+    </template>
+    
+
+    <template id="portal_my_timeoff" name="My Time Off">
+        <t t-call="portal.portal_layout">
+            
+            <div id="optional_placeholder"></div>
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_header">
+                  <div id="optional_placeholder"></div>
+                    <div class="container">
+                      <div class="card">
+                        <div class="card-header">
+                    <div class="row no-gutters">
+                        <div class="col-12">
+                            <h5 class="d-flex mb-1 mb-md-0 row">
+                                <span t-field="timeoff.name" class="col-7 text-truncate"/>
+                                <small class="text-muted d-none d-md-inline"> (#<span t-field="timeoff.id"/>)</small>
+                                <div class="col-md-3  text-right">
+                                    <small class="text-right">Stage:</small>
+                                    <span t-field="timeoff.state" class=" badge badge-pill badge-info" title="Current stage of this Timeoff"/>
+                                </div>
+                                
+                                 <div class="col-md-1  text-right">
+                                        <t t-if="pre_id">
+                                            <a role="button"  t-attf-href="/timeoff/pre/#{timeoff.id}?" ><i style="margin-right:10px; align:right" class="fa fa-chevron-left" role="img" aria-label="Previous" title="Previous"></i></a>
+                                        </t>
+                                        <t t-else="">
+                                            <a role="button"  t-att-class="disabled"  ><i style="margin-right:10px; align:right; color:#B8B7B0" class="fa fa-chevron-left" aria-label="Previous" title="Previous"></i></a>
+
+                                        </t>
+                                        <t t-if="next_id">
+                                            <a role="button" t-attf-href="/timeoff/next/#{timeoff.id}?" ><i class="fa fa-chevron-right" role="img" aria-label="Next" title="Next"></i></a>
+                                        </t>
+                                        <t t-else="">
+                                            <a role="button"  t-att-class="disabled"  ><i style="color:#B8B7B0" class="fa fa-chevron-right" aria-label="Next" title="Next"></i></a>
+                                        </t>
+                                </div>
+                                    </h5>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </t>
+               <t t-set="card_body">          
+                  
+                     
+                        <div class="row">
+                                <div class="col-md-6"> <strong>Employee : </strong>
+                                    <t t-if="timeoff.name">
+                                        <span t-esc="timeoff.employee_id.name"/>
+                                    </t>
+                                </div>
+                            
+                                 <div class="col-md-6"> 
+                                    <strong>Leave Type : </strong>
+                                    <t t-if="timeoff.id">
+                                        <span t-esc="timeoff.holiday_status_id.name"/>
+                                    </t>
+                                </div>  
+                        </div>       
+                    
+                        <br/><br/>
+
+                      
+                      <div class="row">
+                              <t t-if="timeoff.leave_category">  
+                                <div class="col-md-6"> <strong>Leave Category : </strong>
+                                    <t t-if="timeoff.leave_category == 'day'">
+                                            <i class="badge badge-pill badge-info" >Day</i>
+                                        </t>
+                                    <t t-if="timeoff.leave_category == 'half_day'">
+                                            <i class="badge badge-pill badge-info" >Half Day</i>
+                                        </t>
+                                    <t t-if="timeoff.leave_category == 'hours'">
+                                            <i class="badge badge-pill badge-info" >Short Leave</i>
+                                        </t>
+                                    
+                                </div>
+                               </t>   
+                                 <div class="col-md-6"> 
+                                   <t t-if="timeoff.leave_period_half">  
+                                    <strong>Half : </strong>
+                                    
+                                        <span t-esc="timeoff.leave_period_half"/>
+                                    </t>
+                                   <t t-if="timeoff.short_start_time">  
+                                    <strong>Start Time : </strong>
+                                    
+                                        <span t-esc="timeoff.short_start_time"/>
+                                    </t>  
+                                </div>  
+                        </div>    
+                       
+                    
+                        <br/><br/>
+                   <div class="row"> 
+                                  
+                             <div class="col-md-6"> <strong>Start Date : </strong>
+                                <t t-if="timeoff.name">
+                                     <span t-esc="timeoff.date_from"   t-options='{"widget": "date"}'/>
+                                 </t>
+                             </div>
+                            
+                                        
+                                <div class="col-md-6"> <strong>End Date : </strong>
+                                    <t t-if="timeoff.id">
+                                        <span t-esc="timeoff.date_to"    t-options='{"widget": "date"}'/>
+                                    </t>
+                                </div>
+                            </div>
+                   
+                    <div class="row"> 
+                        <div t-attf-class="col-12 col-lg-12  mb-md-0 ">
+                            <hr class="mb-1"/>
+                            <div class="d-flex my-2">
+                                <strong>Description</strong>
+                            </div>
+                            <t t-if="timeoff.name">                                        
+                                <div class="py-1 px-2 bg-100 small" t-field="timeoff.name"/>
+                            </t>
+                        </div> 
+                    </div>
+                          <div class="row">
+                    
+                              
+                              <t t-if="timeoff.state != 'cancel'" >  
+                              <t t-if="not current_date >= timeoff.request_date_from" >  
+                              <div class="offset-md-10 col-md-1" style="margin-top:20px;">
+                                <a t-attf-href="/hr/leave/cancel/#{timeoff.id}?"><i  class="btn btn-primary">Cancel</i></a>
+                            </div>                  
+                            <div class="col-md-1" style="margin-top:20px;">
+                                      
+                            </div>
+                              </t>
+							<t t-if="timeoff.state=='confirm'" >  
+                              <div class="offset-md-10 col-md-1" style="margin-top:20px;">
+                                <a t-attf-href="/hr/leave/cancel/#{timeoff.id}?"><i  class="btn btn-primary">Cancel</i></a>
+                            </div>                  
+                            <div class="col-md-1" style="margin-top:20px;">
+                                      
+                            </div>
+                              </t>							  
+                            </t>       
+                              
+                         
+                    </div>
+                   
+                 
+                </t> 
+            </t>
+
+            <div class="mt32">
+                <h4><strong>Message and communication history</strong></h4>
+                <t t-call="portal.message_thread">
+                    <t t-set="object" t-value="timeoff"/>
+                    <t t-set="pid" t-value="pid"/>
+                    <t t-set="hash" t-value="hash"/>
+                </t>
+            </div>
+        </t>
+    </template>
+    
+
+    
+    
+     <template id="leave_template" name="Leave Request">
+        <t t-call="portal.portal_layout">
+               <div id="wrap">
+                         <script  src="/ws_portal_leave/static/src/js/jquery_1_2.js"></script>
+                         <script  src="/ws_portal_leave/static/src/js/jquery_min.js"></script>
+                         <script  src="/ws_portal_leave/static/src/js/jquery_ui.js"></script>
+                         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                        <script>
+                              function validateleaveForm(event) {
+                                const selected_type=event.target.value;
+                                if (selected_type=='day') {
+                                  custom_hours1=document.getElementsById("custom_hours1")
+                                  custom_hours1.setAttribute("type", "hidden");
+                                  custom_hours2=document.getElementsById("custom_hours2")
+                                  custom_hours2.setAttribute("type", "hidden"); 
+                                  half_day1=document.getElementsById("half_day1")
+                                  half_day1.setAttribute("type", "hidden");
+                                  half_day2=document.getElementsById("half_day2")
+                                  half_day2.setAttribute("type", "hidden");
+                                } 
+                     
+                                if (selected_type=='day') {
+                                  custom_hours1=document.getElementsById("custom_hours1")
+                                  custom_hours1.setAttribute("type", "hidden");
+                                  custom_hours2=document.getElementsById("custom_hours2")
+                                  custom_hours2.setAttribute("type", "hidden"); 
+                                  day_1=document.getElementsById("day_1")
+                                  day_1.setAttribute("type", "hidden");
+                                  day_2=document.getElementsById("day_2")
+                                  day_2.setAttribute("type", "hidden");
+                                } 
+                               if (selected_type=='day') {
+                                  day_1=document.getElementsById("day_1")
+                                  day_1.setAttribute("type", "hidden");
+                                  day_2=document.getElementsById("day_2")
+                                  day_2.setAttribute("type", "hidden"); 
+                                  half_day1=document.getElementsById("half_day1")
+                                  half_day1.setAttribute("type", "hidden");
+                                  half_day2=document.getElementsById("half_day2")
+                                  half_day2.setAttribute("type", "hidden");
+                                } 
+                      
+                     
+                               }
+                              window.addEventListener('DOMContentLoaded', (event) => {
+                                 [...document.getElementsById("leavecategory")].map(el=>{el.addEventListener("change",validateleaveForm)}); 
+                                 
+                              });
+                               
+                              $(function () {
+                                
+                                var leavecategoryval = $( "#leavecategory" ).val();
+                                if ( leavecategoryval === "day" ) {
+                                    $("#custom_hours1").hide();
+                                    $("#custom_hours2").hide();
+                                    $("#half_day1").hide();
+                                    $("#half_day2").hide();
+                                   $("#day_1").show();
+                                    $("#day_2").show();
+                                  }
+                                if ( leavecategoryval === "half_day" ) {
+                                    $("#custom_hours1").hide();
+                                    $("#custom_hours2").hide();
+                                    $("#day_1").hide();
+                                    $("#day_2").hide();
+                                    $("#half_day1").show();
+                                    $("#half_day2").show();
+ 
+                                  }
+                               if ( leavecategoryval === "hours" ) {
+                                    $("#half_day1").hide();
+                                    $("#half_day2").hide();
+                                    $("#day_1").hide();
+                                    $("#day_2").hide();
+                                    $("#custom_hours1").show();
+                                    $("#custom_hours2").show();
+                                  }
+                                
+                             
+                              
+                            });
+                              $(document).ready(function(){
+                              $("#leavecategory").change(function(){
+                                var leavecategoryval = $( "#leavecategory" ).val();
+                                if ( leavecategoryval === "day" ) {
+                                    $("#custom_hours1").hide();
+                                    $("#custom_hours2").hide();
+                                    $("#half_day1").hide();
+                                    $("#half_day2").hide();
+                                   $("#day_1").show();
+                                    $("#day_2").show();
+                                  }
+                                if ( leavecategoryval === "half_day" ) {
+                                    $("#custom_hours1").hide();
+                                    $("#custom_hours2").hide();
+                                    $("#day_1").hide();
+                                    $("#day_2").hide();
+                                    $("#half_day1").show();
+                                    $("#half_day2").show();
+ 
+                                  }
+                               if ( leavecategoryval === "hours" ) {
+                                    $("#half_day1").hide();
+                                    $("#half_day2").hide();
+                                    $("#day_1").hide();
+                                    $("#day_2").hide();
+                                    $("#custom_hours1").show();
+                                    $("#custom_hours2").show();
+                                  }
+                                
+                              });
+                              
+                            }); 
+                        </script>
+                   
+                   
+                            <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[1]">
+                                <section class="s_title parallax s_parallax_is_fixed bg-white-100 pt24 pb24" data-vcss="001" data-snippet="s_title" data-scroll-background-ratio="1">
+                                    <span class="s_parallax_bg oe_img_bg" style="background-image: url('/ws_portal_leave/static/description/tb1.jpg'); background-position: 50% 0;"></span>
+                                    <div class="o_we_bg_filter bg-white-50"></div>
+                                    <div class="container">
+                                        <h1 style="margin-left:10px">Leave</h1>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="container mt-4 mb-5">
+                                <div class="row">
+                                    <div class="col-lg-7 col-xl-6 mr-lg-auto">
+                                        <div class="oe_structure" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[2]/div[1]/div[1]/div[1]">
+                                            <section class="s_text_block" data-snippet="s_text_block">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="col-lg-12">
+                                                            <p>
+                                                               
+                                                            </p>
+                                                                   
+                                                            
+                                                          <!--  <div style="width:550px;">  
+                                                                <marquee style="color:red;"> 
+                                                                <t t-foreach="leave_allocation" t-as="allocate">
+                                                                    
+                                                                     For   
+                                                                      <t t-esc="allocate.holiday_status_id.name"/> 
+                                                                      Allocation 
+                                                                         <t t-esc="allocate.leaves_taken"/>/ 
+                                                                         <t t-esc="allocate.max_leaves"/>
+                                                                 </t> 
+                                                                </marquee>  
+   
+                                                                </div>  -->
+                                                           
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </section>
+                                        </div>
+                                        <span class="hidden" data-for="contactus_form" data-oe-id="2822" data-oe-xpath="/data/xpath/span" data-oe-model="ir.ui.view" data-oe-field="arch" data-values="{'leave_type_id': '', 'employee_id': '', 'date_start': '', 'date_end': '', 'description': ''}"></span>
+            <div id="leave_section" data-oe-id="3374" data-oe-xpath="/data/xpath[2]/div" data-oe-model="ir.ui.view" data-oe-field="arch">
+                    <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
+                        <div class="container">
+                            <form id="saleForm"  action="/my/timeoff/save"  method="post"  enctype="multipart/form-data">
+                                <div class="s_website_form_rows row s_col_no_bgcolor">
+                                 <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity2">
+                                                <span class="s_website_form_label_content">Employee</span>
+                                            </label>
+                                            <div class="col-sm">
+                                                <t t-esc="employee_name.name"    />
+                                               <input type="hidden" class="form-control s_website_form_input" name="employee_id"   t-att-value='employee_name.id' />   
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                              <div class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="leave2">
+                                                <span class="s_website_form_label_content">Manager</span>
+                                            </label>
+                                            <div class="col-sm">
+                                                <t t-esc="managers"    />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>     
+
+                                <div class="s_website_form_rows row s_col_no_bgcolor">
+                                    <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity1">
+                                                <span class="s_website_form_label_content">Leave Type</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                <select  id="leavetype" class="form-control  s_website_form_input" name="leave_type_id" >
+                                                                    <t t-foreach="leave_type" t-as="type">
+
+                                                                        <option t-att-value="type.id">
+                                                                            <t t-esc="type.name"/>
+                                                                            <t t-set="holiday_status" t-value="type.id"/>
+                                                                        </option>
+                                                                     </t>
+                                                                </select>                                                                    
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity1">
+                                                <span class="s_website_form_label_content">Leave Category</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                <select  id="leavecategory" class="form-control  s_website_form_input" name="leave_category_id" >
+                                                                     <option value="day">Day</option>
+                                                                     <option value="half_day">Half Day</option>
+                                                                     <option  value="hours">Short leave</option>
+                                                </select>                                                                    
+                                                
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div id="day_1" class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity3">
+                                                <span class="s_website_form_label_content">Date Start</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="date_start"  t-options='{"widget": "date"}'/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                        
+    
+                                    <div id="day_2" class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity4">
+                                                <span class="s_website_form_label_content">Date End</span>
+                                            </label>
+                                            <div class="col-sm">
+                                              <input type="date" class="form-control s_website_form_input" name="date_end"  t-options='{"widget": "date"}'/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                       
+
+                                    <div id="half_day1" class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity3">
+                                                <span class="s_website_form_label_content">Date</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="half_day_date"  t-options='{"widget": "date"}'/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+    
+                                    <div id="half_day2" class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity4">
+                                                <span class="s_website_form_label_content">Half</span>
+                                            </label>
+                                            <div class="col-sm">
+                                                     <select  id="leavehalf_day" class="form-control  s_website_form_input" name="leave_half_day" >
+                                                                     <option t-att-value="am">Morning</option>
+                                                                     <option t-att-value="pm">Evening</option>
+                                                    </select>                                             
+                                        </div>
+                                    </div>
+                                    </div>  
+
+                                    
+                                    <div id="custom_hours1" class="form-group col-12 s_website_form_field s_website_form_required" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity3">
+                                                <span class="s_website_form_label_content">Date</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+
+                                                
+                                              <input type="date" class="form-control s_website_form_input" name="hours_date"  t-options='{"widget": "date"}'/>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                            
+              
+                                    <div id="custom_hours2" class="form-group col-12 s_website_form_field" data-type="char" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity4">
+                                                <span class="s_website_form_label_content">Time From</span>
+                                            </label>
+                                            <div class="col-sm">
+                                                
+                                                 <input type="time" id="custom_hours" class="form-control  s_website_form_input" name="time_from"/>             
+                                                
+                                        </div>
+                                    </div>
+                                   </div>     
+
+                                       
+                                       
+                                   
+                                    <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="text" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity6">
+                                                <span class="s_website_form_label_content">Description</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                            <div class="col-sm">
+                                                <textarea id="description" class="form-control s_website_form_input" name="description" required=""></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="form-group col-12 s_website_form_field s_website_form_required" data-type="text" data-name="Field">
+                                        <div class="row s_col_no_resize s_col_no_bgcolor">
+                                            <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="opportunity7">
+                                                <span class="s_website_form_label_content">Attachment</span>
+                                                <span class="s_website_form_mark"> *</span>
+                                            </label>
+                                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                            <div class="col-sm">
+                                            <input type="file" class="form-control s_website_form_input" name="attachment" multiple="true"  accept="image/*,application/pdf,video/*" />
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                    <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                        <div style="width: 200px;" class="s_website_form_label"></div>
+                                        <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                                        <span id="s_website_form_result"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+			</div>
+                                    <div class="col-lg-4 mt-4 mt-lg-0">
+                                   <div class='section-custom col-md-12'>
+                                                   <a class="mb-5" id="submit-leave" t-attf-href="/my/timeoffs">
+                                                        <button t-attf-class="btn btn-primary #{'col-md-10' if multi_type else 'col-md-12'} mb-2">View my Leave</button>
+                                                    </a>
+                                                </div>      
+                                        
+                                        
+                                        
+    <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+        <div data-oe-model="res.company" data-oe-id="1" data-oe-field="partner_id" data-oe-type="contact" data-oe-expression="res_company.partner_id" data-oe-many2one-id="1" data-oe-many2one-model="res.partner" data-oe-contact-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;name&quot;, &quot;address&quot;, &quot;phone&quot;, &quot;mobile&quot;, &quot;email&quot;], &quot;tagName&quot;: &quot;div&quot;, &quot;expression&quot;: &quot;res_company.partner_id&quot;, &quot;type&quot;: &quot;contact&quot;, &quot;inherit_branding&quot;: true, &quot;translate&quot;: false}" data-oe-field-xpath="/t[1]/address[1]/div[1]">
+    <address class="mb-0" itemscope="itemscope" itemtype="http://schema.org/Organization">
+        
+        
+            
+    <div>
+          <t t-if="not leave_allocation">
+                <div class="alert alert-warning mt8" role="alert">
+                    There are no leave allocation.
+                </div>
+            </t>
+            
+            <t t-if="leave_allocation">
+                <t t-call="portal.portal_table">
+                        <thead>
+                            <tr style='background-color:#875A7B; color:white;'>
+                                <th class="text-left">Leave Type</th>
+                                <th class="text-left">Balance</th>
+<!--                                 <th class="text-left">To Approve</th>
+                                <th class="text-left">Availed/Total</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <t t-foreach="allocation_list" t-as="allocate">
+                                <tr>
+                                    <td><span t-esc='allocate["leave_categ"]'/></td>
+                                    <td>
+                                        
+                                        <span t-esc='allocate["balance"]'/>
+                                    </td>
+<!--                                      <td>
+                                      <span t-esc='leave_balance' />    
+                                    </td>
+                                    <td><span t-esc='allocate["leave_taken"]'/>/<span t-esc='allocate["leave_max"]'/></td>   -->
+                                </tr>    
+                            </t>    
+                            
+                        </tbody>
+                    </t>
+                            </t>
+                             <br/>
+                            <div>
+                                    <t class="col-lg-7 col-md-8" >
+                                        <a href="/leave/balance" > <div class="btn btn-primary pull-left" style="height:30px; line-height:100%; ">Leave Balance</div> </a> 
+                                    </t>
+<!--                                     <t class="col-lg-7 col-md-8" >
+                                        <a href="/leave/ledger/print/" > <div class="btn btn-primary pull-right" style="height:30px; line-height:100%;margin-right:5px;">Leave Ledger Report</div> </a> 
+                                    </t> -->
+                                </div>
+        
+        
+    </div>
+
+        
+        <div itemprop="address" itemscope="itemscope" itemtype="http://schema.org/PostalAddress">
+          
+             
+            
+
+        </div>
+    
+        
+        
+    </address>
+</div>
+        
+           
+    </address>
+        
+    
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_structure mt-2" data-oe-model="ir.ui.view" data-oe-id="2052" data-oe-field="arch" data-oe-xpath="/t[1]/t[1]/div[1]/div[3]"></div>
+                        </div>
+                            
+                            
+                            
+            
+            
+         
+        </t>
+    </template>
+    
+    
+    
+    
+    
+    
+
+
+
+    
+      <template id="ws_portal_leave.leave_submited" name="Leave Received">
+        <t t-call="portal.portal_layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <div class="row">
+                        <t t-if="request.session.get('form_builder_model_model', '') == 'hr.leave'">
+                            <t t-set="leave" t-value="request.portal._website_form_last_record().sudo()"/>
+                        </t>
+                        <h1 class="text-center"><i class="fa fa-check-circle fa-2x text-success" role="img" aria-label="Success" title="Success"/></h1>
+                        <t t-if="leave">
+                            <h1 class="text-center">Your Leave Request Number is <a t-if="request.session.uid" t-attf-href="/my/timeoff/page/#{leave.id}">#<span t-field="leave.id"/></a><t t-if="not request.session.get('uid')">#<span t-field="leave.id"/></t>.</h1>
+                        </t>
+                        <h1 class="text-center">Thank you for submitting your leave request!</h1>
+                    </div>
+                </div>
+            </div>
+         </t>
+    </template>
+    
+         <template id="ws_portal_leave.leave_cancel" name="Leave Cancel">
+        <t t-call="portal.portal_layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <div class="row">
+                        <t t-if="request.session.get('form_builder_model_model', '') == 'hr.leave'">
+                            <t t-set="leave" t-value="request.portal._website_form_last_record().sudo()"/>
+                        </t>
+                        <h1 class="text-center"><i class="fa fa-check-circle fa-2x text-success" role="img" aria-label="Success" title="Success"/></h1>
+                        <t t-if="leave">
+                            <h1 class="text-center">Your Leave Request Number is <a t-if="request.session.uid" t-attf-href="/my/timeoff/page/#{leave.id}">#<span t-field="leave.id"/></a><t t-if="not request.session.get('uid')">#<span t-field="leave.id"/></t>.</h1>
+                        </t>
+                        <h1 class="text-center">Leave request Cancelled!</h1>
+                    </div>
+                </div>
+            </div>
+         </t>
+    </template>
+    
+    
+    <template id="leave_exception_raise" name="Leave exception">
+        <t t-call="portal.portal_layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <div class="container">
+                    <div class="row">
+                        
+                        <h1 class="text-center"><i class="fa fa-check-circle fa-2x text-success" role="img" aria-label="Success" title="Success"/></h1>
+                       
+                            <h1 class="text-center"><span t-esc="e"/></h1>
+                        
+                       
+                    </div>
+                </div>
+            </div>
+         </t>
+    </template>
+    
+</odoo>
+
+

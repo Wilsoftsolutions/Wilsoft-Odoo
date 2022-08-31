@@ -1,0 +1,173 @@
+<odoo>
+  <data>
+      
+       <record id="hr_attendance_tree_view_shift_allot" model="ir.ui.view">
+            <field name="name">hr.attendance.form.shift.allot</field>
+            <field name="model">hr.attendance</field>
+            <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='check_in']" position="before">
+                    <field name="att_date"  invisible="0"/>
+                    <field name="attend_date"  invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='check_out']" position="after">
+                    <field name="remarks"  invisible="0"/>
+                </xpath>
+               
+               
+            </field>
+        </record>
+      
+      
+      
+      
+        <record id="view_hr_attendance_rectification_form" model="ir.ui.view">
+		<field name="name">hr.attendance.rectify.form</field>
+		<field name="model">hr.attendance.rectify</field>
+		<field name="arch" type="xml">
+
+			<form string="Attendance">
+				<header>
+                    <button name="action_submit"
+							type="object"
+							string="Submit"
+                            class='oe_highlight'
+							states = "draft" />
+                    
+                    <button name="action_approve"
+							type="object"
+							string="Approve"
+                            class='oe_highlight'
+							attrs = "{'invisible': [('approval_request_id','=',False),('state', '!=', 'submitted')]}"/>
+                    
+                    <button name="action_refuse"
+							type="object"
+							string="Refuse"
+                            class='oe_highlight'
+							attrs = "{'invisible': [('approval_request_id','=',False),('state', '!=', 'submitted')]}"/>
+                    
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted,approved,refused"/>
+                </header>
+
+				<sheet>
+                    
+					<h1><field name="employee_id" attrs="{'readonly': [('state','!=', 'draft')]}"/></h1>
+
+					<group>
+
+						<group>
+                            <field name="check_in"  attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="check_out" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="attendance_id" attrs="{'readonly': [('state','!=', 'draft')],'required': [('partial', 'in',['Check In Time Missing','Out Time Missing'])]}"/>
+							<field name="date" attrs="{'readonly': [('state','!=', 'draft')]}" />
+                             <field name="number_of_Days" attrs="{'readonly': [('state','!=', 'draft')]}" />
+
+						</group>
+
+                        <group>
+                            <field name="partial" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+                            <field name="app_date" invisible='1' readonly='1'/> 
+                            <field name="approval_request_id" invisible='0' readonly='1'/> 
+                            <field name="create_date" invisible='1'/> 
+                            <field name="in_time" invisible='1'/> 
+                            <field name="out_time" invisible='1'/> 
+							<field name="reason" attrs="{'readonly': [('state','!=', 'draft')]}"/>
+						</group>
+
+					</group>
+                    
+                    
+
+				
+
+				</sheet>
+			</form>
+
+		</field>
+	</record>
+
+
+
+	<record id="view_attendance_rectify_search" model="ir.ui.view">
+		<field name="name">hr.attendance.rectify.search</field>
+		<field name="model">hr.attendance.rectify</field>
+		<field name="arch" type="xml">
+
+			<search string="Attendance Rectification">
+				<field name="employee_id"/>
+				<field name="check_in"/>
+				<field name="check_out"/>
+                <field name="partial"/>
+                <field name="state"/>
+			</search>
+
+		</field>
+	</record>
+
+
+    
+    
+    
+
+    
+    
+    	<record id="hr_attendance_rectification_tree" model="ir.ui.view">
+		<field name="name">hr.attendance.rectify.tree</field>
+		<field name="model">hr.attendance.rectify</field>
+		<field name="arch" type="xml">
+
+			<tree string="Attendance Rectification"  >
+				<field name="employee_id"/>
+				<field name="check_in"/>
+				<field name="check_out"/>
+                <field name="partial"/>
+                <field name="state"/>
+			</tree>
+
+		    </field>
+	       </record>
+
+
+
+    <record id="action_hr_attendance_rectify" model="ir.actions.act_window">
+		<field name="name">Rectify Attendance</field>
+		<field name="res_model">hr.attendance.rectify</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="view_mode">tree,form</field>
+		<field name="domain">[]</field>
+		<field name="context">{}</field>
+		<field name="help" type="html">
+
+			<p class="o_view_nocontent_smiling_face">
+				Add Attendance Rectifications .............
+			</p>
+
+		</field>
+	</record>
+    
+    
+   
+    
+    
+    
+    
+    
+    
+    <menuitem
+		  id="Attendance_rectify_main_menu"
+		  name="Rectify Attendance"
+		  parent="hr_attendance.menu_hr_attendance_root"
+		  sequence="20"
+	/>
+       
+       
+       
+    <menuitem
+		  id="Attendance_hr_rectify_menu"
+		  name="Rectify Attendance"
+		  parent="Attendance_rectify_main_menu"
+		  action="action_hr_attendance_rectify"
+		  sequence="2"
+	/>   
+  </data>
+</odoo>

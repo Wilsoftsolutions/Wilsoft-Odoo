@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<template id="purchase_extended_report_requestsss_for_request"
+				  inherit_id="account.document_tax_totals">
+			<xpath expr="//tr[1]" position="replace">
+				<tr class="border-black o_subtotal">
+					<td>
+						<strong>Total WS Value</strong>
+					</td>
+
+					<td class="text-right">
+						<span t-att-class="oe_subtotal_footer_separator"
+							  t-esc="subtotal['amount']"
+							  t-options='{"widget": "float", "precision": 2}'/>
+					</td>
+				</tr>
+			</xpath>
+
+			<xpath expr="//tr[@class='border-black o_total']" position="replace">
+				<tr class="border-black o_total">
+					<td>
+						<strong>Net Total</strong>
+					</td>
+					<td class="text-right">
+						<span t-esc="tax_totals['amount_total']" t-options='{"widget": "float", "precision": 2}'/>
+					</td>
+				</tr>
+			</xpath>
+		</template>
+
+
+		<template id="invoice_report_id">
+
+			<t t-call="web.html_container">
+				<t t-call="invoice_date.id_of_the_template"/>
+
+
+				<t t-call="web.internal_layout">
+
+					<t t-foreach="doc" t-as="o">
+
+						<!--                     <t t-call="invoice_date.id_of_the_template"/>-->
+						<style>
+							.data_table_body thead td {text-align: center;}
+							.row_body td {padding-left: 10px;}
+							table, th, td {
+							border: 1px solid lightgray;
+							border-collapse: collapse;
+							}
+							.cd{
+							border-top: 1px solid white;
+							border-bottom: 1px solid white;
+							border-left: 1px solid white;
+							border-right:1px solid white
+							}
+							.tb_border{
+							border-bottom : 1px solid lightgray;
+							border-top: 1px solid white;
+							border-left: 1px solid white;
+							border-right:1px solid white
+							}
+						</style>
+
+						<div class="page" style="font-size:10px;">
+							<br/>
+							<br/>
+							<br/>
+							<br/>
+							<br/>
+							<br/>
+							<br/>
+							<div class="container">
+
+
+								<div class="row">
+									<div class="col-7"
+										 style="border:1px solid lightgray; padding:9px;">
+										<table style="font-size:10px;" width="100%">
+											<tr>
+												<td class="cd" width="15%">Customer:</td>
+												<td class="tb_border" width="85%">
+													<span style="margin-left:5px; color:black">
+														<t t-esc="o.partner_id.name"/>
+													</span>
+												</td>
+
+											</tr>
+
+											<tr>
+												<td class="cd" width="15%">Address:</td>
+												<td class="tb_border" width="85%">
+													<span style="margin-left:5px">
+														<t t-esc="o.partner_id.street"/>
+													</span>
+												</td>
+											</tr>
+
+											<tr>
+												<td class="cd" width="15%">Tel:</td>
+												<td class="tb_border" width="85%">
+													<span style="margin-left:5px">
+														<t t-esc="o.partner_id.phone"/>
+													</span>
+												</td>
+											</tr>
+
+											<tr>
+												<td class="cd" width="15%">STN/CNIC:</td>
+												<td class="tb_border" width="85%">
+													<span style="margin-left:5px">
+														<t t-esc="o.partner_id.x_studio_cnic"/>
+
+													</span>
+												</td>
+											</tr>
+											<tr>
+												<td class="cd" width="15%">SRTN:</td>
+												<td class="tb_border" width="85%">
+													<span style="margin-left:5px">
+														<t t-esc="o.partner_id.x_studio_stn"/>
+
+													</span>
+												</td>
+											</tr>
+											<tr style="font-size:10px">
+												<td class="cd" width="15%">Ship/ Delivery:</td>
+												<td class="tb_border" width="85%">
+													<span style="margin-left:5px"></span>
+												</td>
+											</tr>
+
+										</table>
+									</div>
+									<div class="col-5">
+
+									</div>
+
+								</div>
+							</div>
+
+
+							<table width="100%" style="margin-top:60px;text-align:center;">
+								<thead class="text-center">
+									<tr style="padding-top:7px;">
+										<th width="4%">Sr#</th>
+										<th width="12%">Article</th>
+										<th width="5%">Color</th>
+										<th width="7%">Uom</th>
+										<th width="22%">
+											<table width="100%" style="padding-left: 0px; padding-right"
+												   class="table-bordered-none">
+												<thead>
+													<tr class="text-center">
+														Sizes Ranges
+													</tr>
+													<tr>
+														<th width="8%">36</th>
+														<th width="8%">37</th>
+														<th width="8%">38</th>
+														<th width="8%">39</th>
+														<th width="8%">40</th>
+														<th width="8%">41</th>
+														<th width="8%">42</th>
+														<th width="8%">43</th>
+														<th width="8%">44</th>
+														<th width="8%">45</th>
+														<th width="8%">46</th>
+													</tr>
+												</thead>
+											</table>
+										</th>
+										<th width="8%">Qty</th>
+										<th width="10%">Retail Price</th>
+										<!--                                    <th width=".5%" style="background-color:white;">.</th>-->
+										<!--										<th width="7%">Unit Rate Cost</th>-->
+										<th width="10%">Total Retail
+											Price
+										</th>
+									</tr>
+								</thead>
+								<t t-set="count" t-value="0"/>
+								<t t-set="total_36" t-value="0"/>
+								<t t-set="total_37" t-value="0"/>
+								<t t-set="total_38" t-value="0"/>
+								<t t-set="total_39" t-value="0"/>
+								<t t-set="total_40" t-value="0"/>
+								<t t-set="total_41" t-value="0"/>
+								<t t-set="total_42" t-value="0"/>
+								<t t-set="total_43" t-value="0"/>
+								<t t-set="total_44" t-value="0"/>
+								<t t-set="total_45" t-value="0"/>
+								<t t-set="total_46" t-value="0"/>
+								<t t-set="total_values" t-value="0"/>
+
+
+								<t t-foreach="product_data" t-as="variant">
+
+									<tbody class="data_table_body">
+										<t t-set="count" t-value="count+1"/>
+										<tr class="row_body">
+											<td>
+												<span t-esc="count"/>
+											</td>
+											<td>
+												<span t-esc="variant['product_name']"/>
+											</td>
+											<td>
+												<span t-esc="variant['color']"/>
+											</td>
+											<td>
+												<span t-esc="variant['uom']"/>
+											</td>
+											<td style="padding-left: 0px!important;">
+												<t t-if="variant['color'] != '-'">
+													<table width="100%" class="data_table_inside">
+														<t t-set="total_qty" t-value="0"/>
+														<t t-foreach="variant['sizes']" t-as="size">
+															<t t-set="total_36" t-value="total_36 + size['36']"/>
+															<t t-set="total_37" t-value="total_37 + size['37']"/>
+															<t t-set="total_38" t-value="total_38 + size['38']"/>
+															<t t-set="total_39" t-value="total_39 + size['39']"/>
+															<t t-set="total_40" t-value="total_40 + size['40']"/>
+															<t t-set="total_41" t-value="total_41 + size['41']"/>
+															<t t-set="total_42" t-value="total_42 + size['42']"/>
+															<t t-set="total_43" t-value="total_43 + size['43']"/>
+															<t t-set="total_44" t-value="total_44 + size['44']"/>
+															<t t-set="total_45" t-value="total_45 + size['45']"/>
+															<t t-set="total_46" t-value="total_46 + size['46']"/>
+
+															<tbody>
+																<tr>
+																	<td width="8%">
+																		<span t-esc="size['36']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['36'])"/>
+
+																	</td>
+																	<td width="8%">
+																		<span t-esc="size['37']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['37'])"/>
+
+																	</td>
+																	<td width="8%">
+																		<span t-esc="size['38']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['38'])"/>
+
+																	</td>
+
+																	<td width="8%">
+																		<span t-esc="size['39']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['39'])"/>
+
+																	</td>
+																	<td width="8%">
+																		<span t-esc="size['40']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['40'])"/>
+																	</td>
+																	<td width="8%">
+																		<span t-esc="size['41']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['41'])"/>
+																	</td>
+																	<td width="8%">
+																		<span t-esc="size['42']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['42'])"/>
+																	</td>
+																	<td width="8%">
+																		<span t-esc="size['43']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['43'])"/>
+																	</td>
+																	<td width="8%">
+																		<span t-esc="size['44']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['44'])"/>
+																	</td>
+																	<td width="8%">
+																		<span t-esc="size['45']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['45'])"/>
+																	</td>
+																	<td width="8%">
+																		<span t-esc="size['46']"/>
+																		<span t-set="total_qty"
+																			  t-value="(total_qty + size['46'])"/>
+																	</td>
+																</tr>
+															</tbody>
+														</t>
+													</table>
+												</t>
+												<t t-else="">
+													<span style="padding-left: 10px;">No size set</span>
+												</t>
+											</td>
+											<td>
+												<t t-if="variant['color'] != '-'">
+													<span t-esc="total_qty"/>
+													<t t-set="total_values"
+													   t-value="total_values + (variant['pair_price']* total_qty)"/>
+												</t>
+
+												<t t-else="">
+													<span t-set="total_qty" t-value="variant['line_total_qty']"/>
+													<span t-esc="total_qty"/>
+
+												</t>
+											</td>
+											<td>
+												<span t-esc="variant['pair_price']"
+													  t-options='{"widget": "float", "precision": 2}'/>
+											</td>
+											<!--                                         <td>-->
+											<!--                                             -->
+											<!--                                        </td>-->
+											<td>
+												<span t-esc="variant['pair_price'] * total_qty"
+													  t-options='{"widget": "float", "precision": 2}'/>
+											</td>
+										</tr>
+
+									</tbody>
+								</t>
+
+								<tr class="row_body">
+									<td style="border:1px solid white;">
+
+									</td>
+									<td style="border:1px solid white;">
+
+									</td>
+									<td style="border:1px solid white;">
+
+									</td>
+									<td style="border:1px solid white;">
+
+									</td>
+									<td style="padding-left: 0px!important;">
+										<table width="100%" class="data_table_inside"
+											   style="border:1px solid white;background-color:lightgray;">
+											<tr>
+												<td width="8%" style="border:1px solid white;">
+													<span t-esc="total_36"/>
+
+												</td>
+												<td width="8%" style="border:1px solid white;">
+													<span t-esc="total_37"/>
+
+												</td>
+												<td width="8%" style="border:1px solid white;">
+													<span t-esc="total_38"/>
+
+												</td>
+
+												<td width="8%" style="border:1px solid white;">
+													<span t-esc="total_39"/>
+
+												</td>
+												<td width="8%" style="border:1px solid white;">
+													<span t-esc="total_40"/>
+
+
+												</td>
+												<td width="8%" style="border:1px solid white;">
+													<span t-esc="total_41"/>
+
+												</td>
+												<td width="8%" style="border:1px solid white;">
+													<span t-esc="total_42"/>
+
+												</td>
+												<td width="8%" style="border:1px solid white;">
+													<span t-esc="total_43"/>
+
+												</td>
+												<td width="8%" style="border:1px solid white;">
+													<span t-esc="total_44"/>
+
+												</td>
+												<td width="8%"
+													style="border:1px solid white;border-left: 1px solid white;">
+													<span t-esc="total_45"/>
+
+												</td>
+												<td width="8%" style="border:1px solid white;">
+													<span t-esc="total_46"/>
+
+												</td>
+											</tr>
+										</table>
+									</td>
+									<td style="border:1px solid white;border-right: 1px solid white;">
+
+									</td>
+									<!--                                         <td>-->
+									<!--                                             -->
+									<!--                                        </td>-->
+									<td style="border:1px solid white;">
+
+									</td>
+									<td style="border:1px solid white;border-bottom:1px solid black;background-color:lightgray;">
+										<!--										<span t-field="o.amount_untaxed"/>-->
+										<span t-esc="total_values"
+											  t-options='{"widget": "monetary", "display_currency": o.currency_id }'/>
+									</td>
+								</tr>
+
+
+							</table>
+							<div class="clearfix">
+								<div id="total" class="row">
+									<div t-attf-class="#{'col-6' if report_type != 'html' else 'col-sm-7 col-md-6'} ml-auto">
+										<table class="table table-sm" style="page-break-inside: avoid;">
+											<tr>
+												<td>
+													<strong>Total Value</strong>
+												</td>
+
+												<td class="text-right">
+													<span t-esc="total_values"
+														  t-options='{"widget": "monetary", "display_currency": o.currency_id }'/>
+
+													<!--													<span t-options='{"widget": "integer", "precision": 2}'/>-->
+												</td>
+
+											</tr>
+
+											<!--Tax totals-->
+											<t t-set="tax_totals" t-value="json.loads(o.tax_totals_json)"/>
+											<t t-call="account.document_tax_totals"/>
+
+											<!--Payments-->
+											<t t-if="print_with_payments">
+												<t t-if="o.payment_state != 'invoicing_legacy'">
+													<t t-set="payments_vals"
+													   t-value="o.sudo()._get_reconciled_info_JSON_values()"/>
+													<t t-foreach="payments_vals" t-as="payment_vals">
+														<tr>
+															<td>
+																<i class="oe_form_field text-right oe_payment_label">
+																	Paid on
+																	<t t-esc="payment_vals['date']"
+																	   t-options='{"widget": "date"}'/>
+																</i>
+															</td>
+															<td class="text-right">
+																<span t-esc="payment_vals['amount']"
+																	  t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+															</td>
+														</tr>
+													</t>
+													<t t-if="len(payments_vals) > 0">
+														<tr class="border-black">
+															<td>
+																<strong>Amount Due</strong>
+															</td>
+															<td class="text-right">
+																<span t-field="o.amount_residual"
+																	  t-options='{"widget": "float", "precision": 2, }'/>
+															</td>
+														</tr>
+													</t>
+												</t>
+											</t>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<p style="border-bottom:1px solid lightgray; margin-top:90px; margin-left:390px; font-size:10px">
+							<t t-esc="o.num_words"/>
+						</p>
+
+						<div class="container">
+							<div class="row">
+								<div class="col-12" style="border:1px solid lightgray; margin-left:-10px">
+									<div class="col-12">
+										<table width="100%" class="bank_detail"
+											   style="font-size:10px; margin-top:9px;">
+											<tr>
+
+												<td class="cd" width="20%">Account Name:</td>
+												<td class="tb_border" width="60%">
+													<span style="margin-left:20px; color:black">GLANZ DESIGN
+														(SMC-PRIVATE) LIMITED
+													</span>
+												</td>
+											</tr>
+
+											<tr>
+												<td class="cd">Banks Name:</td>
+												<td class="tb_border">
+													<span style="margin-left:20px">Soneri , HBL and Meezan Bank
+														Limited
+													</span>
+												</td>
+											</tr>
+
+											<tr>
+												<td class="cd">Bank Address:</td>
+												<td class="tb_border">
+													<span style="margin-left:20px">Lahore , Lahore and Tricon Plaza
+														Gulberg Lahore
+													</span>
+												</td>
+											</tr>
+
+											<tr>
+												<td class="cd">Currency Of Account:</td>
+												<td class="tb_border">
+													<span style="margin-left:20px">PKR</span>
+
+												</td>
+											</tr>
+											<tr>
+												<td class="cd">Account Numbers IBNA:</td>
+												<td class="tb_border">
+													<span style="margin-left:20px">8329185 , 15897919205503 and
+														01160010553569
+													</span>
+
+												</td>
+											</tr>
+											<tr>
+												<td class="cd">Bank Identification Code (BIC) or SWIFT Code</td>
+												<td class="tb_border">
+													<span style="margin-left:20px">
+														----------------------------------------------------------
+													</span>
+
+												</td>
+											</tr>
+
+										</table>
+									</div>
+								</div>
+
+							</div>
+							<!--							<div class="col-4 mt-2">-->
+							<!--&lt;!&ndash;								<p>&ndash;&gt;-->
+							<!--&lt;!&ndash;									Head Office: 124/1, Industrial Estate Kot&ndash;&gt;-->
+							<!--&lt;!&ndash;									<br/>&ndash;&gt;-->
+							<!--&lt;!&ndash;									Lakhpat,Lahore<br/>Phone: +92-42-35121668-9&ndash;&gt;-->
+							<!--&lt;!&ndash;								</p>&ndash;&gt;-->
+							<!--							</div>-->
+						</div>
+
+					</t>
+				</t>
+			</t>
+
+		</template>
+	</data>
+</odoo>

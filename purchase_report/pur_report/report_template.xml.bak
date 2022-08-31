@@ -1,0 +1,483 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="purchase_report_id">
+            <t t-call="web.html_container">
+                <t t-call="purchase_report.purchase_header_id"/>
+                <t t-call="web.internal_layout">
+
+                    <!-- <t t-call="report.external_layout"> -->
+                    <!--                    <t t-call="invoice_date.id_of_the_template"/>-->
+                    <style>
+                        .data_table_body thead td {text-align: center;}
+                        .row_body td {padding-left: 10px;}
+                        table, th, td {
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                        }
+                    </style>
+                    <t t-foreach="doc" t-as="o">
+                        <div class="page" style="font-size:10px;margin-top:30px;">
+                            <br/>
+                            <br/>
+                            <br/>
+                            <p>124/1, Quaid-e-Azam Industrial Estate Kot Lakhpat, Lahore, Punjab 54700</p>
+
+                            <!--the section below the header-->
+
+                            <div class="container">
+                                <table width="80%">
+                                    <tr>
+                                        <td style="border:1px solid white;border-right:1px solid black;">
+                                            <b style="">To :</b>
+                                        </td>
+                                        <td style="border:1px solid black; text-align:center; height:40px">
+                                            <span t-esc="o.partner_id.name"/>
+                                        </td>
+
+                                        <td style="text-align:center;border:1px solid white;border-right:1px solid black;">
+                                            <b style="">Delivered To :</b>
+                                        </td>
+                                        <td style="border:1px solid black; text-align:center">
+                                            Plot 234-235, Sunder Industrial Estate, Lahore
+                                        </td>
+
+                                    </tr>
+                                </table>
+
+                                <table width="40%" style="margin-top:15px;border:1px solid white;">
+                                    <tr style="border:1px solid white;">
+                                        <th style="border:1px solid white;">Purchase Order:</th>
+                                        <td style="border:1px solid white;">
+                                            <span t-esc="o.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border:1px solid white;">
+                                        <th style="border:1px solid white;">PO Date :</th>
+                                        <td style="border:1px solid white;">
+                                            <span t-field="o.date_order" t-options='{"widget": "date",}'/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border:1px solid white;">
+                                        <th style="border:1px solid white;">PO Closing Date :</th>
+                                        <td style="border:1px solid white;">
+                                            <span t-esc="o.date_planned" t-options='{"widget": "date",}'/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border:1px solid white;">
+                                        <th style="border:1px solid white;">Department :</th>
+                                        <td style="border:1px solid white;">
+                                            <span t-esc="o.user_id.department_id.name"/>
+                                        </td>
+                                    </tr>
+                                    <tr style="border:1px solid white;">
+                                        <th style="border:1px solid white;">Payment Term :</th>
+                                        <td style="border:1px solid white;">
+                                            <span t-esc="o.payment_term_id.name"/>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+
+                            <table width="100%" style="margin-top:60px">
+                                <thead class="text-center">
+                                    <tr style="background-color:#08194f; color:white">
+                                        <th width="4%">Sr#</th>
+                                        <th width="12%">Article</th>
+                                        <th width="5%">Color</th>
+                                        <th width="5%">Size Ranges</th>
+                                        <th width="8%">Assortment</th>
+                                        <th width="22%">
+                                            <table width="100%" style="padding-left: 0px; padding-right"
+                                                   class="table-bordered-none">
+                                                <thead>
+                                                    <tr class="text-center">
+                                                        Sizes Ranges
+                                                    </tr>
+                                                    <tr>
+                                                        <th width="9%">36</th>
+                                                        <th width="9%">37</th>
+                                                        <th width="9%">38</th>
+                                                        <th width="9%">39</th>
+                                                        <th width="9%">40</th>
+                                                        <th width="9%">41</th>
+                                                        <th width="9%">42</th>
+                                                        <th width="9%">43</th>
+                                                        <th width="9%">44</th>
+                                                        <th width="9%">45</th>
+                                                        <th width="10%">46</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </th>
+                                        <th width="8%">Total Order</th>
+                                        <th width="10%">Packing</th>
+                                        <th width="7%">No. of Carton</th>
+                                        <th width="7%">Retail Price</th>
+                                        <!--                                    <th width=".5%" style="background-color:white;">.</th>-->
+                                        <th width="7%">Unit Rate Cost</th>
+                                        <th width="10%">Total Bill Value</th>
+                                    </tr>
+                                </thead>
+                                <t t-set="count" t-value="0"/>
+                                <t t-set="total_36" t-value="0"/>
+                                <t t-set="total_37" t-value="0"/>
+                                <t t-set="total_38" t-value="0"/>
+                                <t t-set="total_39" t-value="0"/>
+                                <t t-set="total_40" t-value="0"/>
+                                <t t-set="total_41" t-value="0"/>
+                                <t t-set="total_42" t-value="0"/>
+                                <t t-set="total_43" t-value="0"/>
+                                <t t-set="total_44" t-value="0"/>
+                                <t t-set="total_45" t-value="0"/>
+                                <t t-set="total_46" t-value="0"/>
+                                <t t-set="total_values" t-value="0"/>
+                                <t t-set="sub_total" t-value="0"/>
+
+
+                                <t t-foreach="product_data" t-as="variant">
+
+                                    <tbody class="data_table_body">
+                                        <t t-set="count" t-value="count+1"/>
+                                        <tr class="row_body">
+                                            <td>
+                                                <span t-esc="count"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="variant['product_name']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="variant['color']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="variant['size_range']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="variant['assortment']"/>
+                                            </td>
+
+                                            <td style="padding-left: 0px!important;">
+                                                <t t-if="variant['color'] != '-'">
+                                                    <table width="100%" class="data_table_inside">
+                                                        <t t-set="total_qty" t-value="0"/>
+                                                        <t t-foreach="variant['sizes']" t-as="size">
+                                                            <t t-set="total_36" t-value="total_36 + size['36']"/>
+                                                            <t t-set="total_37" t-value="total_37 + size['37']"/>
+                                                            <t t-set="total_38" t-value="total_38 + size['38']"/>
+                                                            <t t-set="total_39" t-value="total_39 + size['39']"/>
+                                                            <t t-set="total_40" t-value="total_40 + size['40']"/>
+                                                            <t t-set="total_41" t-value="total_41 + size['41']"/>
+                                                            <t t-set="total_42" t-value="total_42 + size['42']"/>
+                                                            <t t-set="total_43" t-value="total_43 + size['43']"/>
+                                                            <t t-set="total_44" t-value="total_44 + size['44']"/>
+                                                            <t t-set="total_45" t-value="total_45 + size['45']"/>
+                                                            <t t-set="total_46" t-value="total_46 + size['46']"/>
+
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td width="9%">
+                                                                        <span t-esc="size['36']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['36'])"
+                                                                              t-options='{"widget": "integer",}'/>
+
+                                                                    </td>
+                                                                    <td width="9%">
+                                                                        <span t-esc="size['37']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['37'])"
+                                                                              t-options='{"widget": "integer",}'/>
+
+                                                                    </td>
+                                                                    <td width="9%">
+                                                                        <span t-esc="size['38']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['38'])"
+                                                                              t-options='{"widget": "integer",}'/>
+
+                                                                    </td>
+
+                                                                    <td width="9%">
+                                                                        <span t-esc="size['39']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['39'])"
+                                                                              t-options='{"widget": "integer",}'/>
+
+                                                                    </td>
+                                                                    <td width="9%">
+                                                                        <span t-esc="size['40']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['40'])"
+                                                                              t-options='{"widget": "integer",}'/>
+                                                                    </td>
+                                                                    <td width="9%">
+                                                                        <span t-esc="size['41']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['41'])"
+                                                                              t-options='{"widget": "integer",}'/>
+                                                                    </td>
+                                                                    <td width="9%">
+                                                                        <span t-esc="size['42']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['42'])"
+                                                                              t-options='{"widget": "integer",}'/>
+                                                                    </td>
+                                                                    <td width="9%">
+                                                                        <span t-esc="size['43']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['43'])"
+                                                                              t-options='{"widget": "integer",}'/>
+                                                                    </td>
+                                                                    <td width="9%">
+                                                                        <span t-esc="size['44']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['44'])"
+                                                                              t-options='{"widget": "integer",}'/>
+                                                                    </td>
+                                                                    <td width="9%">
+                                                                        <span t-esc="size['45']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['45'])"
+                                                                              t-options='{"widget": "integer",}'/>
+                                                                    </td>
+                                                                    <td width="10%">
+                                                                        <span t-esc="size['46']"/>
+                                                                        <span t-set="total_qty"
+                                                                              t-value="(total_qty + size['46'])"
+                                                                              t-options='{"widget": "integer",}'/>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </t>
+                                                    </table>
+                                                </t>
+                                                <t t-else="">
+                                                    <span style="padding-left: 10px;">No size set</span>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                <t t-if="variant['color'] != '-'">
+                                                    <span t-esc="total_qty"/>
+                                                    <t t-set="total_values"
+                                                       t-value="(variant['price_unit']* total_qty)"/>
+<!--                                                    <t t-set="sub_total"-->
+<!--                                                       t-value="sub_total + (variant['price_unit']* total_qty)"/>-->
+                                                </t>
+
+                                                <t t-else="">
+                                                    <span t-set="total_qty" t-value="variant['line_total_qty']"/>
+                                                    <span t-esc="total_qty"/>
+                                                    <t t-set="total_values"
+                                                       t-value="(variant['price_unit']* total_qty)"/>
+                                                </t>
+                                            </td>
+                                            <td>
+                                                12 Per Carton
+                                            </td>
+                                            <td>
+                                                <span t-esc="total_qty/12"
+                                                      t-options='{"widget": "float", "precision": 2}'/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="variant['retail_price']"
+                                                      t-options='{"widget": "float", "precision": 2}'/>
+                                            </td>
+                                            <!--                                         <td>-->
+                                            <!--                                             -->
+                                            <!--                                        </td>-->
+                                            <td>
+                                                <span t-esc="variant['price_unit']"
+                                                      t-options='{"widget": "float", "precision": 2}'/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="total_values" t-options='{"widget": "float", "precision": 2}'/>
+
+<!--                                                <span t-esc="variant['line_subtotal']"-->
+<!--                                                      t-options='{"widget": "float", "precision": 2}'/>-->
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </t>
+
+                                <tr class="row_body">
+                                    <td style="border:1px solid white;">
+
+                                    </td>
+                                    <td style="border:1px solid white;">
+
+                                    </td>
+                                    <td style="border:1px solid white;">
+
+                                    </td>
+                                    <td style="border:1px solid white;">
+
+                                    </td>
+                                    <td style="border:1px solid white;">
+
+                                    </td>
+
+                                    <td style="padding-left: 0px!important;">
+                                        <table width="100%" class="data_table_inside"
+                                               style="border:1px solid white;background-color:lightgray;">
+                                            <tr>
+                                                <td width="9%" style="border:1px solid white;">
+                                                    <span t-esc="total_36"/>
+
+                                                </td>
+                                                <td width="9%" style="border:1px solid white;">
+                                                    <span t-esc="total_37"/>
+
+                                                </td>
+                                                <td width="9%" style="border:1px solid white;">
+                                                    <span t-esc="total_38"/>
+
+                                                </td>
+
+                                                <td width="9%" style="border:1px solid white;">
+                                                    <span t-esc="total_39"/>
+                                                </td>
+                                                <td width="9%" style="border:1px solid white;">
+                                                    <span t-esc="total_40"/>
+
+
+                                                </td>
+                                                <td width="9%" style="border:1px solid white;">
+                                                    <span t-esc="total_41"/>
+
+                                                </td>
+                                                <td width="9%" style="border:1px solid white;">
+                                                    <span t-esc="total_42"/>
+
+                                                </td>
+                                                <td width="9%" style="border:1px solid white;">
+                                                    <span t-esc="total_43"/>
+
+                                                </td>
+                                                <td width="9%" style="border:1px solid white;">
+                                                    <span t-esc="total_44"/>
+
+                                                </td>
+                                                <td width="9%"
+                                                    style="border:1px solid white;border-left: 1px solid white;">
+                                                    <span t-esc="total_45"/>
+
+                                                </td>
+                                                <td width="10%" style="border:1px solid white;">
+                                                    <span t-esc="total_46"/>
+
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td style="border:1px solid white;border-right: 1px solid white;">
+
+                                    </td>
+                                    <td style="border:1px solid white;">
+
+                                    </td>
+                                    <td style="border:1px solid white;">
+                                    </td>
+                                    <td style="border:1px solid white;">
+                                    </td>
+                                    <!--                                         <td>-->
+                                    <!--                                             -->
+                                    <!--                                        </td>-->
+                                    <td style="border:1px solid white;">
+
+                                    </td>
+                                    <td style="border:1px solid white;border-bottom:1px solid black;background-color:lightgray;">
+                                        <span t-field="o.amount_untaxed"/>
+                                    </td>
+                                </tr>
+
+
+                            </table>
+                            <br/>
+                            <div class="row">
+                                <div class="col-8">
+                                    <span t-field="o.notes"/>
+                                    <br/>
+                                    <br/>
+                                    <!--								<strong>Approved BY HOD Merchandising-->
+                                    <!--								</strong>-->
+                                    <!--								<br/>-->
+                                    <!--								<br/>-->
+                                    <!--								<hr style="border:1px solid black;color:solid black;"></hr>-->
+                                </div>
+                                <!--							<div class="col-4">-->
+
+                                <!--								<strong>Approved BY CEO-->
+                                <!--								</strong>-->
+
+                                <!--								<hr style="border:1px solid black;color:solid black;"></hr>-->
+
+
+                                <!--							</div>-->
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <table width="100%" style="border:1px solid white;">
+                                        <tr style="border:1px solid white;">
+                                            <th style="border:1px solid white;">
+                                                <strong>Approved BY HOD Merchandising</strong>
+                                            </th>
+                                        </tr>
+                                        <tr style="border:1px solid white;">
+                                            <th style="border:1px solid white;color:white">
+                                                <strong>-</strong>
+                                            </th>
+                                        </tr>
+                                        <tr style="border:1px solid white;">
+                                            <th style="border:1px solid white;color:white">
+                                                -
+                                            </th>
+                                        </tr>
+                                        <tr style="border:1px solid white;border-bottom:3px solid black;margin-top:100px; ">
+                                            <td></td>
+                                        </tr>
+
+                                    </table>
+
+                                </div>
+                                <div class="col-4">
+
+                                </div>
+                                <div class="col-4">
+                                    <table width="100%" style="border:1px solid white;">
+                                        <tr style="border:1px solid white;">
+                                            <th style="border:1px solid white;">
+                                                <strong>Approved BY CEO</strong>
+                                            </th>
+                                        </tr>
+                                        <tr style="border:1px solid white;">
+                                            <th style="border:1px solid white;color:white">
+                                                <strong>-</strong>
+                                            </th>
+                                        </tr>
+                                        <tr style="border:1px solid white;">
+                                            <th style="border:1px solid white;color:white">
+                                                -
+                                            </th>
+                                        </tr>
+
+                                        <tr style="border:1px solid white;border-bottom:3px solid black;margin-top:100px; ">
+                                            <td></td>
+                                        </tr>
+
+                                    </table>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

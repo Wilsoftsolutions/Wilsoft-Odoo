@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="hr_service_record_line_items_tree_view" model="ir.ui.view">
+            <field name="name">hr.service.record.line.items.tree.view</field>
+            <field name="model">hr.service.record.line.items</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" >
+                    <field name="hr_service_id" invisible="1" force_save="1"/>
+                    <field name="hr_service_record_line_id" invisible="1" force_save="1"/>
+                    <field name="sequence" widget="handle" />
+                    <field name="field_id" domain="[('model_id', '=', parent.line_model_id)]" options="{'no_edit_create':True}" />
+                    <field name="field_name" />
+                    <field name="field_type" />
+                    <field name="field_model" />
+                    <field name="field_store" invisible="1"/>
+                    <field name="field_readonly" invisible="1"/>
+                    <field name="field_domain" optional="hide" attrs="{'readonly':[('field_type','!=','many2one')]}"/>
+                    <field name="ref_field_id" domain="[('model_id', '=', parent.line_model_id)]" options="{'no_edit_create':True}" optional="hide" />
+                    <field name="link_field_id" domain="[('model', '=', field_model)]" attrs="{'required':[('field_type','=','many2one')], 'readonly':[('field_type','!=','many2one')]}"/>
+                    <field name="field_label" />
+                    <field name="is_required" attrs="{'readonly':[('field_store','=',False)]}"/>
+                    <field name="is_create" attrs="{'readonly':[('field_store','=',False)]}"/>
+                    <field name="is_edit" attrs="{'readonly':[('field_store','=',False)]}"/>
+                    <field name="display_option" attrs="{'readonly':[('field_store','=',False)]}"/>
+                    <field name="auto_populate" />
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Service Record Items -->
+        <record id="view_service_record_line_items_wizard" model="ir.ui.view">
+            <field name="name">hr.service.record.line.wizard.form</field>
+            <field name="model">hr.service.record.line</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <form string="Service Record Line">
+                    <group>
+                        <group>
+                            <field name="relational_field_id" readonly="1"/>
+                            <field name="line_model_id" readonly="1"/>
+                            <field name="parent_relational_field_id" domain="[('model_id', '=', line_model_id),('ttype','=','many2one')]"/>
+
+                        </group>
+                        <group>
+                            <field name="hr_service_id" readonly="1"/>
+                            <field name="header_model_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <field name="hr_service_record_line_items"  context="{'tree_view_ref': 'de_portal_hr_service.hr_service_record_line_items_tree_view', 'default_hr_service_id': hr_service_id, }"/>
+                    <footer class="oe_edit_only" >
+                        <button string="Confirm" special="save" class="oe_highlight"/>
+                        <button string="Discard" special="cancel"/>
+                    </footer>
+                    
+                </form>
+            </field>
+        </record>
+        
+      
+        <!-- HR Service -->
+        <record model="ir.ui.view" id="hr_service_form_view">
+            <field name="name">hr.service.form.view</field>
+            <field name="model">hr.service</field>
+            <field name="arch" type="xml">
+                <form string="HR Service">
+                    <header>
+                        <button name="button_validate" type="object" states="draft" string="Validate" class="oe_highlight" id="validate" data-hotkey="v"/>
+                        <button name="button_publish" type="object" states="validate" string="Publish" class="oe_highlight" id="validate" data-hotkey="p"/>
+                        <button name="button_draft" states="validate,publish,cancel" string="Set to Draft" type="object" data-hotkey="o"/>
+                        <button name="button_cancel" states="draft,validate,publish" string="Cancel" type="object" data-hotkey="x" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,validate,publish" readonly="1"/>
+                    </header>
+                    <sheet>                  
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Entry Type Name"/>
+                        </h1>
+                       
+                    </div>
+                    <group>
+                        <field name="description" placeholder="define instruction for your team to categoize subscriptions."/>
+                    </group>
+                    <group>
+                        <group name="model" string="Header">
+                            <field name="header_model_id"/>
+                            <field name="header_model_name" invisible="0"/>
+                            <field name="title_field_id" domain="[('model_id', '=', header_model_id),('ttype','!=','one2many')]"/>
+                            <field name="state_field_id" domain="[('model_id', '=', header_model_id),('ttype','!=','one2many')]"/>
+                        </group>
+                        <group string="Operations">
+                            <!--
+                            <field name="parent_relational_field_id" domain="[('model_id', '=', line_model_id),('ttype','=','many2one')]"/>
+                            <field name="line_model_id"/>
+-->
+                            <field name="is_create" />
+                            <field name="is_edit" />
+                            <field name="allow_messages" />
+                        </group>
+                    </group>
+                        <group string="Domain">
+                            <field name="filter_domain" widget="domain" options="{'model': 'header_model_name', 'in_dialog': True}"/>
+                        </group>
+                        <group string="Condition">
+                            <field name="condition" widget="domain" options="{'model': 'header_model_name', 'in_dialog': True}"/>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Service Item Fields" name="header_fields">
+                        <field name="hr_service_items" >
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle" />
+                                <field name="hr_service_id" invisible="1" />
+                                <field name="field_id" domain="[('model_id', '=', parent.header_model_id)]" options="{'no_edit_create':True}" />
+                                <field name="field_name" />
+                                <field name="field_type" />
+                                <field name="field_model" />
+                                <field name="field_store" invisible="1"/>
+                                <field name="field_readonly" invisible="1"/>
+                                <field name="field_domain" optional="hide" attrs="{'readonly':[('field_type','!=','many2one')]}"/>
+                                <field name="ref_field_id" domain="[('model_id', '=', parent.header_model_id)]" options="{'no_edit_create':True}" optional="hide" />
+                                <field name="link_field_id" domain="[('model', '=', field_model)]" attrs="{'required':[('field_type','=','many2one')], 'readonly':[('field_type','!=','many2one')]}"/>
+                                <field name="field_label" />
+                                <field name="is_required" attrs="{'readonly':[('field_store','=',False)]}"/>
+                                <field name="is_create" attrs="{'readonly':[('field_store','=',False)]}"/>
+                                <field name="is_edit" attrs="{'readonly':[('field_store','=',False)]}"/>
+                                <field name="display_option" attrs="{'readonly':[('field_store','=',False)]}"/>
+                                <field name="link_record" />
+                                <field name="auto_populate" />
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Record Lines" name="record_lines">
+                        <field name="hr_service_record_line" >
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle" />
+                                <field name="header_model_id" invisible="1"/>
+                                <field name="relational_field_id" domain="[('model_id', '=', header_model_id),('ttype','=','one2many')]"/>
+                                <field name="line_model_id" string="Model" readonly="1"/>
+                                <field name="parent_relational_field_id" domain="[('model_id', '=', line_model_id),('ttype','=','many2one')]"/>
+
+                                <button name="action_create_record_line_items" type="object" icon="fa-list" width="0.1" options="{&quot;warn&quot;: true}"/>
+
+
+                            </tree>
+                        </field>
+                    </page>
+                    <!--
+                    <page string="Line Item Fields" name="import_fields">
+                        <field name="hr_service_items_line" >
+                            <tree editable="bottom">
+                                <field name="sequence" widget="handle" />
+                                <field name="hr_service_id" invisible="1" />
+                                <field name="field_id" domain="[('model_id', '=', parent.line_model_id)]" options="{'no_edit_create':True}" />
+                                <field name="field_name" />
+                                <field name="field_type" />
+                                <field name="field_model" />
+                                <field name="field_store" invisible="1"/>
+                                <field name="field_readonly" invisible="1"/>
+                                <field name="field_domain" optional="hide" attrs="{'readonly':[('field_type','!=','many2one')]}"/>
+
+                                
+                                <field name="link_field_id" domain="[('model', '=', field_model)]" attrs="{'required':[('field_type','=','many2one')], 'readonly':[('field_type','!=','many2one')]}"/>
+                                <field name="field_label" />
+                                <field name="is_required" attrs="{'readonly':[('field_store','=',False)]}"/>
+                                <field name="is_create" attrs="{'readonly':[('field_store','=',False)]}"/>
+                                <field name="is_edit" attrs="{'readonly':[('field_store','=',False)]}"/>
+                                <field name="add_fields" attrs="{'readonly':[('field_store','=',False)]}"/>
+                                <field name="auto_populate" />
+                            </tree>
+                        </field>
+
+                    </page>
+                            -->
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="hr_service_tree_view">
+            <field name="name">hr.service.tree.view</field>
+            <field name="model">hr.service</field>
+            <field name="arch" type="xml">
+                <tree string="HR Service" >
+                    <field name="name"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_hr_service" model="ir.actions.act_window">
+            <field name="name">HR Service</field>
+            <field name="res_model">hr.service</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                No service found. Let's create one!
+              </p>
+            </field>
+        </record>        
+        
+        <menuitem action="action_hr_service" name="HR Services" id="menu_emp_books_config_hr_service_item" parent="menu_emp_books_config_hr_service" sequence="1"/>
+        
+    </data>
+</odoo>

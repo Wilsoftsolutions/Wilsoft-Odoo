@@ -58,7 +58,7 @@ class PartnerXlsx(models.AbstractModel):
         num_fmt = workbook.add_format({'num_format': '#,####', 'align': 'left', 'border': True})
         row = 0
         col = 0
-        sheet.merge_range(row, col, row + 3, col + 20, 'Sale xlsx Report', title)
+        sheet.merge_range(row, col, row + 3, col + 21, 'Sale xlsx Report', title)
 
         row += 4
         # Header row
@@ -76,8 +76,11 @@ class PartnerXlsx(models.AbstractModel):
         sheet.merge_range(row, col + 13, row + 1, col + 14, 'Billing City', header_row_style)
         sheet.merge_range(row, col + 15, row + 1, col + 15, 'Color', header_row_style)
         sheet.merge_range(row, col + 16, row + 1, col + 16, ' Size', header_row_style)
+        sheet.merge_range(row, col + 17, row + 1, col + 17, 'UOM', header_row_style)
+        sheet.merge_range(row, col + 18, row + 1, col + 18, 'Invoice No.', header_row_style)
+        sheet.merge_range(row, col + 19, row + 1, col + 19, 'Amount', header_row_style)
         # sheet.merge_range(row, col + 17, row + 1, col + 17, ' Status', header_row_style)
-        sheet.merge_range(row, col + 17, row + 1, col + 18, ' Entered Amount', header_row_style)
+        sheet.merge_range(row, col + 20, row + 1, col + 21, ' Entered Amount', header_row_style)
 
         row += 2
         count = 1
@@ -107,8 +110,13 @@ class PartnerXlsx(models.AbstractModel):
                 sheet.merge_range(row, col + 13, row, col + 14, inv.partner_id.street, style0)
                 sheet.write(row, col + 15, color_id.name if color_id else '-', style0)
                 sheet.write(row, col + 16, size.name if size else '-', style0)
+                sheet.write(row, col + 17, line.product_uom_id.name, style0)
+                sheet.write(row, col + 18, inv.name, style0)
+                sheet.write(row, col + 19, -1 * (line.price_subtotal) if inv.move_type == 'out_refund' else line.price_subtotal,
+                                  num_fmt)
+
                 # sheet.write(row, col + 17, inv.state, style0)
-                sheet.merge_range(row, col + 17, row, col + 18, -1 * (
+                sheet.merge_range(row, col + 20, row, col + 21, -1 * (
                         line_tax * line.price_subtotal  + line.price_subtotal) if inv.move_type == 'out_refund' else line_tax * line.price_subtotal  + line.price_subtotal,
                                   num_fmt)
                 grand_total += -1 * (
@@ -117,5 +125,5 @@ class PartnerXlsx(models.AbstractModel):
                 row += 1
                 count += 1
 
-        sheet.merge_range(row, col + 15, row + 1, col + 16, 'Grand Total', header_row_style)
-        sheet.merge_range(row, col + 17, row + 1, col + 18, grand_total, num_fmt)
+        sheet.merge_range(row, col + 18, row + 1, col + 19, 'Grand Total', header_row_style)
+        sheet.merge_range(row, col + 20, row + 1, col + 21, grand_total, num_fmt)

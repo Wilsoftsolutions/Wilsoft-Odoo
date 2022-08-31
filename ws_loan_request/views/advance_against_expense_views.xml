@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--Loan Tree view-->
+    
+        <record id="advance_against_expense_tree_view" model="ir.ui.view">
+        <field name="name">advance.against.expense.tree</field>
+        <field name="model">advance.against.expense</field>
+        <field name="arch" type="xml">
+            <tree string="Loan Type">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!--Loan Form view-->
+    <record id="advance_against_expense_form_view" model="ir.ui.view">
+        <field name="name">advance.against.expense.form</field>
+        <field name="model">advance.against.expense</field>
+        <field name="arch" type="xml">
+            <form string="Advance Against Expense">
+                <header>
+
+                    <button name="action_submit" type="object" string="Submit" states="draft" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel" states="draft" />
+                    <button name="action_approve" type="object" string="Approve" states="waiting_approval_1" class="oe_highlight" />
+                    <button name="action_refuse" type="object" string="Refuse" states="draft,waiting_approval_1" class="oe_highlight" />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,waiting_approval_1,approve" />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group >
+                        <group>
+                           <field name="employee_id"  attrs="{'readonly':[('state','!=','draft')]}"/>
+                           <field name="date"  attrs="{'readonly':[('state','!=','draft')]}"/>
+                           <field name="company_id" attrs="{'readonly':[('state','!=','draft')]}"/> 
+                        </group>
+                        <group>    
+                           <field name="amount" attrs="{'readonly':[('state','!=','draft')]}"/>
+                           <field name="desciption" attrs="{'readonly':[('state','!=','draft')]}"/>
+                           <field name="approval_request_id" readonly='1'/> 
+                        </group>
+                        
+                    </group>
+                   
+                    
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+    
+    
+    
+    
+    
+    <record id="action_advance_against_expense" model="ir.actions.act_window">
+        <field name="name">Advance Against Expense</field>
+        <field name="res_model">advance.against.expense</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{}</field>
+         <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+                Click to create a new Advance Against Expense.
+            </p><p>
+                Use this menu to create Advance Against Expense.
+            </p>
+        </field>
+    </record>
+
+    
+    <menuitem name="Advance Against Expense"
+        parent="menu_base_hr_loan_request"
+        id="menu_advance_against_expense"
+        action="action_advance_against_expense"/>
+    
+    
+   
+</odoo>
