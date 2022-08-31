@@ -3,7 +3,7 @@
     'name': "PO Receiving Report",
     'summary': """This Module is used for PO Receiving Report in XLSX""",
     'description': """This Module is used for PO Receiving Report in XLSX""",
-    'author': "Muhammad Ismail",
+    'author': "SADNAN KHAN",
     'website': "http://www.yourcompany.com",
     'category': 'Uncategorized',
     'version': '0.1',
