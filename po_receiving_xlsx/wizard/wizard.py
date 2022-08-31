@@ -238,7 +238,9 @@ class PartnerXlsx(models.AbstractModel):
                     row += 1
                     count += 1
                     done_ids.append(line.product_id.id)
+
+        # Top heading
         sheet.merge_range(0, 0, 3, 26 + extra_col, 'PO Receiving Report', title)
-        sheet.merge_range(4, 27, 5, 26 + extra_col, 'Date wise', header_row_style)
+        sheet.merge_range(4, 27, 5, 26 + extra_col, 'Date wise Receiving', header_row_style)
         # sheet.merge_range(row, col + 17, row + 1, col + 18, 'Grand Total', header_row_style)
         # sheet.merge_range(row, col + 19, row + 1, col + 20, grand_total, num_fmt)

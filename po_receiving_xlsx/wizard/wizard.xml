@@ -47,7 +47,7 @@
         <!-- wizard code ended here -->
 
         <!-- menu code started here -->
-        <menuitem id="po_receiving_menu_id" parent="stock.menu_warehouse_report"
+        <menuitem id="po_receiving_menu_id" parent="purchase.purchase_report_main"
                   action="po_receiving_report_action_id"/>
         <!-- menu code ended -->
 
