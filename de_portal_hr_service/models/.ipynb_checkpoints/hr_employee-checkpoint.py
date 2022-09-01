@@ -24,7 +24,13 @@ class HrEmployee(models.Model):
     _inherit = 'hr.employee'
     
     
-    employee_type_id = fields.Many2one('emp.type.category',  string='Employee Category', domain="[('company_id','=',company_id)]"  )
+    employee_type_id = fields.Many2one('emp.type.category',  string='Expense Category', domain="[('company_id','=',company_id)]"  )
+    
+class HrEmployeePublic(models.Model):
+    _inherit = 'hr.employee.public'
+    
+    
+    employee_type_id = fields.Many2one('emp.type.category',  string='Expense Category', domain="[('company_id','=',company_id)]"  )
     
     
 class HrEmployee(models.Model):
