@@ -69,9 +69,7 @@ class PartnerXlsx(models.AbstractModel):
                     )
                     size_range.append(size.name)
                 assortment = '-'.join([str(assortment[i]) for i in range(len(assortment))])
-                # size_range = min(size_range) + '-' + max(size_range) if size_range else size_range
                 size_range = []
-                # return '(' + size_range + ')', '(' + assortment + ')'
                 return size_range, '(' + assortment + ')'
             else:
                 return size_range, assortment
@@ -119,21 +117,22 @@ class PartnerXlsx(models.AbstractModel):
             domain.append(('date_order', '<=', data['data']['date_to']))
         purchase_orders = self.env['purchase.order'].sudo().search(domain)
         sheet = workbook.add_worksheet('PO Receiving Report')
-        bold = workbook.add_format({'bold': True, 'align': 'center', 'bg_color': '#fffbed', 'border': True})
         style0 = workbook.add_format({'align': 'left', 'border': True})
         title = workbook.add_format(
-            {'bold': True, 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'bg_color': '#D2EC44',
+            {'bold': True, 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'bg_color': '#FAA900',
              'border': True})
+        no_border = workbook.add_format({'border': True, 'border_color': 'white'})
         header_row_style = workbook.add_format(
-            {'bold': True, 'align': 'center', 'border': True, 'valign': 'vcenter', 'bg_color': '#03bafc'})
+            {'bold': True, 'align': 'center', 'border': True, 'valign': 'vcenter', 'bg_color': '#2C2D52',
+             'font_color': 'D3D3D3'})
         num_fmt = workbook.add_format({'num_format': '#,####', 'align': 'left', 'border': True})
         row = 0
         col = 0
         extra_col = 0
-        sheet.merge_range(row + 6, col + 21, row + 7, col + 22, 'Purchase Order', header_row_style)
-        sheet.set_column(23, 24, 10)
-        sheet.merge_range(row + 6, col + 23, row + 7, col + 24, 'Receiving till date', header_row_style)
-        sheet.merge_range(row + 6, col + 25, row + 7, col + 26, 'Balance', header_row_style)
+        sheet.merge_range(row + 6, col + 23, row + 7, col + 24, 'Purchase Order', header_row_style)
+        sheet.set_column(25, 26, 10)
+        sheet.merge_range(row + 6, col + 25, row + 7, col + 26, 'Receiving till date', header_row_style)
+        sheet.merge_range(row + 6, col + 27, row + 7, col + 28, 'Balance', header_row_style)
         row += 8
         # Header row
         sheet.set_column(0, 5, 18)
@@ -151,20 +150,21 @@ class PartnerXlsx(models.AbstractModel):
         sheet.merge_range(row, col + 11, row + 1, col + 12, 'Retail', header_row_style)
         sheet.merge_range(row, col + 13, row + 1, col + 14, 'Assortment', header_row_style)
         sheet.merge_range(row, col + 15, row + 1, col + 16, 'PO #', header_row_style)
-        sheet.merge_range(row, col + 17, row + 1, col + 18, 'PO Create Date', header_row_style)
-        sheet.merge_range(row, col + 19, row + 1, col + 20, 'PO Closing Date', header_row_style)
-        sheet.merge_range(row, col + 21, row + 1, col + 21, 'Prs', header_row_style)
-        sheet.merge_range(row, col + 22, row + 1, col + 22, 'Val', header_row_style)
+        sheet.set_column(17, 18, 15)
+        sheet.merge_range(row, col + 17, row + 1, col + 18, 'Vendor', header_row_style)
+        sheet.merge_range(row, col + 19, row + 1, col + 20, 'PO Create Date', header_row_style)
+        sheet.merge_range(row, col + 21, row + 1, col + 22, 'PO Closing Date', header_row_style)
         sheet.merge_range(row, col + 23, row + 1, col + 23, 'Prs', header_row_style)
         sheet.merge_range(row, col + 24, row + 1, col + 24, 'Val', header_row_style)
         sheet.merge_range(row, col + 25, row + 1, col + 25, 'Prs', header_row_style)
         sheet.merge_range(row, col + 26, row + 1, col + 26, 'Val', header_row_style)
+        sheet.merge_range(row, col + 27, row + 1, col + 27, 'Prs', header_row_style)
+        sheet.merge_range(row, col + 28, row + 1, col + 28, 'Val', header_row_style)
         row += 2
         col = 0
         count = 1
-        grand_total = 0
         check_col = []
-        d_wise_col = 27
+        d_wise_col = 29
         heading_row = 6
         # putting data started from here
         for ret in purchase_orders:
@@ -175,13 +175,9 @@ class PartnerXlsx(models.AbstractModel):
                     product_related_pickings = self.get_product_related_pickings(ret, line.product_id)
                     gender = self.get_gender(line.product_id)
                     size_range, assortment = self.get_assortment_size_range(line.product_id)
-                    # line_tax = self.get_tax(line) if line.tax_ids else 0
                     product_attribute = line.product_id.product_template_attribute_value_ids
                     color_id = product_attribute.filtered(
                         lambda attribute: attribute.attribute_id.name.upper() == 'COLOR'
-                    )
-                    size = product_attribute.filtered(
-                        lambda attribute: attribute.attribute_id.name.upper() == 'SIZE'
                     )
                     p_temp = self.env['product.template'].search(
                         [('id', '=', line.product_id.product_tmpl_id.id)])
@@ -208,17 +204,18 @@ class PartnerXlsx(models.AbstractModel):
                     sheet.merge_range(row, col + 11, row, col + 12, line.product_id.list_price, style0)
                     sheet.merge_range(row, col + 13, row, col + 14, assortment if assortment else None, style0)
                     sheet.merge_range(row, col + 15, row, col + 16, ret.name if ret else None, style0)
-                    sheet.merge_range(row, col + 17, row, col + 18,
-                                      str(ret.date_order.date()) if ret.date_order else None, style0)
+                    sheet.merge_range(row, col + 17, row, col + 18, ret.partner_id.name, style0)
                     sheet.merge_range(row, col + 19, row, col + 20,
+                                      str(ret.date_order.date()) if ret.date_order else None, style0)
+                    sheet.merge_range(row, col + 21, row, col + 22,
                                       str(ret.date_approve.date()) if ret.date_approve else None, style0)
-                    sheet.write(row, col + 21, total_qty, style0)
-                    sheet.write(row, col + 22, total_qty * line.price_unit, style0)
-                    sheet.write(row, col + 23, total_received, style0)
-                    sheet.write(row, col + 24, total_received * line.price_unit, style0)
+                    sheet.write(row, col + 23, total_qty, style0)
+                    sheet.write(row, col + 24, total_qty * line.price_unit, style0)
+                    sheet.write(row, col + 25, total_received, style0)
+                    sheet.write(row, col + 26, total_received * line.price_unit, style0)
                     bal = total_qty - total_received
-                    sheet.write(row, col + 25, bal, style0)
-                    sheet.write(row, col + 26, bal * line.price_unit, style0)
+                    sheet.write(row, col + 27, bal, style0)
+                    sheet.write(row, col + 28, bal * line.price_unit, style0)
                     for each in product_related_pickings:
                         dict_exist = next(
                             (item for item in check_col if item['date'].date() == each['create_date'].date()), None)
@@ -234,13 +231,12 @@ class PartnerXlsx(models.AbstractModel):
                             check_col.append({'date': each['create_date'], 'col': d_wise_col})
                             d_wise_col += 1
                             extra_col += 1
-                    grand_total += 1
                     row += 1
                     count += 1
                     done_ids.append(line.product_id.id)
 
+        sheet.merge_range(4, 0, 7, 22, '', no_border)
+        sheet.merge_range(4, 23, 5, 28, '', no_border)
         # Top heading
-        sheet.merge_range(0, 0, 3, 26 + extra_col, 'PO Receiving Report', title)
-        sheet.merge_range(4, 27, 5, 26 + extra_col, 'Date wise Receiving', header_row_style)
-        # sheet.merge_range(row, col + 17, row + 1, col + 18, 'Grand Total', header_row_style)
-        # sheet.merge_range(row, col + 19, row + 1, col + 20, grand_total, num_fmt)
+        sheet.merge_range(0, 0, 3, 28 + extra_col, 'PO Receiving Report', title)
+        sheet.merge_range(4, 29, 5, 28 + extra_col, 'Date wise Receiving', header_row_style)
