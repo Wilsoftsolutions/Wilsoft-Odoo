@@ -1,0 +1,29 @@
+<odoo>
+    <data>
+          
+        <record id="view_hr_salary_rule_form_detail_report" model="ir.ui.view">
+        <field name="name">hr.salary.rule.form.detail.report</field>
+        <field name="model">hr.salary.rule</field>
+        <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Configuration" >
+                   <group>
+                     <group>
+                       <field name="detail_report" />
+                        <field name="detail_deduction" />
+                        <field name="detail_compansation" /> 
+                        <field name="detail_sequence" />  
+                     </group>
+                       
+                     <group>
+                     </group>
+
+                   </group>
+                </page> 
+            </xpath>
+             </field>
+          </record>
+        
+    </data>
+</odoo>
