@@ -112,9 +112,9 @@ class PartnerXlsx(models.AbstractModel):
         if data['data']['vendors']:
             domain.append(('partner_id.id', 'in', data['data']['vendors']))
         if data['data']['date_from']:
-            domain.append(('date_order', '>=', data['data']['date_from']))
+            domain.append(('date_approve', '>=', data['data']['date_from']))
         if data['data']['date_to']:
-            domain.append(('date_order', '<=', data['data']['date_to']))
+            domain.append(('date_approve', '<=', data['data']['date_to']))
         purchase_orders = self.env['purchase.order'].sudo().search(domain)
         sheet = workbook.add_worksheet('PO Receiving Report')
         style0 = workbook.add_format({'align': 'left', 'border': True})
@@ -166,6 +166,8 @@ class PartnerXlsx(models.AbstractModel):
         check_col = []
         d_wise_col = 29
         heading_row = 6
+        done_row_col = []
+        col_for_loop = []
         # putting data started from here
         for ret in purchase_orders:
             done_ids = []
@@ -221,6 +223,7 @@ class PartnerXlsx(models.AbstractModel):
                             (item for item in check_col if item['date'].date() == each['create_date'].date()), None)
                         if dict_exist:
                             sheet.write(row, dict_exist['col'], each['qty_done'], style0)
+                            done_row_col.append({'col': dict_exist['col'], 'row': row, 'val': each['qty_done']})
                         else:
                             sheet.set_column(d_wise_col, d_wise_col, 15)
                             sheet.merge_range(heading_row, d_wise_col, heading_row + 1, d_wise_col,
@@ -229,11 +232,22 @@ class PartnerXlsx(models.AbstractModel):
                                               header_row_style)
                             sheet.write(row, d_wise_col, each['qty_done'], style0)
                             check_col.append({'date': each['create_date'], 'col': d_wise_col})
+                            done_row_col.append({'col': d_wise_col, 'row': row, 'val': each['qty_done']})
+                            col_for_loop.append(d_wise_col)
                             d_wise_col += 1
                             extra_col += 1
                     row += 1
                     count += 1
                     done_ids.append(line.product_id.id)
+
+        for row in range(row - 10):
+            for col in col_for_loop:
+                dict_exist = next((item for item in done_row_col if item['col'] == col and item['row'] == row + 10),
+                                  None)
+                if dict_exist:
+                    continue
+                else:
+                    sheet.write(row + 10, col, '', style0)
 
         sheet.merge_range(4, 0, 7, 22, '', no_border)
         sheet.merge_range(4, 23, 5, 28, '', no_border)
