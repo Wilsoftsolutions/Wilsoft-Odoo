@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <report
+                id="qc_def_reports_xlsx_id"
+                model="reports.qc.xlsx"
+                string="QC Xlsx Report"
+                report_type="xlsx"
+                name="qc_inspection_xlsx_report.qc_reports_xlsx_id"
+                file="qc_inspection_xlsx_report.qc_reports_xlsx_id"
+                attachment_use="False"
+        />
+    </data>
+</odoo>
