@@ -4,6 +4,13 @@ from odoo import models, fields, api, _
 from datetime import date, datetime, timedelta
 
 
+class HREmployeePublic(models.Model):
+    _inherit = 'hr.employee.public'
+    
+    leave_ded = fields.Boolean(string='Not Leave Deduction')
+    stop_salary = fields.Boolean(string='Stop Salary')
+    
+
 class HREmployee(models.Model):
     _inherit = 'hr.employee'
     

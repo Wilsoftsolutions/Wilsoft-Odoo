@@ -1,0 +1,92 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data>
+        <record id="view_hr_policy_configuration_form" model="ir.ui.view">
+            <field name="name">hr.policy.configuration.form</field>
+            <field name="model">hr.policy.configuration</field>
+            <field name="arch" type="xml">
+                <form string="HR Policy"  >
+                    <sheet>
+                        <h1><field name="name" /></h1>
+                       <group>
+                        <group>
+                              <field name="grace_period"  />   
+                              <field name="number_of_late" />   
+                              <field name="leave_ded"  />
+                        </group>
+                        <group>
+                            <field name="shift_start_time" />
+                            <field name="shift_end_time" />
+                            <field name="company_id" />  
+                        </group>
+                       </group>
+                        
+                        <notebook>
+                            <page string="Day Attendance">
+                                <field  name="attendance_line_ids" >
+                                   <tree editable="bottom">
+                                     <field name="type"  />
+                                     <field name="policy_id"  invisible='1'/>  
+                                     <field name="hours"  />   
+                                   </tree> 
+                                </field>
+                            </page>
+                            <page string="Day Attendance">
+                                <field  name="break_line_ids" >
+                                   <tree editable="bottom">
+                                      <field name="day"  />
+                                      <field name="policy_id"  invisible='1'/>  
+                                      <field name="start_time"  />   
+                                      <field name="end_time"  />     
+                                   </tree> 
+                                </field>
+                            </page>
+                            
+                        </notebook> 
+                        
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_hr_policy_configuration_tree">            
+            <field name="name">hr.policy.configuration.tree</field>
+            <field name="model">hr.policy.configuration</field>
+            <field name="arch" type="xml">
+                <tree string="HR Policy" >
+                    <field name="name"/>
+                    <field name="grace_period"  />   
+                    <field name="number_of_late" />   
+                    <field name="leave_ded"  />
+                    <field name="shift_start_time" />
+                    <field name="shift_end_time" />
+                    <field name="company_id" readonly='1'/>  
+                </tree>
+            </field>            
+        </record>
+
+        <record id="action_hr_policy_config" model="ir.actions.act_window">
+            <field name="name">HR Policy</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hr.policy.configuration</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="view_id" ref="view_hr_policy_configuration_tree"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create Records Here.......
+                </p>
+            </field>
+        </record>
+        
+     
+        <menuitem id="hr_policy_config_menuitem"
+                  name="HR Policy"
+                  parent="hr.menu_human_resources_configuration"
+                  action="action_hr_policy_config"
+                  sequence="13"
+                  />
+   
+    </data>
+</odoo>

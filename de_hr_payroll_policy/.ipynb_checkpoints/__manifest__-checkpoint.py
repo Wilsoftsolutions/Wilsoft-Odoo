@@ -27,6 +27,7 @@
         'data/email_template.xml',
         'views/hr_employee_views.xml',
         'views/hr_salary_rule_views.xml',
+        'views/hr_policy_config_views.xml',
         'views/res_company_views.xml',
         'wizard/payroll_summary_wizard.xml',
         'report/payroll_summary_report.xml',
