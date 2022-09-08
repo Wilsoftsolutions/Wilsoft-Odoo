@@ -3,7 +3,7 @@
         <!-- report menu started here -->
         <report
                 id="sale_return_report_id"
-                model="reports.xlsx"
+                model="sale.return.wizard"
                 string="Sale Xlsx Report"
                 report_type="xlsx"
                 name="sale_return_report.sale_return_report"
