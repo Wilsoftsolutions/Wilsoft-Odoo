@@ -26,20 +26,38 @@ class HREmployee(models.Model):
             for emp in employees:
                 # Retirement Age Portion
                 total_service_days = 365 * emp.company_id.retirement_age
-                calculated_days = (fields.date.today()+ timedelta(60) - emp.birthday).days
+                check_start_date = fields.date.today()+ timedelta(60)
+                check_end_date = emp.birthday if emp.birthday else fields.date.today()
+                calculated_days = (check_start_date - check_end_date).days
                 if calculated_days > total_service_days:
                     emp.action_send_mail_reminder_retirement_age() 
+                check_start_date = fields.date.today() + timedelta(30)  
+                calculated_days = (check_start_date - check_end_date).days
+                if calculated_days > total_service_days:
+                    emp.action_send_mail_reminder_retirement_age()
+                check_start_date = fields.date.today() + timedelta(4)  
+                calculated_days = (check_start_date - check_end_date).days
+                if calculated_days > total_service_days:
+                    emp.action_send_mail_reminder_retirement_age()    
                 # Birth Day Portion
-                if str( (fields.date.today() + timedelta(6)).strftime('%d-%m')) == str(emp.birthday.strftime('%d-%m')):
+                if str( (fields.date.today() + timedelta(6)).strftime('%d-%m')) == str(emp.birthday.strftime('%d-%m') if emp.birthday else fields.date.today().strftime('%d-%m') ):
                     emp.action_send_mail_reminder_hr()
                     emp.action_send_mail_reminder()
+                if str( (fields.date.today() + timedelta(3)).strftime('%d-%m')) == str(emp.birthday.strftime('%d-%m') if emp.birthday else fields.date.today().strftime('%d-%m') ):
+                    emp.action_send_mail_reminder_hr()
+                    emp.action_send_mail_reminder()    
                 # Work Anniversary Portion
-                if str( (fields.date.today() + timedelta(6)).strftime('%d-%m')) == str(emp.x_studio_doj.strftime('%d-%m')):
+                if str( (fields.date.today() + timedelta(6)).strftime('%d-%m')) == str(emp.x_studio_doj.strftime('%d-%m') if emp.x_studio_doj else  fields.date.today().strftime('%d-%m') ):
                     emp.action_send_mail_reminder_work_day_hr()
                     emp.action_send_mail_reminder_work_day()
+                if str( (fields.date.today() + timedelta(3)).strftime('%d-%m')) == str(emp.x_studio_doj.strftime('%d-%m') if emp.x_studio_doj else  fields.date.today().strftime('%d-%m') ):
+                    emp.action_send_mail_reminder_work_day_hr()
+                    emp.action_send_mail_reminder_work_day()    
                 # Probation End Notification
                 if str( (fields.date.today() + timedelta(6))) == str(emp.x_studio_probation_due_date):
                     emp.action_send_mail_reminder_probation_notification()
+                if str( (fields.date.today() + timedelta(3))) == str(emp.x_studio_probation_due_date):
+                    emp.action_send_mail_reminder_probation_notification()    
 
                     
 

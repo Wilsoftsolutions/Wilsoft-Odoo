@@ -7,6 +7,7 @@ class HRPolicyConfiguration(models.Model):
     _description = 'HR Policy Configuration'    
     
     name = fields.Char(string='Name', required=True)
+    is_active = fields.Boolean(string='Active')
     grace_period = fields.Float(string='Day Grace Time', required=True)
     number_of_late = fields.Float(string='Number of Late', required=True)
     leave_ded = fields.Float(string='Leave Deduction', required=True)
@@ -15,6 +16,15 @@ class HRPolicyConfiguration(models.Model):
     company_id = fields.Many2one('res.company', string='Company', required=True)
     attendance_line_ids = fields.One2many('policy.day.attendance', 'policy_id', string='Day Attendance')
     break_line_ids = fields.One2many('policy.day.break', 'policy_id' , string='Break Lines')
+    
+    
+    def action_allocate_config(self):
+        executable_run = self.env['hr.policy.configuration'].search([('is_active','=',True)])
+        for ext in executable_run:
+            employees = self.env['hr.employee'].search([('company_id','=',ext.company_id.id)])
+            for emp in employees:
+                pass
+            
     
     
 class PolicyDayAttendance(models.Model):

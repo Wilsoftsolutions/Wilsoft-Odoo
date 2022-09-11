@@ -6,7 +6,7 @@
         <field name="model">res.company</field>
         <field name="inherit_id" ref="base.view_company_form" />
         <field name="arch" type="xml">
-               <xpath expr="//field['vat']" position="after">               
+               <xpath expr="//field[@name='vat']" position="after">               
                     <field name="retirement_age" />
                     <field name="hr_id" />
                </xpath>
