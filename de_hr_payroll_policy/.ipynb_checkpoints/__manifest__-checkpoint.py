@@ -19,13 +19,15 @@
     'version': '15.0.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','hr_payroll'],
+    'depends': ['base','hr','hr_payroll','ws_hr_attendance'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'data/email_template.xml',
         'views/hr_employee_views.xml',
+        'views/hr_attendance_views.xml',
+        'views/hr_leave_type_views.xml',
         'views/hr_salary_rule_views.xml',
         'views/hr_policy_config_views.xml',
         'views/res_company_views.xml',

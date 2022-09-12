@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from datetime import date, datetime, timedelta
+from odoo.exceptions import ValidationError, UserError
+from dateutil.relativedelta import relativedelta
+
+
 
 class HRPolicyConfiguration(models.Model):
     _name = 'hr.policy.configuration'
@@ -23,7 +28,45 @@ class HRPolicyConfiguration(models.Model):
         for ext in executable_run:
             employees = self.env['hr.employee'].search([('company_id','=',ext.company_id.id)])
             for emp in employees:
-                pass
+                settle_date = fields.date.today() - timedelta(2)
+                exist_att = self.env['hr.attendance'].search([('employee_id','=',emp.id),('att_date','=',settle_date),('worked_hours','>',0),('is_validated','=',False)], limit=1)
+                if exist_att:
+                    checking_date = exist_att.check_in+relativedelta(hours=+5)
+                    
+                    if checking_date.strftime('%H:%M').replace(':','.') > str(ext.grace_period):
+                        exist_att.update({
+                            'is_validated': True
+                        })
+                        leave_type = self.env['hr.leave.type'].search([('unpaid_leave','=',True)], limit=1)
+                        leave_types = self.env['hr.leave.type'].search([('leave_priority','!=',0)], order='leave_priority ASC')
+                        for type in leave_types:
+                            total_allocations = 0
+                            total_leaves = 0 
+                            allocation = self.env['hr.leave.allocation'].search([('employee_id','=',emp.id),('state','=','validate'),('holiday_status_id','=',type.id)])
+                            leaves = self.env['hr.leave'].search([('employee_id','=',emp.id),('state','=','validate'),('holiday_status_id','=',type.id)])
+                            for alloc in allocation:
+                                total_allocations += alloc.number_of_days
+                            for leav in leaves:
+                                total_leaves += leav.number_of_days 
+                            remaining_alloc =  total_allocations - total_leaves   
+                            if   total_allocations >  total_leaves and remaining_alloc > ext.leave_ded: 
+                                leave_type = type
+                                break;
+                        line_vals = {
+                            'employee_id': emp.id,
+                            'number_of_days': ext.leave_ded,
+                            'request_date_from': exist_att.check_in,
+                            'request_date_to': exist_att.check_in,
+                            'holiday_status_id': leave_type.id,
+                            'name': 'Leave Deduction Due To Late Arrival',
+                        }
+                        leave = self.env['hr.leave'].create(line_vals)
+                        leave.update({
+                            'number_of_days': ext.leave_ded,
+                        })
+                        leave.action_approve()
+                        if leave.state!='validate':
+                            leave.action_validate()
             
     
     
@@ -64,6 +107,11 @@ class PolicyDayBreak(models.Model):
     
     
     
+class HrLeaveType(models.Model):
+    _inherit = 'hr.leave.type'
+    
+    leave_priority = fields.Integer(string='Attendance Deduction (Priority)')
+    unpaid_leave = fields.Boolean(string='Unpaid Leave')
     
     
         

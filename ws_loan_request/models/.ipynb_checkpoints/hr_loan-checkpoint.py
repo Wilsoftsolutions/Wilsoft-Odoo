@@ -3,6 +3,7 @@
 from odoo import models, fields, api, _
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from datetime import date, datetime, timedelta
 from odoo.exceptions import ValidationError, UserError
 
 
@@ -60,10 +61,23 @@ class HrLoan(models.Model):
     ], string="State", default='draft', track_visibility='onchange', copy=False, )
     
     
+    @api.constrains('loan_amount')
+    def _check_loan_amount(self):
+        for line in self:
+            loan_exist = self.env['hr.loan'].search([('employee_id','=',line.employee_id.id),('date','>', line.date-timedelta(30) ),('state','!=','draft')], limit=1)
+            if loan_exist and line.loan_type_id.per_month==True:
+                raise UserError('Already Loan Request Exist in System! '+ str(loan_exist.name)+' Not Allow to request Advance twice in a single month. Please Select Date greater than '+str(loan_exist.date+timedelta(30)))
+            contract = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open')], limit=1)
+            if contract:
+                amount_limit = ((contract.wage)/100) * line.loan_type_id.percentage
+                if line.loan_amount > amount_limit and line.loan_type_id.percentage > 0:
+                    raise UserError('Not Allow to Submit Advance Amount Greater than '+str(amount_limit) )
+    
     
     @api.model
     def create(self, values):
         values['name'] = self.env['ir.sequence'].get('hr.loan.seq') or ' '
+        
         res = super(HrLoan, self).create(values)
         res.action_submit()
         return res
@@ -194,4 +208,6 @@ class HrLoanType(models.Model):
     name = fields.Char(string="Name", required=True)
     installment = fields.Integer(string='Installment')
     code = fields.Char(string='Code')
+    per_month = fields.Boolean(string='Limit Per Month')
+    percentage = fields.Float(string='Percentage Of Salary')
     
