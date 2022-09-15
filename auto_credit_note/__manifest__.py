@@ -4,7 +4,7 @@
     'summary': """Automate the credit Note For Return""",
     'description': """Automate the credit Note For Return
     """,
-    'author': "Muhammad Ismail",
+    'author': "Sadnan khan",
     'category': 'Uncategorized',
     'version': '0.1',
     'depends': ['base', 'stock'],
