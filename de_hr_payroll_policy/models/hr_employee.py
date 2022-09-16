@@ -21,7 +21,7 @@ class  HrEmployeePublic(models.Model):
     _inherit='hr.employee.public'
   
     is_advance_expense = fields.Boolean(string='Advance Expense')
-    
+    employee_family_ids = fields.One2many('hr.employee.family', 'employee_id', string='Employee Family')
     
     
     

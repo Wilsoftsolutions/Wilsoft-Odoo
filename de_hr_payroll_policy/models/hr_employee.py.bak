@@ -17,6 +17,12 @@ class HREmployee(models.Model):
     leave_ded = fields.Boolean(string='Not Leave Deduction')
     stop_salary = fields.Boolean(string='Stop Salary')
     
+class  HrEmployeePublic(models.Model):
+    _inherit='hr.employee.public'
+  
+    is_advance_expense = fields.Boolean(string='Advance Expense')
+    
+    
     
     
     def action_send_reminder_email_notification(self):
