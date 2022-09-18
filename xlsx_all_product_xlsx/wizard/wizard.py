@@ -52,11 +52,12 @@ class PartnerXlsx(models.AbstractModel):
         sheet.merge_range(row, col + 8, row + 1, col + 9, 'Color Description', header_row_style)
         sheet.merge_range(row, col + 10, row + 1, col + 10, 'Color', header_row_style)
         sheet.merge_range(row, col + 11, row + 1, col + 11, 'Size', header_row_style)
-        loc_col = 12
+        sheet.merge_range(row, col + 12, row + 1, col + 12, 'UOM', header_row_style)
+        loc_col = 13
         for loc in all_internal_loc:
             warehouse = loc.warehouse_id.name if loc.warehouse_id else ''
             sheet.merge_range(row, loc_col, row + 1, loc_col + 1,
-                               warehouse + '\n' + loc.name,
+                              warehouse + '\n' + loc.name,
                               header_row_style)
             loc_col += 2
         sheet.merge_range(row, loc_col, row + 1, loc_col, 'Price', header_row_style)
@@ -89,7 +90,8 @@ class PartnerXlsx(models.AbstractModel):
                 sheet.merge_range(row, col + 8, row, col + 9, color_id.name if color_id else '-', style0)
                 sheet.write(row, col + 10, color_id.name if color_id else '-', style0)
                 sheet.write(row, col + 11, size.name if size else '-', style0)
-                loc_location = 12
+                sheet.write(row, col + 12, stock.product_id.uom_id.name if stock.product_id.uom_id else '-', style0)
+                loc_location = 13
                 i = 0
                 for loc in all_internal_loc:
                     qty = stock.product_id.with_context(to_date=fields.Datetime.now(),
@@ -140,7 +142,8 @@ class PartnerXlsx(models.AbstractModel):
             sheet.merge_range(row, col + 8, row, col + 9, color_id.name if color_id else '-', style0)
             sheet.write(row, col + 10, color_id.name if color_id else '-', style0)
             sheet.write(row, col + 11, size.name if size else '-', style0)
-            loc_location = 12
+            sheet.write(row, col + 12, prod.uom_id.name if prod.uom_id else '-', style0)
+            loc_location = 13
             for loc in all_internal_loc:
                 qty = 0
                 sheet.merge_range(row, loc_location, row, loc_location + 1, qty, style0)
@@ -148,3 +151,4 @@ class PartnerXlsx(models.AbstractModel):
             sheet.write(row, loc_location, prod.list_price, style0)
             row += 1
             new_count += 1
+

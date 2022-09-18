@@ -52,7 +52,7 @@ class PartnerXlsx(models.AbstractModel):
         header_row_style = workbook.add_format({'bold': True, 'align': 'center', 'border': True, 'valign': 'vcenter', })
         row = 0
         col = 0
-        sheet.merge_range(row, col, row + 3, col + 15, 'Inventory xlsx Report', title)
+        sheet.merge_range(row, col, row + 3, col + 16, 'Inventory xlsx Report', title)
 
         row += 4
         # Header row
@@ -67,8 +67,9 @@ class PartnerXlsx(models.AbstractModel):
         sheet.merge_range(row, col + 10, row + 1, col + 10, 'Size', header_row_style)
         sheet.merge_range(row, col + 11, row + 1, col + 11, 'Qty', header_row_style)
         sheet.merge_range(row, col + 12, row + 1, col + 13, 'Locator', header_row_style)
-        sheet.merge_range(row, col + 14, row + 1, col + 14, 'Price', header_row_style)
-        sheet.merge_range(row, col + 15, row + 1, col + 15, 'Total', header_row_style)
+        sheet.merge_range(row, col + 14, row + 1, col + 14, 'Uom', header_row_style)
+        sheet.merge_range(row, col + 15, row + 1, col + 15, 'Price', header_row_style)
+        sheet.merge_range(row, col + 16, row + 1, col + 16, 'Total', header_row_style)
         row += 2
         count = 1
         grand_total = 0
@@ -92,12 +93,14 @@ class PartnerXlsx(models.AbstractModel):
             sheet.write(row, col + 11, stock.quantity, style0)
             sheet.merge_range(row, col + 12, row, col + 13,
                               stock.location_id.warehouse_id.name if stock.location_id.warehouse_id else '-', style0)
-            sheet.write(row, col + 14, stock.product_id.lst_price, style0)
-            sheet.write(row, col + 15, stock.product_id.lst_price * stock.quantity, style0)
+            sheet.write(row, col + 14, stock.product_id.uom_id.name, style0)
+            sheet.write(row, col + 15, stock.product_id.lst_price, style0)
+            sheet.write(row, col + 16, stock.product_id.lst_price * stock.quantity, style0)
             grand_total += stock.product_id.lst_price * stock.quantity
             row += 1
             count += 1
 
         # grand total
-        sheet.merge_range(row, col + 13, row + 1, col + 14, 'Grand Total', header_row_style)
-        sheet.merge_range(row, col + 15, row + 1, col + 15, grand_total, header_row_style)
+        sheet.merge_range(row, col + 14, row + 1, col + 15, 'Grand Total', header_row_style)
+        sheet.merge_range(row, col + 16, row + 1, col + 16, grand_total, header_row_style)
+
