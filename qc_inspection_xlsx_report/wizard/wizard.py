@@ -39,6 +39,7 @@ class PartnerXlsx(models.AbstractModel):
         sheet = workbook.add_worksheet('QC xlsx Report')
         bold = workbook.add_format({'bold': True, 'align': 'center', 'bg_color': '#fffbed', 'border': True})
         style0 = workbook.add_format({'align': 'center', 'border': True})
+        date_style = workbook.add_format({'text_wrap': True, 'num_format': 'dd-mm-yyyy','align': 'center', 'border': True})
         title = workbook.add_format(
             {'bold': True, 'align': 'center', 'valign': 'vcenter', 'font_size': 20, 'bg_color': '#f2eee4',
              'border': True})
@@ -66,15 +67,6 @@ class PartnerXlsx(models.AbstractModel):
         count = 1
         grand_total = 0
         for inv in qc_all:
-            # for line in inv.invoice_line_ids:
-            # line_tax = self.get_tax(line) if line.tax_ids else 0
-            # product_attribute = line.product_id.product_template_attribute_value_ids
-            # color_id = product_attribute.filtered(
-            #     lambda attribute: attribute.attribute_id.name.upper() == 'COLOR'
-            # )
-            # size = product_attribute.filtered(
-            #     lambda attribute: attribute.attribute_id.name.upper() == 'SIZE'
-            # )
             check_total = (inv.check36 + inv.check37 + inv.check38 +
                            inv.check39 + inv.check40 + inv.check41 +
                            inv.check42 + inv.check43 + inv.check44+
@@ -96,9 +88,9 @@ class PartnerXlsx(models.AbstractModel):
                            inv.bal_45 + inv.bal_46
                            )
 
-            sheet.write(row, col, str(inv.create_date), style0)
-            sheet.write(row, col + 1, inv.name.name, style0)
-            sheet.write(row, col + 2, '', style0)
+            sheet.write(row, col, inv.x_studio_date, date_style)
+            sheet.write(row, col + 1, inv.x_studio_qc_inspector, style0)
+            sheet.write(row, col + 2, inv.vendor_id.name, style0)
             sheet.write(row, col + 3, inv.po_item_id.name if inv.po_item_id.name else '-', style0)
             sheet.write(row, col + 4, inv.plan, style0)
             sheet.write(row, col + 5, check_total, style0)
