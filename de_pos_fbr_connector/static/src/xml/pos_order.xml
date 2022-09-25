@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+	<t t-extend="PosTicket">
+		<t t-jquery="receipt-user" t-operation="after">
+			<div class="receipt-inv-number">
+                Invoice Number: <t t-esc="order.get_invoice_number()"/><br />
+            </div>
+		
+		</t>
+	</t>
+    
+    <!-- Receipt -->
+    <t t-extend="OrderReceipt">
+        <t t-jquery=".cashier" t-operation="after">
+           <t t-if="order.get_invoice_number()">
+               <br/>
+               Invoice No.: <t t-esc="order.get_invoice_number()"/>
+               <br/>
+           </t>
+        </t>
+    </t>
+</templates>
