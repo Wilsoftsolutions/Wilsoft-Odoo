@@ -27,7 +27,7 @@ class XlsxQCInspectionReports(models.TransientModel):
 class PartnerXlsx(models.AbstractModel):
     _name = "report.qc_inspection_xlsx_report.qc_reports_xlsx_id"
     _inherit = "report.report_xlsx.abstract"
-    _description = "Sale XLSX Report"
+    _description = "Qc XLSX Report"
 
     def generate_xlsx_report(self, workbook, data, docs):
         domain = []
@@ -89,7 +89,7 @@ class PartnerXlsx(models.AbstractModel):
                            )
 
             sheet.write(row, col, inv.x_studio_date, date_style)
-            sheet.write(row, col + 1, inv.x_studio_qc_inspector, style0)
+            sheet.write(row, col + 1, inv.x_studio_qc_inspector.name, style0)
             sheet.write(row, col + 2, inv.vendor_id.name, style0)
             sheet.write(row, col + 3, inv.po_item_id.name if inv.po_item_id.name else '-', style0)
             sheet.write(row, col + 4, inv.plan, style0)
@@ -98,4 +98,6 @@ class PartnerXlsx(models.AbstractModel):
             sheet.write(row, col + 8, bpair_total, style0)
             sheet.merge_range(row, col + 9, row, col + 10, bal_total, num_fmt)
             sheet.merge_range(row, col + 11, row, col + 12, inv.comment, style0)
+            row += 1
+
 
