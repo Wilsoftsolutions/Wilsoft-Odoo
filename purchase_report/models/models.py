@@ -229,7 +229,6 @@ class InvoiceInheritReport(models.AbstractModel):
                 product_data.append(new_dict)
             else:
                 dict_exist['sizes'][0][size.name] += inv_line.product_qty
-
         else:
             self.create_line_without_qty(product_data, inv_line, product_data)
 

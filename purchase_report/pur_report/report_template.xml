@@ -14,11 +14,15 @@
                         border: 1px solid black;
                         border-collapse: collapse;
                         }
-                        .data_table_inside td {}
+                        .data_table_inside td { padding: 4.5px 2px;
+                        border-right: 1px solid black!important;text-align:center;
+                        border: none;}
+                        .data_table_inside {border:none;}
+                        .data_table_inside td:last-child{border-right:none!important;}
                         h6{font-size: 9px;}
                     </style>
                     <t t-foreach="doc" t-as="o">
-                        <div class="page" style="font-size:10px;margin-top:30px;">
+                        <div class="page" style="font-size:10px;margin-top:-40px;">
                             <br/>
                             <br/>
                             <br/>
@@ -79,15 +83,15 @@
                                     </tr>
                                 </table>
                             </div>
-                            <table width="100%" style="margin-top:60px">
+                            <table width="100%" style="margin-top:30px">
                                 <thead class="text-center">
                                     <tr style="background-color:#08194f; color:white">
                                         <th width="2%">Sr#</th>
-                                        <th width="8%">Article</th>
+                                        <th width="16%">Article</th>
                                         <th width="4%">Color</th>
                                         <th width="3%">Size Ranges</th>
                                         <th width="5%">Assortment</th>
-                                        <th width="55%">
+                                        <th width="47%">
                                             <table width="100%" style="padding-left: 0px; padding-top: 0px;"
                                                    class="table-bordered-none size_range">
                                                 <thead>
@@ -376,173 +380,196 @@
                                                             <tbody class="tbody">
                                                                 <tr>
                                                                     <td width="2%" t-if="one==1">
-                                                                        <h6 t-esc="size['1']"/>
+                                                                        <h6 t-esc="size['1']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_1"
                                                                               t-value="(total_1 + size['1'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="two==1">
-                                                                        <h6 t-esc="size['2']"/>
+                                                                        <h6 t-esc="size['2']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_2"
                                                                               t-value="(total_2 + size['2'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="three==1">
-                                                                        <h6 t-esc="size['3']"/>
+                                                                        <h6 t-esc="size['3']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_3"
                                                                               t-value="(total_3 + size['3'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="four==1">
-                                                                        <h6 t-esc="size['4']"/>
+                                                                        <h6 t-esc="size['4']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_1"
                                                                               t-value="(total_1 + size['4'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="five==1">
-                                                                        <h6 t-esc="size['5']"/>
+                                                                        <h6 t-esc="size['5']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_5"
                                                                               t-value="(total_5 + size['5'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="six==1">
                                                                         <h6 t-esc="size['6']"/>
                                                                         <span t-set="total_6"
                                                                               t-value="(total_6 + size['6'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="sev==1">
-                                                                        <h6 t-esc="size['7']"/>
+                                                                        <h6 t-esc="size['7']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_7"
                                                                               t-value="(total_7 + size['36'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="eig==1">
-                                                                        <h6 t-esc="size['8']"/>
+                                                                        <h6 t-esc="size['8']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['7'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="nine==1">
-                                                                        <h6 t-esc="size['9']"/>
+                                                                        <h6 t-esc="size['9']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_9"
                                                                               t-value="(total_9 + size['9'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="ten==1">
-                                                                        <h6 t-esc="size['10']"/>
+                                                                        <h6 t-esc="size['10']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_10"
                                                                               t-value="(total_10 + size['10'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="ele==1">
-                                                                        <h6 t-esc="size['11']"/>
+                                                                        <h6 t-esc="size['11']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_11"
                                                                               t-value="(total_11 + size['11'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="twe==1">
-                                                                        <h6 t-esc="size['12']"/>
+                                                                        <h6 t-esc="size['12']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_12"
                                                                               t-value="(total_12 + size['12'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="t34==1">
-                                                                        <h6 t-esc="size['34']"/>
+                                                                        <h6 t-esc="size['34']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_34"
                                                                               t-value="(total_34 + size['34'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="t35==1">
-                                                                        <h6 t-esc="size['35']"/>
+                                                                        <h6 t-esc="size['35']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_35"
                                                                               t-value="(total_35 + size['35'])"
-                                                                              t-options='{"widget": "integer",}'/>
-
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
                                                                     </td>
                                                                     <td width="2%" t-if="t36==1">
-                                                                        <h6 t-esc="size['36']"/>
+                                                                        <h6 t-esc="size['36']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['36'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="t37==1">
-                                                                        <h6 t-esc="size['37']"/>
+                                                                        <h6 t-esc="size['37']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['37'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="t38==1">
-                                                                        <h6 t-esc="size['38']"/>
+                                                                        <h6 t-esc="size['38']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['38'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
 
                                                                     <td width="2%" t-if="t39==1">
-                                                                        <h6 t-esc="size['39']"/>
+                                                                        <h6 t-esc="size['39']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['39'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
 
                                                                     </td>
                                                                     <td width="2%" t-if="t40==1">
-                                                                        <h6 t-esc="size['40']"/>
+                                                                        <h6 t-esc="size['40']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['40'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
                                                                     </td>
                                                                     <td width="2%" t-if="t41==1">
-                                                                        <h6 t-esc="size['41']"/>
+                                                                        <h6 t-esc="size['41']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['41'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
                                                                     </td>
                                                                     <td width="2%" t-if="t42==1">
-                                                                        <h6 t-esc="size['42']"/>
+                                                                        <h6 t-esc="size['42']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['42'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
                                                                     </td>
                                                                     <td width="2%" t-if="t43==1">
-                                                                        <h6 t-esc="size['43']"/>
+                                                                        <h6 t-esc="size['43']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['43'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
                                                                     </td>
                                                                     <td width="2%" t-if="t44==1">
-                                                                        <h6 t-esc="size['44']"/>
+                                                                        <h6 t-esc="size['44']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['44'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
                                                                     </td>
                                                                     <td width="2%" t-if="t45==1">
-                                                                        <h6 t-esc="size['45']"/>
+                                                                        <h6 t-esc="size['45']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['45'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
                                                                     </td>
                                                                     <td width="3%" t-if="t46==1">
-                                                                        <h6 t-esc="size['46']"/>
+                                                                        <h6 t-esc="size['46']"
+                                                                            t-options='{"widget": "float", "precision": 0}'/>
                                                                         <span t-set="total_qty"
                                                                               t-value="(total_qty + size['46'])"
-                                                                              t-options='{"widget": "integer",}'/>
+                                                                              t-options='{"widget": "float", "precision": 0}'/>
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -553,7 +580,7 @@
                                                     <span style="padding-left: 10px;">No size set</span>
                                                 </t>
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 <t t-if="variant['color'] != '-'">
                                                     <span t-esc="total_qty"/>
                                                     <t t-set="total_values"
@@ -569,22 +596,22 @@
                                                        t-value="(variant['price_unit']* total_qty)"/>
                                                 </t>
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 12 Per Carton
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 <span t-esc="total_qty/12"
                                                       t-options='{"widget": "float", "precision": 2}'/>
                                             </td>
-                                            <td>
+                                            <td class="text-right">
                                                 <span t-esc="variant['retail_price']"
                                                       t-options='{"widget": "float", "precision": 2}'/>
                                             </td>
-                                            <td>
+                                            <td class="text-right">
                                                 <span t-esc="variant['price_unit']"
                                                       t-options='{"widget": "float", "precision": 2}'/>
                                             </td>
-                                            <td>
+                                            <td class="text-right">
                                                 <span t-esc="total_values"
                                                       t-options='{"widget": "float", "precision": 2}'/>
 
@@ -609,112 +636,137 @@
                                     <td style="border:1px solid white;">
 
                                     </td>
-                                    <td style="border:1px solid white;">
+                                    <td style="border:1px solid white; border-right:1px solid black;">
 
                                     </td>
 
                                     <td style="padding-left: 0px!important;">
                                         <table width="100%" class="data_table_inside"
-                                               style="border:1px solid white;background-color:lightgray;">
+                                               style="border:1px solid white; font-weight:bold;">
                                             <tr>
                                                 <td width="2%" t-if="one==1" style="border:1px solid white;">
-                                                    <span t-esc="total_1"/>
+                                                    <span t-esc="total_1"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
                                                 </td>
                                                 <td width="2%" t-if="two==1" style="border:1px solid white;">
-                                                    <span t-esc="total_2"/>
+                                                    <span t-esc="total_2"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
                                                 </td>
                                                 <td width="2%" t-if="three==1" style="border:1px solid white;">
-                                                    <span t-esc="total_3"/>
+                                                    <span t-esc="total_3"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="four==1" style="border:1px solid white;">
-                                                    <span t-esc="total_4"/>
+                                                    <span t-esc="total_4"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="five==1" style="border:1px solid white;">
-                                                    <span t-esc="total_5"/>
+                                                    <span t-esc="total_5"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="six==1" style="border:1px solid white;">
-                                                    <span t-esc="total_6"/>
+                                                    <span t-esc="total_6"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="sev==1" style="border:1px solid white;">
-                                                    <span t-esc="total_7"/>
+                                                    <span t-esc="total_7"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="eig==1" style="border:1px solid white;">
-                                                    <span t-esc="total_8"/>
+                                                    <span t-esc="total_8"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="nine==1" style="border:1px solid white;">
-                                                    <span t-esc="total_9"/>
+                                                    <span t-esc="total_9"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="ten==1" style="border:1px solid white;">
-                                                    <span t-esc="total_10"/>
+                                                    <span t-esc="total_10"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="ele==11" style="border:1px solid white;">
-                                                    <span t-esc="total_11"/>
+                                                    <span t-esc="total_11"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="twe==12" style="border:1px solid white;">
-                                                    <span t-esc="total_12"/>
+                                                    <span t-esc="total_12"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="t34==1" style="border:1px solid white;">
-                                                    <span t-esc="total_34"/>
+                                                    <span t-esc="total_34"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="t35==1" style="border:1px solid white;">
-                                                    <span t-esc="total_35"/>
+                                                    <span t-esc="total_35"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="t36==1" style="border:1px solid white;">
-                                                    <span t-esc="total_36"/>
+                                                    <span t-esc="total_36"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="t37==1" style="border:1px solid white;">
-                                                    <span t-esc="total_37"/>
+                                                    <span t-esc="total_37"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="t38==1" style="border:1px solid white;">
-                                                    <span t-esc="total_38"/>
+                                                    <span t-esc="total_38"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
 
                                                 <td width="2%" t-if="t39==1" style="border:1px solid white;">
-                                                    <span t-esc="total_39"/>
+                                                    <span t-esc="total_39"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
                                                 </td>
                                                 <td width="2%" t-if="t40==1" style="border:1px solid white;">
-                                                    <span t-esc="total_40"/>
+                                                    <span t-esc="total_40"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
 
                                                 </td>
                                                 <td width="2%" t-if="t41==1" style="border:1px solid white;">
-                                                    <span t-esc="total_41"/>
+                                                    <span t-esc="total_41"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="t42==1" style="border:1px solid white;">
-                                                    <span t-esc="total_42"/>
+                                                    <span t-esc="total_42"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="t43==1" style="border:1px solid white;">
-                                                    <span t-esc="total_43"/>
+                                                    <span t-esc="total_43"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="t44==1" style="border:1px solid white;">
-                                                    <span t-esc="total_44"/>
+                                                    <span t-esc="total_44"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="2%" t-if="t45==1"
                                                     style="border:1px solid white;border-left: 1px solid white;">
-                                                    <span t-esc="total_45"/>
+                                                    <span t-esc="total_45"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                                 <td width="3%" t-if="t46==1" style="border:1px solid white;">
-                                                    <span t-esc="total_46"/>
+                                                    <span t-esc="total_46"
+                                                          t-options='{"widget": "float", "precision": 0}'/>
 
                                                 </td>
                                             </tr>
@@ -730,10 +782,11 @@
                                     </td>
                                     <td style="border:1px solid white;">
                                     </td>
-                                    <td style="border:1px solid white;">
+                                    <td style="border: 1px solid white;border-right: 1px solid black;">
 
                                     </td>
-                                    <td style="border:1px solid white;border-bottom:1px solid black;background-color:lightgray;">
+                                    <td class="text-right"
+                                        style="border:1px solid black;font-weight:bold;">
                                         <span t-field="o.amount_untaxed"/>
                                     </td>
                                 </tr>
