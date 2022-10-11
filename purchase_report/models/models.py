@@ -6,7 +6,10 @@ from odoo import models
 class InvoiceInheritReport(models.AbstractModel):
     _name = 'report.purchase_report.purchase_report_id'
     _description = 'Product Quantity Color and size wise'
-
+    
+    def action_confirm(self):
+        res = super(InvoiceInheritReport, self).action_confirm()
+    
     def _get_report_values(self, docids, data=None):
         purchase_order = self.env['purchase.order'].browse((docids[0]))
         for rec in purchase_order:
