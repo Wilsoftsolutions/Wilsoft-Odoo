@@ -601,22 +601,22 @@
                                             </td>
                                             <td class="text-center">
                                                 <span t-esc="total_qty/12"
-                                                      t-options='{"widget": "float", "precision": 2}'/>
+                                                      t-options='{"widget": "float", "precision": 0}'/>
                                             </td>
                                             <td class="text-right">
                                                 <span t-esc="variant['retail_price']"
-                                                      t-options='{"widget": "float", "precision": 2}'/>
+                                                      t-options='{"widget": "float", "precision": 0}'/>
                                             </td>
                                             <td class="text-right">
                                                 <span t-esc="variant['price_unit']"
-                                                      t-options='{"widget": "float", "precision": 2}'/>
+                                                      t-options='{"widget": "float", "precision": 0}'/>
                                             </td>
                                             <td class="text-right">
                                                 <span t-esc="total_values"
-                                                      t-options='{"widget": "float", "precision": 2}'/>
+                                                      t-options='{"widget": "float", "precision": 0}'/>
 
                                                 <!--                                                <span t-esc="variant['line_subtotal']"-->
-                                                <!--                                                      t-options='{"widget": "float", "precision": 2}'/>-->
+                                                <!--                                                      t-options='{"widget": "float", "precision": 0}'/>-->
                                             </td>
                                         </tr>
 

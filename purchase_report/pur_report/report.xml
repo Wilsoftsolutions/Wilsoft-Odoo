@@ -21,7 +21,7 @@
         <report
                 id="purchase_report_id_custom"
                 model="purchase.order"
-                report_type="qweb-html"
+                report_type="qweb-pdf"
                 string="purchase report"
                 name="purchase_report.purchase_report_id"
                 file="purchase_report.purchase_report_id"
