@@ -10,6 +10,8 @@
     "version": "14.0.10",
     "depends": ["base", "web", "point_of_sale"],
     "application": True,
+    
+    
     "data": [
         'views/pos_config_settings.xml',
 #         'views/sh_pos_receipt_extend.xml',
