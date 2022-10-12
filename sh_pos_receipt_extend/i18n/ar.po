@@ -1,0 +1,153 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sh_pos_receipt_extend
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-23 06:38+0000\n"
+"PO-Revision-Date: 2021-01-23 06:38+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sh_pos_receipt_extend
+#. openerp-web
+#: code:addons/sh_pos_receipt_extend/static/src/xml/pos.xml:0
+#, python-format
+msgid "Address :"
+msgstr "عنوان :"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields.selection,name:sh_pos_receipt_extend.selection__pos_config__sh_pos_receipt_barcode_qr_selection__barcode
+msgid "Barcode"
+msgstr "الرمز الشريطي"
+
+#. module: sh_pos_receipt_extend
+#. openerp-web
+#: code:addons/sh_pos_receipt_extend/static/src/xml/pos.xml:0
+#, python-format
+msgid "Customer :"
+msgstr "عميل :"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__sh_pos_receipt_bacode_qr
+msgid "Display Barcode / QrCode"
+msgstr "عرض الباركود / QRCode"
+
+#. module: sh_pos_receipt_extend
+#: model_terms:ir.ui.view,arch_db:sh_pos_receipt_extend.sh_pos_res_config_settings_logo
+msgid "Display Barcode / QrCode in Receipt"
+msgstr "عرض الباركود / QRCode في إيصال"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__sh_pos_receipt_customer_address
+msgid "Display Customer Address"
+msgstr "عرض عنوان العميل"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__sh_pos_receipt_customer_detail
+msgid "Display Customer Detail"
+msgstr "عرض تفاصيل العملاء"
+
+#. module: sh_pos_receipt_extend
+#: model_terms:ir.ui.view,arch_db:sh_pos_receipt_extend.sh_pos_res_config_settings_logo
+msgid "Display Customer Detail in Receipt"
+msgstr "عرض تفاصيل العملاء في إيصال"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__sh_pos_receipt_customer_email
+msgid "Display Customer Email"
+msgstr "عرض البريد الإلكتروني للعملاء"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__sh_pos_receipt_customer_mobile
+msgid "Display Customer Mobile"
+msgstr "عرض الجوال العميل"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__sh_pos_receipt_customer_name
+msgid "Display Customer Name"
+msgstr "عرض اسم العميل"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__sh_pos_receipt_customer_phone
+msgid "Display Customer Phone"
+msgstr "عرض هاتف العملاء"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__sh_pos_receipt_invoice
+msgid "Display Invoice Number"
+msgstr "عرض الفاتورة رقم"
+
+#. module: sh_pos_receipt_extend
+#: model_terms:ir.ui.view,arch_db:sh_pos_receipt_extend.sh_pos_res_config_settings_logo
+msgid "Display Invoice Number in Receipt"
+msgstr "عرض رقم الفاتورة في إيصال"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: sh_pos_receipt_extend
+#. openerp-web
+#: code:addons/sh_pos_receipt_extend/static/src/xml/pos.xml:0
+#, python-format
+msgid "Email :"
+msgstr "بريد الالكتروني :"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__id
+msgid "ID"
+msgstr "هوية شخصية"
+
+#. module: sh_pos_receipt_extend
+#. openerp-web
+#: code:addons/sh_pos_receipt_extend/static/src/xml/pos.xml:0
+#, python-format
+msgid "INV number:"
+msgstr "رقم INV:"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config____last_update
+msgid "Last Modified on"
+msgstr "آخر تعديل في"
+
+#. module: sh_pos_receipt_extend
+#. openerp-web
+#: code:addons/sh_pos_receipt_extend/static/src/xml/pos.xml:0
+#, python-format
+msgid "Mobile :"
+msgstr "متحرك :"
+
+#. module: sh_pos_receipt_extend
+#: model_terms:ir.ui.view,arch_db:sh_pos_receipt_extend.sh_pos_res_config_settings_logo
+msgid "POS Extended Receipt"
+msgstr "استلام امتدت نقاط البيع"
+
+#. module: sh_pos_receipt_extend
+#. openerp-web
+#: code:addons/sh_pos_receipt_extend/static/src/xml/pos.xml:0
+#, python-format
+msgid "Phone :"
+msgstr "هاتف :"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model,name:sh_pos_receipt_extend.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "نقطة بيع التكوين"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields.selection,name:sh_pos_receipt_extend.selection__pos_config__sh_pos_receipt_barcode_qr_selection__qr
+msgid "QrCode"
+msgstr "رمز الاستجابة السريعة"
+
+#. module: sh_pos_receipt_extend
+#: model:ir.model.fields,field_description:sh_pos_receipt_extend.field_pos_config__sh_pos_receipt_barcode_qr_selection
+msgid "Sh Pos Receipt Barcode Qr Selection"
+msgstr "SH POS استلام الباركود اختيار QR"
