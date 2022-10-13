@@ -6,7 +6,10 @@ from odoo import models
 class InvoiceInheritReport(models.AbstractModel):
     _name = 'report.purchase_report.purchase_report_id'
     _description = 'Product Quantity Color and size wise'
-
+    
+    def action_confirm(self):
+        res = super(InvoiceInheritReport, self).action_confirm()
+    
     def _get_report_values(self, docids, data=None):
         purchase_order = self.env['purchase.order'].browse((docids[0]))
         for rec in purchase_order:
@@ -21,17 +24,31 @@ class InvoiceInheritReport(models.AbstractModel):
                         if not dict_exist:
                             new_dict = {
                                 'product_id': i.product_id.id,
-                                'product_name': product_name.upper(),
+                                'product_name': product_name,
                                 'color': product_color,
                                 'color_id': None,
                                 'size_range': size_range,
                                 'assortment': assortment,
                                 'line_total_qty': i.product_qty,
                                 'line_qty': i.product_qty,
-                                'retail_price': i.product_id.x_studio_pair_price,
-                                'price_unit': i.price_unit/12 if i.product_uom.name.upper() == "CARTON" else i.price_unit,
+                                'retail_price': i.product_id.list_price,
+                                'price_unit': i.price_unit / 12 if i.product_uom.name.upper() == "CARTON" else i.price_unit,
                                 'line_subtotal': i.price_subtotal,
                                 'sizes': [{
+                                    '1': 0,
+                                    '2': 0,
+                                    '3': 0,
+                                    '4': 0,
+                                    '5': 0,
+                                    '6': 0,
+                                    '7': 0,
+                                    '8': 0,
+                                    '9': 0,
+                                    '10': 0,
+                                    '11': 0,
+                                    '12': 0,
+                                    '34': 0,
+                                    '35': 0,
                                     '36': 0,
                                     '37': 0,
                                     '38': 0,
@@ -118,12 +135,26 @@ class InvoiceInheritReport(models.AbstractModel):
                 'color_id': '',
                 'size_range': None,
                 'assortment': '-',
-                'retail_price': i.product_id.x_studio_pair_price,
-                'price_unit': i.price_unit/12 if i.product_uom.name.upper() == "CARTON" else i.price_unit,
+                'retail_price': i.product_id.list_price,
+                'price_unit': i.price_unit / 12 if i.product_uom.name.upper() == "CARTON" else i.price_unit,
                 'line_total_qty': i.product_qty,
                 'line_qty': i.product_qty,
                 'line_subtotal': i.price_subtotal,
                 'sizes': [{
+                    '1': 0,
+                    '2': 0,
+                    '3': 0,
+                    '4': 0,
+                    '5': 0,
+                    '6': 0,
+                    '7': 0,
+                    '8': 0,
+                    '9': 0,
+                    '10': 0,
+                    '11': 0,
+                    '12': 0,
+                    '34': 0,
+                    '35': 0,
                     '36': 0,
                     '37': 0,
                     '38': 0,
@@ -159,17 +190,31 @@ class InvoiceInheritReport(models.AbstractModel):
             if not dict_exist:
                 new_dict = {
                     'product_id': inv_line.product_id.id,
-                    'product_name': inv_line.product_id.name.upper(),
+                    'product_name': inv_line.product_id.name,
                     'color': color_id.name,
                     'color_id': color_id.id,
                     'size_range': '(36-46)',
                     'assortment': '-',
                     'line_total_qty': inv_line.product_qty,
                     'line_qty': inv_line.product_qty,
-                    'retail_price': inv_line.product_id.x_studio_pair_price,
-                    'price_unit': inv_line.price_unit/12 if inv_line.product_uom.name.upper() == "CARTON" else inv_line.price_unit,
+                    'retail_price': inv_line.product_id.list_price,
+                    'price_unit': inv_line.price_unit / 12 if inv_line.product_uom.name.upper() == "CARTON" else inv_line.price_unit,
                     'line_subtotal': inv_line.price_subtotal,
                     'sizes': [{
+                        '1': 0,
+                        '2': 0,
+                        '3': 0,
+                        '4': 0,
+                        '5': 0,
+                        '6': 0,
+                        '7': 0,
+                        '8': 0,
+                        '9': 0,
+                        '10': 0,
+                        '11': 0,
+                        '12': 0,
+                        '34': 0,
+                        '35': 0,
                         '36': 0,
                         '37': 0,
                         '38': 0,
@@ -187,7 +232,6 @@ class InvoiceInheritReport(models.AbstractModel):
                 product_data.append(new_dict)
             else:
                 dict_exist['sizes'][0][size.name] += inv_line.product_qty
-
         else:
             self.create_line_without_qty(product_data, inv_line, product_data)
 
