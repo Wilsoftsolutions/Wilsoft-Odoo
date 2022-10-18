@@ -265,9 +265,6 @@ class AccountTaxPayment(models.Model):
     amount = fields.Float(string='Amount')
     
     
-    
-    
-    
     @api.onchange('invoice_id')
     def onchange_invoice(self):
         for line in self:
