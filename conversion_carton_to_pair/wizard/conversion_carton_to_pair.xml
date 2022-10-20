@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+        <record id="conversion_carton_to_pair_wizard_form_view" model="ir.ui.view">
+            <field name="model">conversion.carton.pair</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="source_id" />
+                                <field name="product_id"/>
+                                <field name="picking_type_id"/>
+                            </group>
+                            <group>
+                                <field name="location_id" />
+                                <field name="quantity"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button name="convert_carton_to_pair" type="object" string="Conversion"/>
+                            <button string="Cancel" type="cancel" special="cancel"/>
+                        </footer>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+        <record id="conversion_carton_to_pair_wizard_action_id" model="ir.actions.act_window">
+            <field name="name">Conversion</field>
+            <field name="res_model">conversion.carton.pair</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <menuitem id="conversion_carton_to_pair_menu_item" name="Conversion" parent="stock.menu_stock_root"
+                  action="conversion_carton_to_pair_wizard_action_id" sequence="10"/>
+    </data>
+</odoo>
