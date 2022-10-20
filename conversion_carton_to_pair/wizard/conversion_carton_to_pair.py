@@ -26,7 +26,7 @@ class ConversionCartonToPair(models.TransientModel):
             out_move_lines.append((0, 0, {
                 'product_id': i.sh_product_id.id,
                 'product_uom': i.sh_uom.id,
-                'product_uom_qty': i.sh_qty,
+                'product_uom_qty': i.sh_qty * self.quantity,
                 'name': i.sh_product_id.name,
                 'company_id': self.company_id.id,
                 'location_id': self.location_id.id,
