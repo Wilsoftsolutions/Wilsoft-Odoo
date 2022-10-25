@@ -26,8 +26,17 @@ class InheritStockPicking(models.Model):
                                 'discount': rec.discount
                             })]
                         })
-                    else:
-                        return res
+                cr_note.action_post()
+                related_invoice = self.env['account.move'].search([('invoice_origin', '=', cr_note.invoice_origin)])
+                only_invoices = related_invoice.filtered(
+                    lambda invoice: invoice.name.split('/')[0].upper() != "RINV" and invoice.payment_state in [
+                        'not_paid', 'partial'])
+                only_invoices = only_invoices[0] if only_invoices else only_invoices
+                move_lines = cr_note.line_ids.filtered(
+                    lambda line: line.account_internal_type in ('receivable', 'payable') and not line.reconciled)
+                for line in move_lines:
+                    only_invoices.js_assign_outstanding_line(line.id)
+                return res
             else:
                 return res
         return res
