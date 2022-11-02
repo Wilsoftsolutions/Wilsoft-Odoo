@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!--  Multi Action To send Failed FBR Request -->
+    <record id="post_data_to_fbr_action" model="ir.actions.server">
+        <field name="name">Post Data to FBR</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="point_of_sale.model_pos_order" />
+        <field name="binding_model_id" ref="point_of_sale.model_pos_order" />
+        <field name="code">
+            records.post_data_to_fbr_action()
+        </field>
+    </record>
+
+    <!--  Cron To send Failed FBR Request -->
+    <record id="post_data_to_fbr_cron" model="ir.cron">
+        <field name="name">Post Data to FBR Cron</field>
+        <field name="active" eval="True" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False" />
+        <field name="model_id" ref="point_of_sale.model_pos_order" />
+        <field name="code">model.post_data_to_fbr_cron()</field>
+        <field name="state">code</field>
+    </record>
+
+   <record id="sh_demo_product_for_service_fees" model ="product.product">
+		<field name="name">Service Fees</field>
+		<field name="type">service</field>
+		<field name="is_service_fee">True</field>
+		<field name="pct_code" >910852</field>
+	</record>
+
+	<record id="sh_service_cost_acc" model="account.account">
+		<field name="code">444444</field>
+		<field name="name">FBR Service Cost</field>
+		<field name="user_type_id" ref="account.data_account_type_expenses" />
+	</record>
+</odoo>

@@ -1,0 +1,127 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sh_pos_fbr_connector
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 14.1alpha1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-10-19 12:22+0000\n"
+"PO-Revision-Date: 2020-10-19 12:22+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sh_pos_fbr_connector
+#: model_terms:ir.ui.view,arch_db:sh_pos_fbr_connector.pos_config_form_view_inherit
+msgid "Add header Authorization for FBR here"
+msgstr "أضف إذن رأس FBR هنا"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_config__display_name
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_order__display_name
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_product_template__display_name
+msgid "Display Name"
+msgstr "اسم العرض"
+
+#. module: sh_pos_fbr_connector
+#: model_terms:ir.ui.view,arch_db:sh_pos_fbr_connector.pos_order_inherit_form_view
+msgid "FBR"
+msgstr "FBR"
+
+#. module: sh_pos_fbr_connector
+#: model_terms:ir.ui.view,arch_db:sh_pos_fbr_connector.pos_config_form_view_inherit
+msgid "FBR Configuration"
+msgstr "تكوين FBR"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_config__fbr_authorization
+msgid "FBR Header Authorization"
+msgstr "ترخيص رأس FBR"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_order__fbr_respone
+msgid "FBR Response"
+msgstr "استجابة FBR"
+
+#. module: sh_pos_fbr_connector
+#: model_terms:ir.ui.view,arch_db:sh_pos_fbr_connector.view_pos_order_filter_inherit
+msgid "Failed FBR Request"
+msgstr "فشل طلب FBR"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_config__id
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_order__id
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_product_template__id
+msgid "ID"
+msgstr "هوية شخصية"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_order__invoice_number
+msgid "Invoice Number"
+msgstr "رقم الفاتورة"
+
+#. module: sh_pos_fbr_connector
+#. openerp-web
+#: code:addons/sh_pos_fbr_connector/static/src/xml/pos.xml:0
+#, python-format
+msgid "Invoice Number:"
+msgstr "رقم الفاتورة:"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_config____last_update
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_order____last_update
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_product_template____last_update
+msgid "Last Modified on"
+msgstr "تاريخ آخر تعديل"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_product_product__pct_code
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_product_template__pct_code
+msgid "PCT Code"
+msgstr "كود معاهدة التعاون بشأن البراءات"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_config__pos_id
+msgid "POSID"
+msgstr "نقطة البيع"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model,name:sh_pos_fbr_connector.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "تكوين نقطة البيع"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model,name:sh_pos_fbr_connector.model_pos_order
+msgid "Point of Sale Orders"
+msgstr "أوامر نقاط البيع"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_order__post_data_fbr
+msgid "Post Data Successful ?"
+msgstr "تم إرسال البيانات بنجاح؟"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.actions.server,name:sh_pos_fbr_connector.post_data_to_fbr_action
+msgid "Post Data to FBR"
+msgstr "إرسال البيانات إلى FBR"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.actions.server,name:sh_pos_fbr_connector.post_data_to_fbr_cron_ir_actions_server
+#: model:ir.cron,cron_name:sh_pos_fbr_connector.post_data_to_fbr_cron
+#: model:ir.cron,name:sh_pos_fbr_connector.post_data_to_fbr_cron
+msgid "Post Data to FBR Cron"
+msgstr "انشر البيانات إلى FBR Cron"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model,name:sh_pos_fbr_connector.model_product_template
+msgid "Product Template"
+msgstr "نموذج المنتج"
+
+#. module: sh_pos_fbr_connector
+#: model:ir.model.fields,field_description:sh_pos_fbr_connector.field_pos_order__pos_reference
+msgid "Receipt Ref"
+msgstr "مرجع الاستلام"

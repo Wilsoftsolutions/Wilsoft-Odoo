@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="FbrOrderReceipt" owl="1">
+        <div class="pos-receipt sh_pos_fbr_receipt">
+            <t t-if="env.pos.get_order().getOrderReceiptEnv().receipt.company.logo">
+                <div class="sh_receipt_company_logo">
+                    <img class="pos-receipt-logo" t-att-src="env.pos.get_order().getOrderReceiptEnv().receipt.company.logo" alt="Logo" />
+                </div>
+            </t>
+            <div class="pos-receipt-contact sh_receipt_company_address">
+                <t t-if="env.pos.get_order().getOrderReceiptEnv().receipt.company.contact_address">
+                    <div>
+                        <t t-esc="env.pos.get_order().getOrderReceiptEnv().receipt.company.contact_address" />
+                    </div>
+                </t>
+                <t t-if="env.pos.get_order().getOrderReceiptEnv().receipt.company.phone">
+                    <div>Tel:<t t-esc="env.pos.get_order().getOrderReceiptEnv().receipt.company.phone" />
+                    </div>
+                </t>
+                <t t-if="env.pos.get_order().getOrderReceiptEnv().receipt.company.vat">
+                    <!-- <t t-esc="env.pos.get_order().getOrderReceiptEnv().receipt.company.vat_label" /> -->
+                    <div>NTN :<t t-esc="receipt.company.vat" />
+                    </div>
+                </t>
+                <t t-if="env.pos.get_order().getOrderReceiptEnv().receipt.company.email">
+                    <div>
+                        <t t-esc="env.pos.get_order().getOrderReceiptEnv().receipt.company.email" />
+                    </div>
+                </t>
+                <t t-if="env.pos.get_order().getOrderReceiptEnv().receipt.company.website">
+                    <div>
+                        <t t-esc="env.pos.get_order().getOrderReceiptEnv().receipt.company.website" />
+                    </div>
+                </t>
+                <t t-if="env.pos.company.strn_or_ntn">
+                    <div>STRN :<t t-esc="env.pos.company.strn_or_ntn" />
+                    </div>
+                </t>
+                <t t-if="env.pos.get_order().getOrderReceiptEnv().receipt.company.company_registry">
+                    <div>Company Registry :<t t-esc="env.pos.get_order().getOrderReceiptEnv().receipt.company.company_registry" />
+                    </div>
+                </t>
+            </div>
+            <div class="receipt_other_info">
+                <div class="receipt_pos_no">POS No : <t t-esc="env.pos.config.pos_id"></t>
+                </div>
+                <div class="receipt_pos_no">
+	           		Receipt Ref : <t t-esc="env.pos.get_order().name"/>
+                </div>
+                <div class="receipt_pos_no">
+
+                    <t t-if="env.pos.get_order().invoice_number">
+                        <t t-esc="env.pos.get_order().invoice_number" />
+                    </t>
+                </div>
+                <div class="receipt_date">
+                    <div>
+                        <t t-esc="receipt.date.localestring" />
+                    </div>
+                </div>
+            </div>
+            <t t-if="env.pos.config.is_header_or_footer and env.pos.config.receipt_header">
+                <div class="sh_receipt_pos_header">
+                    <t t-esc="env.pos.config.receipt_header" />
+                </div>
+            </t>
+            <div class="mode_div">
+                <div class="receipt_mode">
+                    <div class="sh_cashier">User : <t t-esc="env.pos.get_cashier().name" />
+                    </div>
+                    Mode Of Payment:
+                    <t t-if="env.pos.get_order() and env.pos.get_order() and env.pos.get_order().get_paymentlines() and env.pos.get_order().get_paymentlines().length > 0">
+                        <t t-if="env.pos.get_order().get_paymentlines()[0] and env.pos.get_order().get_paymentlines()[0].payment_method and env.pos.get_order().get_paymentlines()[0].payment_method.payment_mode">
+                            <t t-if="env.pos.get_order().get_paymentlines()[0].payment_method.payment_mode == '1'">
+                                Cash
+                            </t>
+                            <t t-elif="env.pos.get_order().get_paymentlines()[0].payment_method.payment_mode == '2'">
+                                Card
+                            </t>
+                            <t t-elif="env.pos.get_order().get_paymentlines()[0].payment_method.payment_mode == '3'">
+                                Gift Voucher
+                            </t>
+                            <t t-elif="env.pos.get_order().get_paymentlines()[0].payment_method.payment_mode == '4'">
+                                Loyalty Card
+                            </t>
+                            <t t-elif="env.pos.get_order().get_paymentlines()[0].payment_method.payment_mode == '5'">
+                                Mixed
+                            </t>
+                            <t t-elif="env.pos.get_order().get_paymentlines()[0].payment_method.payment_mode == '6'">
+                                Cheque
+                            </t>
+                        </t>
+                    </t>
+                </div>
+                <div class="receipt_customer_name">
+                    <t t-if="env.pos.get_order().get_client()">
+                   Customer :     <t t-esc="env.pos.get_order() and env.pos.get_order().get_client() and env.pos.get_order().get_client().name" />
+                    <t t-if="env.pos.get_order().get_client() and env.pos.get_order().get_client().cnic"> /                        <t t-esc="env.pos.get_order().get_client().cnic" />
+                    </t>
+                    <t t-if="env.pos.get_order().get_client() and env.pos.get_order().get_client().ntn"> /                        <t t-esc="env.pos.get_order().get_client().ntn" />
+                    </t>
+                </t>
+            </div>
+        </div>
+        <t t-set="sr_no" t-value="1"></t>
+        <t t-set="subtotal" t-value="0.00"></t>
+        <div class="receipt_line_table_div">
+            <table class="receipt_line_table">
+                <thead>
+                    <th style="width: 6%;">#</th>
+                    <th style="width: 25%;">Description</th>
+                    <th style="width: 18%;">Price</th>
+                    <th style="width: 15%;">GST Rate</th>
+                    <th style="width: 10%;">Qty</th>
+                    <th style="width: 10%;">GST</th>
+                    <th style="width: 16%;">Total</th>
+                </thead>
+                <tbody>
+                    <t t-foreach="env.pos.get_order().export_for_printing().orderlines" t-as="line">
+                        <tr>
+                            <td>
+                                <t t-esc="line.sr_no"></t>
+                            </td>
+                            <td>
+                                <t t-esc="line.product_name" />
+                            </td>
+                            <td>
+                                <t t-esc="env.pos.format_currency(line.price)" />
+                            </td>
+                            <td>
+                                <t t-if="line.taxes and line.taxes.length &gt; 0">
+                                    <t t-foreach="line.taxes" t-as="each_tax">
+                                        <t t-esc="each_tax.name" />
+                                        <br />
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                        -
+                                </t>
+                            </td>
+                            <td>
+                                <t t-esc="line.quantity" />
+                            </td>
+                            <td>
+                                <t t-esc="env.pos.format_currency(line.tax)" />
+                            </td>
+                            <td>
+                                <t t-esc="env.pos.format_currency(line.price_display)" />
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+        <div class="receipt_subtotal">
+            <div class="receipt_subtotal_table">
+                <div class="sh_label_value">
+                    <label>Subtotal : </label>
+                    <span>
+                        <t t-esc="env.pos.format_currency(env.pos.get_order().export_for_printing().subtotal)" />
+                    </span>
+                </div>
+                <div class="sh_label_value">
+                    <label>Sales Tax :</label>
+                    <span>
+                        <t t-esc="env.pos.format_currency(env.pos.get_order().export_for_printing().total_tax)" />
+                    </span>
+                </div>
+                <div class="sh_label_value">
+                    <label>Discount :</label>
+                    <span>
+                        <t t-esc="env.pos.format_currency(env.pos.get_order().export_for_printing().total_discount)" />
+                    </span>
+                </div>
+                <t t-if="env.pos.config.sh_enable_fbr_connector_feature and env.pos.config.sh_enable_include_service and env.pos.config.sh_service_fee">
+                    <div class="sh_label_value">
+                        <label>POS Service Fee :</label>
+                        <span>
+                            <t t-esc="env.pos.format_currency(env.pos.config.sh_service_fee)"/>
+                        </span>
+                    </div>
+                </t>
+                <div class="sh_label_value">
+                    <label>Payable : </label>
+                    <span>
+                        <t t-esc="env.pos.format_currency(env.pos.get_order().export_for_printing().total_with_tax)"/>
+                    </span>
+                </div>
+
+                <div class="sh_label_value">
+                    <label>Received :</label>
+                    <span>
+                        <t t-esc="env.pos.format_currency(env.pos.get_order().export_for_printing().total_paid)" />
+                    </span>
+                </div>
+                <div class="sh_label_value">
+                    <label>Change :</label>
+                    <span>
+                        <t t-esc="env.pos.format_currency(env.pos.get_order().export_for_printing().total_change)" />
+                    </span>
+                </div>
+            </div>
+        </div>
+        <t t-if="env.pos.config.is_header_or_footer and env.pos.config.receipt_footer">
+            <div class="sh_receipt_pos_footer">
+                <t t-esc="env.pos.config.receipt_footer" />
+            </div>
+        </t>
+        <div class="receipt_fbr_invoice">
+            <div class="receipt_fbr_invoice_label">
+                    FBR Invoice #
+            </div>
+            <div class="receipt_fbr_invoice_data">
+                <t t-esc="env.pos.get_order().get_invoice_number() || env.pos.get_order().fbr_invoice_number" />
+            </div>
+        </div>
+        <div class="receipt_fbr_logo_qr">
+            <div class="receipt_fbr_logo">
+                <t t-if="env.pos.config.sh_receipt_logo">
+                    <img t-att-src="env.pos.get_order().get_receipt_logo(env.pos.config.id)" alt="Logo" class="pos-receipt-logo" />
+                </t>
+            </div>
+            <div class="receipt_fbr_qr">
+                <img t-att-src="'/report/barcode/QR/'+env.pos.get_order().get_invoice_number()+'?width=100'" class="qr_class" />
+            </div>
+        </div>
+        <div class="sh_bottom_note">
+            <span>Verify this invoice through FBR TaxAsaan MobileApp or SMS at 9966 and win exciting prizes in draw</span>
+        </div>
+    </div>
+</t>
+
+<t t-extend="ReceiptScreen" t-inherit="point_of_sale.ReceiptScreen" t-inherit-mode="extension">
+    <xpath expr="//div[hasclass('pos-receipt-container')]" position="replace">
+        <t t-if="env.pos.config.sh_enable_fbr_connector_feature">
+            <div class="pos-receipt-container">
+                <FbrOrderReceipt order="currentOrder" t-ref="order-receipt" />
+            </div>
+        </t>
+        <t t-else="">
+            <div class="pos-receipt-container">
+                <OrderReceipt order="currentOrder" t-ref="order-receipt" />
+            </div>
+        </t>
+    </xpath>
+</t>
+</templates>

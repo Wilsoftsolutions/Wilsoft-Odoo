@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	    <record id="sh_fbr_log_form_view" model="ir.ui.view">
+        <field name="name">sh.fbr.log.form</field>
+        <field name="model">sh.fbr.log</field>
+        <field name="arch" type="xml">
+            <form string="FBR Logs" create="0" edit="0">
+                <sheet>
+                    
+                    <group>
+                        <group>
+                           <field name="name" readonly="1"/>
+			                <field name="create_date" readonly="1"/>
+			                <field name="fbr_request" readonly="1"/>
+			                
+                        </group>
+                        <group>
+                            <field name="posted_succesfull" readonly="1"/>
+			                <field name="fbr_invoice_number" readonly="1"/>
+			                <field name="fbr_response" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <record id="sh_fbr_log_tree_view" model="ir.ui.view">
+        <field name="name">sh.fbr.log.tree</field>
+        <field name="model">sh.fbr.log</field>
+        <field name="arch" type="xml">
+            <tree create="0" edit="0">
+                <field name="name" />
+                <field name="create_date" />
+                <field name="fbr_request" />
+                <field name="posted_succesfull" />
+                <field name="fbr_invoice_number" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="sh_fbr_log_views_action" model="ir.actions.act_window">
+        <field name="name">FBR Log</field>
+        <field name="res_model">sh.fbr.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="sh_fbr_log_views_menu" name="FBR Logs" parent="point_of_sale.menu_point_config_product"
+     sequence="100" action="sh_fbr_log_views_action" groups="point_of_sale.group_pos_manager" />
+	
+	
+	
+    <record model="ir.ui.view" id="pos_config_form_view_inherit">
+        <field name="name">pos.config.form.extended.view</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[4]" position="after">
+                <div class="row mt16 o_settings_container" id="sh_pos_fbr_connetion">
+                    <div class="col-xs-6 col-md-6 o_setting_box">
+                        <h2 name="order">FBR Configuration</h2>
+                        <div class="o_setting_left_pane">
+                            <field name="sh_enable_fbr_connector_feature" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="sh_enable_fbr_connector_feature" />
+                            <div class="content-group" attrs="{'invisible': [('sh_enable_fbr_connector_feature','=',False)],'required': [('sh_enable_fbr_connector_feature','=',True)]}">
+                                <div class="mt16">
+                                    <label for="sh_fbr_authentication_type" />
+                                    <field name="sh_fbr_authentication_type" widget="radio" />
+                                    <br />
+                                    <label for="fbr_authorization" />
+                                    <div class="text-muted">
+                                        Add header Authorization for FBR here
+                                    </div>
+                                    <field name="fbr_authorization" attrs="{'required': [('sh_enable_fbr_connector_feature','=',True)]}" />
+                                    <br />
+                                    <label for="pos_id" />
+                                    <div class="text-muted"></div>
+                                    <field name="pos_id" attrs="{'required': [('sh_enable_fbr_connector_feature','=',True)]}" />
+                                    <br />
+                                    <label for="sh_receipt_logo" />
+                                    <div class="text-muted"></div>
+                                    <field name="sh_receipt_logo" widget="image" attrs="{'required': [('sh_enable_fbr_connector_feature','=',True)]}" />
+                                </div>
+                                <div class="mt16"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-md-6 o_setting_box" attrs="{'invisible': [('sh_enable_fbr_connector_feature','=',False)]}">
+                        
+                        <div class="o_setting_left_pane">
+                            <field name="sh_enable_include_service" />
+                        </div>
+                        <div class="o_setting_right_pane"><label for="sh_enable_include_service" /><br /></div>
+                        <div class="o_setting_right_pane" attrs="{'invisible': [('sh_enable_include_service','=',False)]}">
+                            <label for="sh_service_fee" /><br />
+                            <field name="sh_service_fee"/>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="pos_order_inherit_form_view" model="ir.ui.view">
+        <field name="name">pos.order.inherit.form.view</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//notebook/page[@name='extra']" position="after">
+                <page string="FBR">
+                    <group>
+                        <field name="post_data_fbr" readonly="1" />
+                        <field name="invoice_number" readonly="1" />
+                        <field name="sh_include_service_fee" invisible="1"/>
+						<field name="fbr_request" readonly="1"/>
+						<field name="fbr_respone" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+         
+        </field>
+    </record>
+    <record id="view_pos_order_filter_inherit" model="ir.ui.view">
+        <field name="name">pos.order.list.select.inherit</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_filter" />
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="post_data_fbr" />
+            </field>
+            <xpath expr="//filter[@name='posted']" position="after">
+                <filter string="Failed FBR Request" name="fbr" domain="[('post_data_fbr','=',False)]" />
+            </xpath>
+        </field>
+    </record>
+    <record id="product_inherit_form_view" model="ir.ui.view">
+        <field name="name">product.inherit.form.view</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="arch" type="xml">
+            <field name="default_code" position="after">
+                <field name="pct_code" />
+            </field>
+        </field>
+    </record>
+    <record id="product_template_inherit_form_view" model="ir.ui.view">
+        <field name="name">product.temaplte.inherit.form.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <field name="default_code" position="after">
+                <field name="pct_code" />
+            </field>
+        </field>
+    </record>
+
+    <record id="res_company_inherit_view_form" model="ir.ui.view">
+        <field name="name">res.company.inherit.view.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form" />
+        <field name="arch" type="xml">
+            <field name="currency_id" position="before">
+                <field name="strn_or_ntn" />
+            </field>
+        </field>
+    </record>
+
+    <record id="pos_payment_method_inherit_form_view" model="ir.ui.view">
+        <field name="name">pos.payment.method.inherit.form.view</field>
+        <field name="model">pos.payment.method</field>
+        <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="payment_mode" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_partner_inherit_view_form" model="ir.ui.view">
+        <field name="name">res.partner.inherit.view.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="point_of_sale.view_partner_property_form" />
+        <field name="arch" type="xml">
+            <field name="vat" position="after">
+                <field name="cnic" />
+                <field name="ntn" />
+            </field>
+        </field>
+    </record>
+
+    <record id="sh_pos_Sesion_inherit_form_view" model="ir.ui.view">
+        <field name="name">sh.fbr.pos.session.form.view.inherit.</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form" />
+        <field name="arch" type="xml">
+            <field name="start_at" position="before">
+                <field name="sh_service_fee_journal" />
+            </field>
+        </field>
+    </record>
+
+
+</odoo>

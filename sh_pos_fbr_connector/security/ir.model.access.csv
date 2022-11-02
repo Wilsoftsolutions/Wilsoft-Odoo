@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+sh_pos_fbr_connector.access_sh_fbr_log,access_sh_fbr_log,sh_pos_fbr_connector.model_sh_fbr_log,base.group_user,1,1,1,1

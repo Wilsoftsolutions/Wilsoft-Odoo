@@ -1,0 +1,101 @@
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .sh_receipt_company_logo {
+    margin-bottom: 15px;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .sh_receipt_company_address {
+    color: #212121;
+}
+
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_other_info {
+    color: #212121;
+    text-align: center;
+    margin-top: 6px;
+    font-size: 12px;
+    line-height: 13px;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_line_table_div {
+    margin-top: 10px;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_line_table_div .receipt_line_table {
+    color: #212121;
+    font-size: 12px;
+    width: 100%;
+    table-layout: fixed;
+    text-align: center;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_line_table_div .receipt_line_table thead {
+    padding-bottom: 10px;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_line_table_div .receipt_line_table thead th,
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_line_table_div .receipt_line_table td {
+    padding: 3px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_line_table_div .receipt_line_table thead th {
+    padding-bottom: 8px;
+}
+
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_fbr_logo_qr {
+    display: flex;
+    align-items: center;
+    margin: 15px 0px;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_fbr_logo_qr .receipt_fbr_qr img {
+    width: 45%;
+}
+
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .mode_div {
+    margin-top: 8px;
+    color: #212121;
+    font-size: 12px;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_subtotal .receipt_subtotal_table {
+    text-align: right;
+    font-size: 12px;
+    color: #212121;
+    line-height: 16px;
+    margin: 6px 0px;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_fbr_invoice {
+    text-align: center;
+    margin: 15px 0px 22px 0px;
+    color: #212121;
+    font-size: 14px;
+    font-weight: bold;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .sh_bottom_note {
+    text-align: center;
+    font-size: 12px;
+    color: #212121;
+}
+
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_other_info .receipt_pos_no {
+    margin-bottom: 4px;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .mode_div .receipt_mode .sh_cashier {
+    padding-bottom: 6px;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_fbr_logo {
+    width: 50%;
+    text-align: center;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_fbr_logo_qr .receipt_fbr_qr {
+    width: 50%;
+    text-align: center;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .receipt_fbr_logo_qr .receipt_fbr_logo img {
+    width: 50%;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .sh_receipt_pos_header,.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .sh_receipt_pos_footer{
+	border-top: 1px solid #b7b7b7;
+    border-bottom: 1px solid #b7b7b7;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 3px 0px;
+    text-align: center;
+    word-break: break-word;
+}
+.pos .receipt-screen.screen .pos-receipt-container .sh_pos_fbr_receipt .sh_receipt_pos_footer{
+    margin-bottom: 10px;
+}
