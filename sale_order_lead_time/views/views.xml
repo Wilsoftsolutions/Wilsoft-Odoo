@@ -1,0 +1,13 @@
+<odoo>
+  <data>
+       <report
+                id="sale_order_lead_time_report_xlsx_id"
+                model="report.sale.order.lead.xlsx"
+                string="Sale Order Lead Xlsx"
+                report_type="xlsx"
+                name="sale_order_lead_time.sale_order_lead_time_id"
+                file="sale_order_lead_time.sale_order_lead_time_id"
+                attachment_use="False"
+        />
+  </data>
+</odoo>
