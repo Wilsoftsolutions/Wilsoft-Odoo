@@ -31,7 +31,7 @@ class InvoiceInheritReport(models.AbstractModel):
                                 'assortment': assortment,
                                 'line_total_qty': i.product_qty,
                                 'line_qty': i.product_qty,
-                                'retail_price': i.product_id.list_price,
+                                'retail_price': i.product_id.list_price / 12,
                                 'price_unit': i.price_unit / 12 if i.product_uom.name.upper() == "CARTON" else i.price_unit,
                                 'line_subtotal': i.price_subtotal,
                                 'sizes': [{
@@ -135,7 +135,7 @@ class InvoiceInheritReport(models.AbstractModel):
                 'color_id': '',
                 'size_range': None,
                 'assortment': '-',
-                'retail_price': i.product_id.list_price,
+                'retail_price': i.product_id.list_price / 12,
                 'price_unit': i.price_unit / 12 if i.product_uom.name.upper() == "CARTON" else i.price_unit,
                 'line_total_qty': i.product_qty,
                 'line_qty': i.product_qty,
