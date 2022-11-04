@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='payment_term_id']" position="after">
 <!--                    <field name="approve_date" readonly="True" attrs="{'invisible': [('state', '!=', 'done')]}"/>-->
-                    <field name="approve_date"/>
+                    <field name="approve_date" readonly="True"/>
                 </xpath>
             </field>
          </record>

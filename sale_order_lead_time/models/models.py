@@ -7,8 +7,7 @@ class SaleOderModelInherit(models.Model):
 
     approve_date = fields.Date('Approval Date')
 
-    # def action_confirm(self):
-    #     self.approve_date = datetime.now().date()
-    #     res = super(SaleOderModelInherit, self).action_confirm()
-    #
-    #     return res
+    def action_confirm(self):
+        self.approve_date = datetime.now().date()
+        res = super(SaleOderModelInherit, self).action_confirm()
+        return res

@@ -36,7 +36,7 @@ class PartnerXlsx(models.AbstractModel):
             domain.append(('date_order', '>=', data['data']['date_from']))
         if data['data']['date_to']:
             domain.append(('date_order', '<=', data['data']['date_to']))
-        domain.append(('state', '=', 'done'))
+        domain.append(('state', 'in', ['sale', 'done']))
         sales = self.env['sale.order'].sudo().search(domain)
 
         sheet = workbook.add_worksheet('Sale Order Lead Time')
@@ -107,7 +107,7 @@ class PartnerXlsx(models.AbstractModel):
                 'order_date': str(rec.create_date.date()),
                 'approval_date': str(rec.approve_date) if rec.approve_date else '-',
                 'approval_days': order_approve_days if order_approve_days else 0,
-                'delivery_date': delivery.scheduled_date ,
+                'delivery_date': str(delivery.date_done.date()) if delivery.date_done else '-',
                 'invoice_date': str(invoice.invoice_date) if invoice.invoice_date else '-',
                 'delivery_approve_days': delivery_approve_days,
                 'invoice_approve_days': invoice_approve_days,
@@ -120,8 +120,8 @@ class PartnerXlsx(models.AbstractModel):
             sheet.write(row, 2, line['location'], title2)
             sheet.write(row, 3, str(line['order_date']) if str(line['order_date']) else '-', title2)
             sheet.write(row, 4, str(line['approval_date']) if str(line['approval_date']) else '-', title2)
-            sheet.write(row, 5, line['approval_days'], title2)
+            sheet.write(row, 5, abs(line['approval_days']), title2)
             sheet.write(row, 6, str(line['delivery_date']) if str(line['delivery_date']) else '-', title2)
-            sheet.write(row, 7, line['delivery_approve_days'], title2)
+            sheet.write(row, 7, abs(line['delivery_approve_days']), title2)
             sheet.write(row, 8, str(line['invoice_date']) if str(line['invoice_date']) else '-', title2)
-            sheet.write(row, 9, line['invoice_approve_days'], title2)
+            sheet.write(row, 9, abs(line['invoice_approve_days']), title2)
