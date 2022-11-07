@@ -26,9 +26,15 @@ class AccountPayment(models.Model):
     def _compute_tax_amount(self):
         for line in self:
             total_amount = 0
+            preceding_tax = 0
+            count_prece_tax = 0
             for tax_line in line.tax_line_ids:
+                count_prece_tax += 1
+                if count_prece_tax==1:
+                    preceding_tax += tax_line.tax_id.amount
                 total_amount += tax_line.amount
-            line.total_wht_tax_amount = total_amount    
+            line.total_wht_tax_amount = total_amount 
+            line.wht_percentage = preceding_tax
                 
           
     
