@@ -3,6 +3,7 @@ from lxml import etree
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
+import json
 
 class AccountPayment(models.Model):
     _inherit = 'account.payment'
@@ -259,10 +260,18 @@ class AccountTaxPayment(models.Model):
     
     tax_id = fields.Many2one('account.tax', string='Tax', required=True )
     payment_id = fields.Many2one('account.payment', string='Payment')
+    partner_id = fields.Many2one('res.partner', string='Partner')
     include_tax_id = fields.Many2one('account.tax', string='Include Tax')
-    invoice_id = fields.Many2one('account.move',  string='Invoice')
+    invoice_id = fields.Many2one('account.move',  string='Invoice', domain="[('state','=','posted'),('payment_state','in',('not_paid','in_payment','partial')),('partner_id','=',partner_id)]")
     inv_amount = fields.Float(string='INV Amount')
     amount = fields.Float(string='Amount')
+    
+    @api.onchange('payment_id')
+    def onchange_payment(self):
+        for line in self:
+            if line.payment_id:
+                line.partner_id = line.payment_id.partner_id.id
+   
     
     
     

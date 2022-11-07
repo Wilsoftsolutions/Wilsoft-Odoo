@@ -20,11 +20,13 @@
     'version': '15.0.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','account_accountant'],
+    'depends': ['base','account','account_accountant','report_xlsx'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'wizard/wht_report_wizard.xml',
+        'report/wht_tax_report.xml',
         'views/account_payment_register_views.xml',
         'views/account_payment_views.xml',
     ],
