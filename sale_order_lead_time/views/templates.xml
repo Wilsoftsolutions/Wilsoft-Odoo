@@ -1,0 +1,15 @@
+<odoo>
+    <data>
+         <record id="sale_lead_team_form_id" model="ir.ui.view">
+            <field name="name">Sale Lead Team</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+<!--                    <field name="approve_date" readonly="True" attrs="{'invisible': [('state', '!=', 'done')]}"/>-->
+                    <field name="approve_date" readonly="True"/>
+                </xpath>
+            </field>
+         </record>
+    </data>
+</odoo>
