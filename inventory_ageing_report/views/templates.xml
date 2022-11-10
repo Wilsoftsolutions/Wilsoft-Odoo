@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="product_template_inherit" model="ir.ui.view">
+            <field name="name">Product Template Inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='barcode']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="season"/>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

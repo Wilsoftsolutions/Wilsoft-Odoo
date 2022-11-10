@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <record id="inventory_ageing_report__wizard_form_id" model="ir.ui.view">
+            <field name="model">reports.inventory.ageing.xlsx</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                            </group>
+                            <group>
+                                <field name="location_id" domain="[('usage', '=', 'internal')]"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button name="get_print_data" type="object" string="Print"/>
+                            <button string="Cancel" type="cancel" special="cancel"/>
+                        </footer>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+        <record id="inventory_ageing_lead_report_wizard_action_id" model="ir.actions.act_window">
+            <field name="name">Inventory ageing report XLSX</field>
+            <field name="res_model">reports.inventory.ageing.xlsx</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    <!--  Add Text Here  -->
+                </p>
+                <p>
+                    <!--  More details about what a user can do with this object will be OK  -->
+                </p>
+            </field>
+        </record>
+        <!--  This Menu Item must have a parent and an action  -->
+        <menuitem id="inventory_ageing_report_menu_item" parent="stock.menu_warehouse_report"
+                  action="inventory_ageing_lead_report_wizard_action_id" sequence="31"/>
+    </data>
+</odoo>

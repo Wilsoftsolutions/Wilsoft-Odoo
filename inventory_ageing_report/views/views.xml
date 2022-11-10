@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+        <odoo>
+            <data>
+                <report id="inventory_ageing_report_xlsx_id" model="reports.inventory.ageing.xlsx"
+                        string="Inventory Ageing Report XLSX" report_type="xlsx"
+                        name="inventory_ageing_report.inventory_ageing_id"
+                        file="inventory_ageing_report.inventory_ageing_id" attachment_use="False"/>
+            </data>
+        </odoo>
+    </data>
+</odoo>
