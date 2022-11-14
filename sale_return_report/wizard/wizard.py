@@ -81,6 +81,8 @@ class PartnerXlsx(models.AbstractModel):
 
         # putting data started from here
         for ret in credit_notes:
+            cancel_remark = self.env['stock.picking'].sudo().search([('origin', '=', ret.invoice_origin)], limit=1)
+
             for line in ret.invoice_line_ids:
                 line_tax = self.get_tax(line) if line.tax_ids else 0
                 product_attribute = line.product_id.product_template_attribute_value_ids
@@ -108,7 +110,7 @@ class PartnerXlsx(models.AbstractModel):
                 sheet.write(row, col + 17, line.product_uom_id.name, style0)
                 sheet.write(row, col + 18, line.product_id.categ_id.complete_name, style0)
                 sheet.write(row, col + 19, ret.name, style0)
-                sheet.write(row, col + 20, ret.name, style0)
+                sheet.write(row, col + 20, cancel_remark.x_studio_cancel_remarks if cancel_remark.x_studio_cancel_remarks else '-', style0)
                 sheet.merge_range(row, col + 21, row, col + 22, line.price_subtotal, num_fmt)
                 sheet.merge_range(row, col + 23, row, col + 24, line_tax + line.price_subtotal, num_fmt)
                 grand_total += line_tax + line.price_subtotal
