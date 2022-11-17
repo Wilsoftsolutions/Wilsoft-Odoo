@@ -51,7 +51,6 @@ class PartnerXlsx(models.AbstractModel):
         row = 0
         col = 0
         sheet.merge_range(row, col, row + 3, col + 24, 'Sale Return Report', title)
-
         row += 4
         # Header row
         sheet.set_column(0, 5, 18)
@@ -78,11 +77,9 @@ class PartnerXlsx(models.AbstractModel):
         row += 2
         count = 1
         grand_total = 0
-
         # putting data started from here
         for ret in credit_notes:
-            cancel_remark = self.env['stock.picking'].sudo().search([('origin', '=', ret.invoice_origin)], limit=1)
-
+            cancel_remark = self.env['stock.picking'].sudo().search([('group_id.name', '=', ret.invoice_origin),('picking_type_id.name','=','Returns')], limit=1)
             for line in ret.invoice_line_ids:
                 line_tax = self.get_tax(line) if line.tax_ids else 0
                 product_attribute = line.product_id.product_template_attribute_value_ids
