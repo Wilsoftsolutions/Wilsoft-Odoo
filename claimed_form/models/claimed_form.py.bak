@@ -23,7 +23,7 @@ class PlannedFormModel(models.Model):
         ('waiting_ware_house_approval', 'Waiting W/H Approval'),
         ('approved', 'Approved'),
         # ('reject', 'Rejected'),
-        ('cancelled', 'Rejected')
+        ('cancelled', 'Cancelled')
 
     ], default='draft')
     claimed_line_ids = fields.One2many("claimed.form.line", 'claimed_id')
