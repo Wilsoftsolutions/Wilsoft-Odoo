@@ -67,16 +67,11 @@ class PartnerXlsx(models.AbstractModel):
         sheet.write(1, 8, 'On Hand Stock', title1)
         sheet.write(1, 9, 'No. Of Days', title1)
         sheet.write(1, 10, 'UOM', title1)
-
         if data['data']['location_id']:
             domain = []
-            # if data['data']['date_from']:
-            #     domain.append(('date', '>=', data['data']['date_from']))
             if data['data']['location_id']:
                 domain.append(('location_id', '=', data['data']['location_id']))
-
             stock_ageing = self.env['stock.move.line'].sudo().search(domain)
-
             row = 1
             for i in stock_ageing:
                 if i.qty_done > 0:
@@ -95,17 +90,11 @@ class PartnerXlsx(models.AbstractModel):
                     sheet.write(row, 7, '-', title2)
                     sheet.write(row, 8, i.qty_done, title2)
                     sheet.write(row, 9, abs(no_days.days), title2)
-                    sheet.write(row, 10, i.product_id.uom_id.name, title2)
+                    sheet.write(row, 10, i.product_uom_id.name, title2)
         else:
             domain = []
-            # if data['data']['date_from']:
-            #     domain.append(('date', '>=', data['data']['date_from']))
-            # if data['data']['location_id']:
-            #     domain.append(('location_id', '=', data['data']['location_id']))
             domain.append(('location_id.usage', '=', 'internal'))
-
             stock_ageing = self.env['stock.move.line'].sudo().search(domain)
-
             row = 1
             for i in stock_ageing:
                 if i.qty_done > 0:
@@ -124,4 +113,4 @@ class PartnerXlsx(models.AbstractModel):
                     sheet.write(row, 7, '-', title2)
                     sheet.write(row, 8, i.qty_done, title2)
                     sheet.write(row, 9, abs(no_days.days), title2)
-                    sheet.write(row, 10, i.product_id.uom_id.name, title2)
+                    sheet.write(row, 10, i.product_uom_id.name, title2)
