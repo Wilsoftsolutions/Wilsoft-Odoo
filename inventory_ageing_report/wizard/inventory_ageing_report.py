@@ -67,54 +67,56 @@ class PartnerXlsx(models.AbstractModel):
         sheet.write(1, 8, 'On Hand Stock', title1)
         sheet.write(1, 9, 'No. Of Days', title1)
         sheet.write(1, 10, 'UOM', title1)
+
         if data['data']['location_id']:
             domain = []
             if data['data']['location_id']:
                 domain.append(('location_id', '=', data['data']['location_id']))
-            stock_ageing = self.env['stock.move.line'].sudo().search(domain)
+            stock_ageing = self.env['stock.quant'].sudo().search(domain)
             row = 1
             for i in stock_ageing:
-                stock_quant = self.env['stock.quant'].sudo().search([('location_id', '=', i.location_id.id)])
-                for d in stock_quant:
-                    if d.quantity > 0:
-                        product_name = d.product_id.display_name
-                        date_str = data['data']['date_from']
-                        h = datetime.strptime(date_str, '%Y-%m-%d')
-                        no_days = h.date() - i.date.date()
+                stock_line =  stock_ageing = self.env['stock.move.line'].sudo().search([('product_id', '=', i.product_id.id),('location_id', '=', i.location_id.id)])
+                for d in stock_line:
+                    if i.quantity > 0:
+                        product_name = i.product_id.display_name
+                        date_str =data['data']['date_from']
+                        h =  datetime.strptime(date_str, '%Y-%m-%d')
+                        no_days = h.date() - d.date.date()
                         row += 1
-                        sheet.write(row, 0, str(i.date), title2)
-                        sheet.write(row, 1, d.location_id.display_name, title2)
-                        sheet.write(row, 2, d.product_id.categ_id.display_name, title2)
-                        sheet.write(row, 3, d.product_id.name, title2)
-                        sheet.write(row, 4, d.product_id.season if d.product_id.season else '-', title2)
-                        sheet.write(row, 5, d.product_id.display_name, title2)
+                        sheet.write(row, 0, str(d.date), title2)
+                        sheet.write(row, 1, i.location_id.display_name, title2)
+                        sheet.write(row, 2, i.product_categ_id.display_name, title2)
+                        sheet.write(row, 3, i.product_id.name, title2)
+                        sheet.write(row, 4, i.product_id.season if i.product_id.season else '-', title2)
+                        sheet.write(row, 5, i.product_id.display_name, title2)
                         sheet.write(row, 6, '-', title2)
                         sheet.write(row, 7, '-', title2)
-                        sheet.write(row, 8, d.quantity, title2)
+                        sheet.write(row, 8, i.quantity, title2)
                         sheet.write(row, 9, abs(no_days.days), title2)
-                        sheet.write(row, 10, d.product_uom_id.name, title2)
+                        sheet.write(row, 10, i.product_uom_id.name, title2)
         else:
             domain = []
             domain.append(('location_id.usage', '=', 'internal'))
-            stock_ageing = self.env['stock.move.line'].sudo().search(domain)
+            stock_ageing = self.env['stock.quant'].sudo().search(domain)
             row = 1
             for i in stock_ageing:
-                stock_quant = self.env['stock.quant'].sudo().search([('location_id', '=', i.location_id.id )])
-                for d in stock_quant:
-                    if d.quantity > 0:
-                        product_name = d.product_id.display_name
+                stock_line = stock_ageing = self.env['stock.move.line'].sudo().search(
+                    [('product_id', '=', i.product_id.id), ('location_id', '=', i.location_id.id)])
+                for d in stock_line:
+                    if i.quantity > 0:
+                        product_name = i.product_id.display_name
                         date_str = data['data']['date_from']
                         h = datetime.strptime(date_str, '%Y-%m-%d')
-                        no_days = h.date() - i.date.date()
+                        no_days = h.date() - d.date.date()
                         row += 1
-                        sheet.write(row, 0, str(i.date), title2)
-                        sheet.write(row, 1, d.location_id.display_name, title2)
-                        sheet.write(row, 2, d.product_id.categ_id.display_name, title2)
-                        sheet.write(row, 3, d.product_id.name, title2)
-                        sheet.write(row, 4, d.product_id.season if d.product_id.season else '-', title2)
-                        sheet.write(row, 5, d.product_id.display_name, title2)
+                        sheet.write(row, 0, str(d.date), title2)
+                        sheet.write(row, 1, i.location_id.display_name, title2)
+                        sheet.write(row, 2, i.product_categ_id.display_name, title2)
+                        sheet.write(row, 3, i.product_id.name, title2)
+                        sheet.write(row, 4, i.product_id.season if i.product_id.season else '-', title2)
+                        sheet.write(row, 5, i.product_id.display_name, title2)
                         sheet.write(row, 6, '-', title2)
                         sheet.write(row, 7, '-', title2)
-                        sheet.write(row, 8, d.quantity, title2)
+                        sheet.write(row, 8, i.quantity, title2)
                         sheet.write(row, 9, abs(no_days.days), title2)
-                        sheet.write(row, 10, d.product_uom_id.name, title2)
+                        sheet.write(row, 10, i.product_uom_id.name, title2)
