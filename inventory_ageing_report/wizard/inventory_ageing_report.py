@@ -7,7 +7,7 @@ class XlsxInventoryAgiengReports(models.TransientModel):
     _name = 'reports.inventory.ageing.xlsx'
     _description = 'Description'
 
-    date_from = fields.Date('Date from', )
+    date_from = fields.Date('Date from', required=True)
     location_id = fields.Many2one('stock.location', string='Location')
 
     def get_print_data(self):
@@ -53,8 +53,9 @@ class PartnerXlsx(models.AbstractModel):
         sheet.set_column(7, 7, 15)
         sheet.set_column(8, 8, 15)
         sheet.set_column(9, 9, 20)
-        sheet.set_row(0, 20)
-        sheet.merge_range(0, 0, 0, 9, 'Inventory Ageing Report', title)
+        sheet.set_column(9, 9, 21)
+        sheet.set_row(0, 21)
+        sheet.merge_range(0, 0, 0, 10, 'Inventory Ageing Report', title)
         sheet.write(1, 0, 'Receiving Date', title1)
         sheet.write(1, 1, 'Location', title1)
         sheet.write(1, 2, 'Item Category', title1)
@@ -65,21 +66,19 @@ class PartnerXlsx(models.AbstractModel):
         sheet.write(1, 7, 'Size', title1)
         sheet.write(1, 8, 'On Hand Stock', title1)
         sheet.write(1, 9, 'No. Of Days', title1)
-
+        sheet.write(1, 10, 'UOM', title1)
         if data['data']['location_id']:
             domain = []
-            if data['data']['date_from']:
-                domain.append(('date', '>=', data['data']['date_from']))
             if data['data']['location_id']:
                 domain.append(('location_id', '=', data['data']['location_id']))
-
             stock_ageing = self.env['stock.move.line'].sudo().search(domain)
-
             row = 1
             for i in stock_ageing:
                 if i.qty_done > 0:
                     product_name = i.product_id.display_name
-                    no_days = datetime.now().date() - i.date.date()
+                    date_str =data['data']['date_from']
+                    h =  datetime.strptime(date_str, '%Y-%m-%d')
+                    no_days = h.date() - i.date.date()
                     row += 1
                     sheet.write(row, 0, str(i.date), title2)
                     sheet.write(row, 1, i.location_id.display_name, title2)
@@ -90,22 +89,19 @@ class PartnerXlsx(models.AbstractModel):
                     sheet.write(row, 6, '-', title2)
                     sheet.write(row, 7, '-', title2)
                     sheet.write(row, 8, i.qty_done, title2)
-                    sheet.write(row, 9, str(no_days.days), title2)
+                    sheet.write(row, 9, abs(no_days.days), title2)
+                    sheet.write(row, 10, i.product_uom_id.name, title2)
         else:
             domain = []
-            if data['data']['date_from']:
-                domain.append(('date', '>=', data['data']['date_from']))
-            # if data['data']['location_id']:
-            #     domain.append(('location_id', '=', data['data']['location_id']))
-            domain.append(('usage', '=', 'internal'))
-
+            domain.append(('location_id.usage', '=', 'internal'))
             stock_ageing = self.env['stock.move.line'].sudo().search(domain)
-
             row = 1
             for i in stock_ageing:
                 if i.qty_done > 0:
                     product_name = i.product_id.display_name
-                    no_days = datetime.now().date() - i.date.date()
+                    date_str = data['data']['date_from']
+                    h = datetime.strptime(date_str, '%Y-%m-%d')
+                    no_days = h.date() - i.date.date()
                     row += 1
                     sheet.write(row, 0, str(i.date), title2)
                     sheet.write(row, 1, i.location_id.display_name, title2)
@@ -116,4 +112,5 @@ class PartnerXlsx(models.AbstractModel):
                     sheet.write(row, 6, '-', title2)
                     sheet.write(row, 7, '-', title2)
                     sheet.write(row, 8, i.qty_done, title2)
-                    sheet.write(row, 9, str(no_days.days), title2)
+                    sheet.write(row, 9, abs(no_days.days), title2)
+                    sheet.write(row, 10, i.product_uom_id.name, title2)
