@@ -42,14 +42,14 @@ class UserAttendance(models.Model):
          "The Timestamp and User must be unique per Device"),
     ]
     
-   # @api.constrains('att_date')
-   # def _check_att_date(self):
-   #     """ attendance date updation. """
-   #     for attendance in self:
-   #         attendance.update({
-   #             'att_date': attendance.timestamp,
-   #         })
-   #
+    @api.constrains('att_date')
+    def _check_att_date(self):
+        """ attendance date updation. """
+        for attendance in self:
+            attendance.update({
+                'att_date': attendance.timestamp,
+            })
+   
 
     @api.model_create_multi
     def create(self, vals_list):
