@@ -27,6 +27,7 @@
         'data/hr_loan_seq.xml',
         'security/ir.model.access.csv',
         'views/hr_loan_views.xml',
+        'views/hr_employee_views.xml',
         'views/advance_against_expense_views.xml',
         'views/hr_loan_type_views.xml',
     ],

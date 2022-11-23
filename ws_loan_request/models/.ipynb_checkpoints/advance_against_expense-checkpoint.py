@@ -31,6 +31,14 @@ class AdvanceAgainstExpense(models.Model):
     
     
     
+    @api.constrains('amount')
+    def _check_amount(self):
+        for line in self:            
+            if line.employee_id.is_advance_expense==False:
+                raise UserError('Not Allow to Request Advance Against Expense! ')
+    
+    
+    
     @api.model
     def create(self, values):
         values['name'] = self.env['ir.sequence'].get('advance.against.seq') or ' '
@@ -112,4 +120,12 @@ class AdvanceAgainstExpense(models.Model):
                     'You cannot delete a loan which is not in draft or cancelled state')
         return super(HrLoan, self).unlink()
     
-   
+    
+
+class HrEmployee(models.Model):
+    _inherit = 'hr.employee'
+    
+    
+    is_advance_expense = fields.Boolean(string='Advance Against Expense')
+    
+    

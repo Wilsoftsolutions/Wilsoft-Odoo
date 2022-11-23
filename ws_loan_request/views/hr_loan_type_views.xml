@@ -32,16 +32,14 @@
                     <group >
                         <group>
                            <field name="installment" readonly="0"/>
+                           <field name="per_month" readonly="0"/> 
                         </group>
                         <group>    
                            <field name="code" readonly="0"/>
-                        </group>
-                        
-                    </group>
-                   
-                    
-                </sheet>
-                
+                           <field name="percentage" readonly="0"/>  
+                        </group>  
+                    </group>   
+                </sheet>               
             </form>
         </field>
     </record>
