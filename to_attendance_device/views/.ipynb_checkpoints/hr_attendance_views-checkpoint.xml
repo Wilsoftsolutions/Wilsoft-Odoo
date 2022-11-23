@@ -10,8 +10,8 @@
 		            <field name="checkin_device_id"/>
 		        </field>
 		        <field name="check_out" position="after">
-		            <field name="checkout_device_id"/>
-		            <field name="activity_id"/>
+		            <field name="checkout_device_id" invisible="1" />
+		            <field name="activity_id" invisible="1" />
 		        </field>
 		   </field>
 		</record>
@@ -22,11 +22,12 @@
 		    <field name="inherit_id" ref="hr_attendance.view_attendance_tree"/> 
 		    <field name="arch" type="xml">
 		    	<field name="check_in" position="after">
-		            <field name="checkin_device_id"/>
+		            <field name="checkin_device_id"  invisible="1" />
 		        </field>
 		        <field name="check_out" position="after">
-		            <field name="checkout_device_id"/>
-		            <field name="activity_id"/>
+                    <field name="attendance_status"  invisible="1" />
+		            <field name="checkout_device_id"  invisible="1" />
+		            <field name="activity_id" invisible="1" />
 		        </field>
 		   </field>
 		</record>

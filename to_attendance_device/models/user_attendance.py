@@ -41,6 +41,14 @@ class UserAttendance(models.Model):
          'UNIQUE(user_id, device_id, timestamp)',
          "The Timestamp and User must be unique per Device"),
     ]
+    
+    @api.constrains('att_date')
+    def _check_att_date(self):
+        """ attendance date updation. """
+        for attendance in self:
+            attendance.update({
+                'att_date': attendance.timestamp,
+            })
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -71,6 +79,10 @@ class UserAttendance(models.Model):
                     check_out_attendance.update({
                         'is_attendance_created': True,
                     })
+                    if attendance.worked_hours==0.0:
+                        attendance.update({
+                            'check_out': False
+                        })
                         
                     
                 
