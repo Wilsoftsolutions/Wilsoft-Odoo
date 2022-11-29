@@ -36,7 +36,7 @@
                                 <field name='tax_line_ids' attrs="{'readonly': [('state', '=', 'posted')]}">
                                    <tree editable='bottom'> 
                                       <field name='payment_id' invisible='1'/>
-                                      <field name='partner_id' invisible='0'/>
+                                      <field name='partner_id' invisible='1'/>
                                       <field name='tax_id' options="{'no_create': True, 'no_create_edit':True}"/>
                                       <field name='include_tax_id' options="{'no_create': True, 'no_create_edit':True}" />
                                       <field name='invoice_id'  options="{'no_create': True, 'no_create_edit':True}" />
