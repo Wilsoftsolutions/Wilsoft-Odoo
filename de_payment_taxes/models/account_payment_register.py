@@ -74,7 +74,5 @@ class AccountTaxPayment(models.TransientModel):
             include_tax = 0            
             if line.include_tax_id:
                 include_tax = (abs(line.include_tax_id.amount) / 100 * line.payment_register_id.amount)
-            if line.invoice_id:
-                line.amount = (abs(line.tax_id.amount) / 100 * (line.inv_amount) )
             else:    
                 line.amount = (abs(line.tax_id.amount) / 100 * (line.payment_register_id.amount + include_tax) )    

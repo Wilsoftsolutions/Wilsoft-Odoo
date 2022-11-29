@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from lxml import etree
-
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 import json
@@ -294,9 +293,7 @@ class AccountTaxPayment(models.Model):
         for line in self:
             include_tax = 0
             if line.include_tax_id:
-                include_tax = (abs(line.include_tax_id.amount) / 100 * self.payment_id.amount)
-            if line.invoice_id:
-                line.amount = (abs(line.tax_id.amount) / 100 * (line.inv_amount) )  
+                include_tax = (abs(line.include_tax_id.amount) / 100 * self.payment_id.amount)  
             else:    
                 line.amount = (abs(line.tax_id.amount) / 100 * (self.payment_id.amount + include_tax) )
            
