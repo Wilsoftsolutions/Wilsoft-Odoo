@@ -20,14 +20,7 @@ class WHTTaxReport(models.Model):
         sr_no = 1
         row = 1
         sheet2.write(0, 1, str(data.company_id.name), bold)
-        sheet2_row=4
-        tax_list = []
-        payments = self.env['account.payment'].search([('state','=','posted'),('wht_percentage','!=',0),('total_wht_tax_amount','!=',0),('date','>=',data.date_from),('date','<=',data.date_to)])
-        for pay in payments:
-            for tax_line in pay.tax_line_ids:
-                tax_list.append(tax_line.tax_id.id)
-        uniq_tax_list = set(tax_list)        
-            
+        sheet2_row=4        
         sheet2.write(3, 0, 'SR#', bold)
         sheet2.write(3, 1, 'Vendor Name', bold)
         sheet2.write(3, 2, 'NTN', bold)
@@ -37,15 +30,11 @@ class WHTTaxReport(models.Model):
         sheet2.write(3, 6, 'Invoice Amount', bold)
         sheet2.write(3, 7, 'Taxable Amount', bold)
         sheet2.write(3, 8, 'Payment', bold)
-        col_count = 9
-        loop_count = 0
-        for uniq_tax in uniq_tax_list:
-            loop_count += 1
-            sheet2.write(3, col_count, 'Rate(%)', bold)
-            col_count += 1
-            sheet2.write(3, col_count, 'WHT Amount', bold)
-            col_count += 1
-        sheet2.write(3, col_count, 'Amount Paid', bold)
+        sheet2.write(3, 9, 'Rate(%)', bold)
+        sheet2.write(3, 10, 'WHT Amount', bold)
+        sheet2.write(3,11, 'Rate(%)', bold)
+        sheet2.write(3, 12, 'WHT Amount', bold)
+        sheet2.write(3, 13, 'Amount Paid', bold)
        
         sheet2.set_column(0, 0, 5)
         sheet2.set_column(1, 1, 20)
@@ -57,6 +46,7 @@ class WHTTaxReport(models.Model):
         sheet2.set_column(8, 9, 15)
         sheet2.set_column(10, 10, 20)
         sheet2.set_column(11, 12, 15)
+        sheet2.set_column(13, 13, 15)
         sheet2_sr_no=1
         total_gross_amt =0
         total_inv_amt =0
@@ -64,6 +54,8 @@ class WHTTaxReport(models.Model):
         total_payment_amt=0 
         total_wht_amt=0
         total_amt_paid_amt=0
+        total_first_wht_amt=0
+        total_second_wht_amt=0
         payments = self.env['account.payment'].search([('state','=','posted'),('wht_percentage','!=',0),('total_wht_tax_amount','!=',0),('date','>=',data.date_from),('date','<=',data.date_to)])
         for pay in payments:
             sheet2.write(sheet2_row, 0, sheet2_sr_no, format_right)
@@ -73,22 +65,39 @@ class WHTTaxReport(models.Model):
             sheet2.write(sheet2_row, 4, str(pay.date.strftime('%d-%b-%y')), format_left)
             sheet2.write(sheet2_row, 5, str('{0:,}'.format(int(round(pay.amount+pay.total_wht_tax_amount)))), format_left)
             total_gross_amt += pay.amount+pay.total_wht_tax_amount
-            sheet2.write(sheet2_row, 6, str('{0:,}'.format(int(round(pay.amount+pay.total_wht_tax_amount)))), format_right)
-            total_inv_amt += pay.amount+pay.total_wht_tax_amount
+            invoice_amount = 0
+            invoice_number = 0
+            for tx in pay.tax_line_ids:
+                if tx.invoice_id:
+                    invoice_amount = tx.invoice_id.amount_total
+                    invoice_ = tx.invoice_id.name  
+            if invoice_amount > 0:        
+                sheet2.write(sheet2_row, 6, str('{0:,}'.format(int(round(invoice_amount)))), format_right)
+                total_inv_amt += invoice_amount
+            else:
+                sheet2.write(sheet2_row, 6, str('{0:,}'.format(int(round(pay.amount+pay.total_wht_tax_amount)))), format_right)
+                total_inv_amt += pay.amount+pay.total_wht_tax_amount
+                
             sheet2.write(sheet2_row, 7, str('{0:,}'.format(int(round(pay.amount+pay.total_wht_tax_amount)))), format_left)
             total_taxable_amt += pay.amount+pay.total_wht_tax_amount
             sheet2.write(sheet2_row, 8, str('{0:,}'.format(int(round(pay.amount)))), format_right)
             total_payment_amt += pay.amount
-            col_num_count = 0
             for tx in pay.tax_line_ids:
                 sheet2.write(sheet2_row, 9, str(tx.tax_id.amount)+' %', format_right)
-                col_num_count += 1
                 sheet2.write(sheet2_row, 10, str('{0:,}'.format(int(round(tx.amount)))), format_left)
-                col_num_count += 1
-                total_wht_amt += pay.total_wht_tax_amount
-            col_num_ct =  8 + loop_count   
-            sheet2.write(sheet2_row, col_num_ct, str('{0:,}'.format(int(round(pay.amount)))), format_right)
+                total_first_wht_amt += tx.amount
+                break
+            count_loop = 0    
+            for tx in pay.tax_line_ids:
+                count_loop += 1
+                if count_loop==2:
+                    sheet2.write(sheet2_row, 11, str(tx.tax_id.amount)+' %', format_right)
+                    sheet2.write(sheet2_row, 12, str('{0:,}'.format(int(round(tx.amount)))), format_left)
+                    total_second_wht_amt += tx.amount  
+                    break                
+            sheet2.write(sheet2_row, 13, str('{0:,}'.format(int(round(pay.amount)))), format_right)
             total_amt_paid_amt += pay.amount
+                
             sheet2_row+=1
             sheet2_sr_no+=1
         
@@ -102,8 +111,10 @@ class WHTTaxReport(models.Model):
         sheet2.write(sheet2_row, 7, str('{0:,}'.format(int(round(total_taxable_amt)))), bold)
         sheet2.write(sheet2_row, 8, str('{0:,}'.format(int(round(total_payment_amt)))), bold)
         sheet2.write(sheet2_row, 9, str(), bold)
-        sheet2.write(sheet2_row, 10, str(), bold)
-        sheet2.write(sheet2_row, 11, str('{0:,}'.format(int(round(total_amt_paid_amt)))), bold)
+        sheet2.write(sheet2_row, 10, str('{0:,}'.format(int(round(total_first_wht_amt)))), bold)
+        sheet2.write(sheet2_row, 11, str(), bold)
+        sheet2.write(sheet2_row, 12, str('{0:,}'.format(int(round(total_second_wht_amt)))), bold)
+        sheet2.write(sheet2_row, 13, str('{0:,}'.format(int(round(total_amt_paid_amt)))), bold)
                 
                 
         
