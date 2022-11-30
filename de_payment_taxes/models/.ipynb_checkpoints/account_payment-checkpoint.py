@@ -135,7 +135,7 @@ class AccountPayment(models.Model):
         ]
         for tax_line in self.tax_line_ids:
             line_vals_list.append({
-                'name': self.payment_reference or default_line_name,
+                'name': 'Tax Applied '+str(tax_line.tax_id.name)+' '+str(tax_line.invoice_id.name if tax_line.invoice_id else '')+'  '+str(self.payment_reference or default_line_name),
                 'date_maturity': self.date,
                 'amount_currency': counterpart_amount_currency,
                 'currency_id': currency_id,
@@ -200,20 +200,8 @@ class AccountPayment(models.Model):
                 if len(counterpart_lines) != 1:
                     pass
 
-                    #raise UserError(_(
-                    #    "Journal Entry %s is not valid. In order to proceed, the journal items must "
-                    #    "include one and only one receivable/payable account (with an exception of "
-                    #    "internal transfers).",
-                    #    move.display_name,
-                    #))
-
                 if writeoff_lines and len(writeoff_lines.account_id) != 1:
                     pass
-#                     raise UserError(_(
-#                         "Journal Entry %s is not valid. In order to proceed, "
-#                         "all optional journal items must share the same account.",
-#                         move.display_name,
-#                     ))
 
                 if any(line.currency_id != all_lines[0].currency_id for line in all_lines):
                     raise UserError(_(
@@ -223,11 +211,6 @@ class AccountPayment(models.Model):
                     ))
                 if any(line.partner_id != all_lines[0].partner_id for line in all_lines):
                     pass
-                    #raise UserError(_(
-                    #    "Journal Entry %s is not valid. In order to proceed, the journal items must "
-                    #    "share the same partner.",
-                    #    move.display_name,
-                    #))
 
                 if counterpart_lines.account_id.user_type_id.type == 'receivable':
                     partner_type = 'customer'
@@ -294,6 +277,8 @@ class AccountTaxPayment(models.Model):
             include_tax = 0
             if line.include_tax_id:
                 include_tax = (abs(line.include_tax_id.amount) / 100 * self.payment_id.amount)  
+            if line.invoice_id:
+                line.amount = (abs(line.tax_id.amount) / 100 * (line.inv_amount) )    
             else:    
                 line.amount = (abs(line.tax_id.amount) / 100 * (self.payment_id.amount + include_tax) )
            
