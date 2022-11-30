@@ -3,9 +3,6 @@
 # from odoo import models, fields, api
 
 
-
-
-
 # class ws_hr_payroll(models.Model):
 #     _name = 'ws_hr_payroll.ws_hr_payroll'
 #     _description = 'ws_hr_payroll.ws_hr_payroll'
