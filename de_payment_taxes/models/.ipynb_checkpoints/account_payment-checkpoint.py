@@ -237,6 +237,7 @@ class AccountPayment(models.Model):
 
             move.write(move._cleanup_write_orm_values(move, move_vals_to_write))
             pay.write(move._cleanup_write_orm_values(pay, payment_vals_to_write))
+            pay._compute_tax_amount()
     
     
     
