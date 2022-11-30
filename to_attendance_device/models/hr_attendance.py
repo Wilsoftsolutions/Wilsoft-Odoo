@@ -10,6 +10,8 @@ from odoo.tools import format_datetime
 from odoo.osv.expression import AND, OR
 from odoo.tools.float_utils import float_is_zero
 
+
+
 class HrAttendance(models.Model):
     _inherit = 'hr.attendance'
 
