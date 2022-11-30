@@ -49,7 +49,6 @@ class UserAttendance(models.Model):
             attendance.update({
                 'att_date': attendance.timestamp,
             })
-   
 
     @api.model_create_multi
     def create(self, vals_list):
