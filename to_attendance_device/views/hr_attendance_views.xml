@@ -27,7 +27,7 @@
 		        <field name="check_out" position="after">
                     <field name="attendance_status"  invisible="0" />
                     <field name="company_id"  invisible="1" />
-                    <field name="att_count"  invisible="1" />
+                    <field name="att_count"  invisible="0" />
 		            <field name="checkout_device_id"  invisible="1" />
 		            <field name="activity_id" invisible="1" />
 		        </field>
