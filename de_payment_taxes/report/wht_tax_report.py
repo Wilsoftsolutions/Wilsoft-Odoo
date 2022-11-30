@@ -78,7 +78,9 @@ class WHTTaxReport(models.Model):
                 sheet2.write(sheet2_row, 7, str('{0:,}'.format(int(round(pay.amount+pay.total_wht_tax_amount)))), format_left)
                 total_taxable_amt += pay.amount+pay.total_wht_tax_amount
                 sheet2.write(sheet2_row, 8, str('{0:,}'.format(int(round(pay.amount)))), format_right)
+                total_payment_amt += pay.amount
                 sheet2.write(sheet2_row, 9, str(tax_line.tax_id.amount)+' %', format_right)
+                
                 sheet2.write(sheet2_row, 10, str('{0:,}'.format(int(round(tax_line.amount)))), format_left)
                 total_wht_amt += tax_line.amount   
                 sheet2.write(sheet2_row, 11, str('{0:,}'.format(int(round(pay.amount)))), format_right)
