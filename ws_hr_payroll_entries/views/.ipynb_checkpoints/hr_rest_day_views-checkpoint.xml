@@ -1,0 +1,25 @@
+<odoo>
+  <data>
+      
+      <record id="view_hr_rest_day_tree" model="ir.ui.view">
+			<field name="name">Rest Day</field>
+			<field name="model">hr.rest.day</field>
+			<field name="arch" type="xml">
+				<tree string="Rest Day" create="false" edit="false">
+					<field name="employee_id" />
+                    <field name="date" />
+				</tree>
+			</field>
+		</record>
+      
+       <record model="ir.actions.act_window" id="action_hr_rest_day_data">
+			<field name="name">Rest Day</field>
+			<field name="res_model">hr.rest.day</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		<menuitem id="hr_rest_day_data_menu" name="Rest Day"
+			parent="hr_attendance.menu_hr_attendance_root" sequence="10" action="action_hr_rest_day_data"
+			/>
+  </data>
+</odoo>

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ws_hr_payroll_entries_ws_hr_payroll_entries,ws_hr_payroll_entries.ws_hr_payroll_entries,model_ws_hr_payroll_entries_ws_hr_payroll_entries,base.group_user,1,1,1,1
