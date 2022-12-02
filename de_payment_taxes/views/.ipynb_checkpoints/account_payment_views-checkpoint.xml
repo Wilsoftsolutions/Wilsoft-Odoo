@@ -1,0 +1,58 @@
+<odoo>
+	<data>
+
+                <!-- Withholding Payment Inherit -->
+		<record id="payment_tree_view_tax_validation" model="ir.ui.view">
+			<field name="name">account.payment.tree.tax.valid</field>
+			<field name="model">account.payment</field>
+			<field name="inherit_id" ref="account.view_account_payment_tree"/>
+			<field name="arch" type="xml">
+			    <xpath expr="//field[@name='amount_company_currency_signed']" position="before">
+                      <field name="tax_cpr_number" />
+			          <field name="total_wht_tax_amount" />
+                      <field name="wht_percentage" />
+			    </xpath>
+                            
+			</field>
+		</record>
+
+
+
+		<!-- Account Payment Form Inherit -->
+		<record id="account_payment_form_tax_validation" model="ir.ui.view">
+			<field name="name">account.payment.form.tax.validation</field>
+			<field name="model">account.payment</field>
+			<field name="inherit_id" ref="account.view_account_payment_form"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="//field[@name='journal_id']" position="after">
+                                  <field name="ext_account_id"   attrs="{'readonly': ['|',('is_lock_entry','=',True),('state', '=', 'posted')]}" />
+                                  <field name="tax_cpr_number"   />
+                                  <field name="is_lock_entry"  invisible='1' />
+				</xpath>
+                <xpath expr="//group[@name='group2']" position="after">
+                       <notebook>
+                           <page string='Taxes'>
+                                <field name='tax_line_ids' attrs="{'readonly': [('state', '=', 'posted')]}">
+                                   <tree editable='bottom'> 
+                                      <field name='payment_id' invisible='1'/>
+                                      <field name='partner_id' invisible='1'/>
+                                      <field name='tax_id' options="{'no_create': True, 'no_create_edit':True}"/>
+                                      <field name='include_tax_id' options="{'no_create': True, 'no_create_edit':True}" />
+                                      <field name='invoice_id'  options="{'no_create': True, 'no_create_edit':True}" />
+                                      <field name='inv_amount'  /> 
+                                      <field name='amount' /> 
+                                   </tree>    
+                                </field>  
+                           </page>
+                       </notebook>
+                </xpath>  
+
+			</field>
+		</record>
+
+		
+
+
+	</data>
+</odoo>

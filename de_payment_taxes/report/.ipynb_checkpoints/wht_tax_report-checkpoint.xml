@@ -1,0 +1,12 @@
+<odoo>
+  <data>
+    <report
+                id="open_pay_tax_wht_action"
+                model="report.de_payment_taxes.wht_tax_xlsx"
+                string="WHT Details(Excel)"
+                report_type="xlsx"
+                name="de_payment_taxes.wht_tax_xlsx"
+                file="WHT Details"
+        />
+  </data>
+</odoo>

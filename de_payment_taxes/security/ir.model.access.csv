@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_tax_payment,access.account.tax.payment,model_account_tax_payment,,1,1,1,1
+access_account_tax_payment_line,access.account.tax.payment.line,model_account_tax_payment_line,,1,1,1,1
+access_wht_report_wizard,access.wht.report.wizard,model_wht_report_wizard,,1,1,1,1
