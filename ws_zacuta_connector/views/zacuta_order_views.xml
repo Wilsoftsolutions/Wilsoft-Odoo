@@ -1,0 +1,198 @@
+<odoo>
+  <data>
+      
+      <!-- Form View -->
+        <record id="zacuta_order_form_view" model="ir.ui.view">
+            <field name="name">zacuta.order.form.view</field>
+            <field name="model">zacuta.order</field>
+            <field name="arch" type="xml">
+                <form string="Instance">
+                    <header>
+                       <field name="state" widget="statusbar"
+                               statusbar_visible="draft,post,cancel"/>
+                         
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="zid" placeholder="Name ...."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                               
+                                <field name="user_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="sheet_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="booking_date"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="promo"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="status"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="remarks"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="cn_number"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="shipper_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="consignment_name"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="consignee_email"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="consignment_addres"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="consignment_phone_number"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="designation"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                  <field name="order_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="tracking_number" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                <field name="cod_amount"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="tax"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="comment"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="assigned_to"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="rts"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="weight"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="delivery_price" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="discount" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="advance"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="added_by"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            </group>
+                            
+                            <group>
+                                 <field name="last_edit_by"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="created_at"   attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="updated_at"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="deposit_type"   attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="deposit_status" attrs="{'readonly': [('state', '!=', 'draft')]}"  />
+                                 <field name="deposit_accept_date"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="bank_trans_details"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="reminder_comments"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="reminder_date" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="reminder"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="reminder_flag"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="source"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="shopify_order_id"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="shipper_tracking_id"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="return_remarks"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="attempt"   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                 <field name="shipper_last_status"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="shipper_shipping_stats" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="booking_complete_status"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="fetched" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="shipper_slip_link" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="province"  attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                                 <field name="commission" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+                            </group>
+                           
+                        </group>
+                        <notebook>
+                            <page string='Order Line'>
+                                <field name='order_line' attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                    <tree editable='bottom'>
+                                       <field name="name"  />
+                                       <field name="quantity"  />
+                                       <field name="price"  />
+                                       <field name="order_id"  invisible='1'/>
+                                    </tree>    
+                                </field>    
+                            </page>
+                            <page string='Payment Line' invisible='1'>
+                                <field name='pay_line' attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                    <tree editable='bottom'>
+                                       <field name="cn_number"  />
+                                       <field name="billing_method"  />
+                                       <field name="invoice_cheque_no"  />
+                                        <field name="weight_charged"  />
+                                       <field name="shipment_charges"  />
+                                       <field name="cash_handling_charges"  />
+                                        <field name="return_charges"  />
+                                       <field name="insurance_charges"  />
+                                       <field name="fuel_surcharge_percentage"  />
+                                        <field name="fuel_surcharge_amount"  />
+                                       <field name="gst"  />
+                                        <field name="gst_amount"  />
+                                       <field name="net_charges"  />
+                                       <field name="gross_charges"  />
+                                       <field name="order_id"  invisible='1'/>
+                                    </tree>    
+                                </field>  
+                            </page>
+                            <page string='Shipper Line'>
+                                <field name='shipper_line_ids' attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                    <tree editable='bottom'>
+                                       <field name="id"  />
+                                       <field name="name"  />
+                                       <field name="email"  />
+                                       <field name="phone_number"  />
+                                       <field name="address"  />
+                                       <field name="origin_city"  />
+                                       <field name="created_at"  />
+                                       <field name="updated_at"  />
+                                       <field name="api_status"  />
+                                       <field name="order_id"  invisible='1'/>
+                                    </tree>    
+                                </field>  
+                            </page>
+                            <page string='Rider Line'>
+                                <field name='rider_line_ids' attrs="{'readonly': [('state', '!=', 'draft')]}">
+                                    <tree editable='bottom'>
+                                       <field name="id"  />
+                                       <field name="name"  />
+                                       <field name="username"  />
+                                       <field name="password"  />
+                                       <field name="token"  />
+                                       <field name="phone"  />
+                                       <field name="address"  />
+                                       <field name="delete_status"  />
+                                       <field name="status"  />
+                                       <field name="created_at"  />
+                                       <field name="updated_at"  /> 
+                                       <field name="order_id"  invisible='1'/>
+                                    </tree>    
+                                </field>  
+                            </page>
+                            
+                        </notebook>
+                        
+                    </sheet>
+                    
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="zacuta_order_tree_view" model="ir.ui.view">
+            <field name="name">zacuta.order.tree.view</field>
+            <field name="model">zacuta.order</field>
+            <field name="arch" type="xml">
+                <tree string="data">                 
+                    <field name="zid"/>
+                    <field name="shopify_order_id"/>
+                    <field name="booking_date"  />
+                    <field name="status" />
+                    <field name="delivery_price"/>
+                    <field name="tax"  />
+                    <field name="discount" />
+                    <field name="commission"/>
+                    <field name="province"  />
+                    <field name="fetched" />
+                </tree>
+            </field>
+        </record>
+      
+
+        <record id="zacuta_order_action" model="ir.actions.act_window">
+            <field name="name">Zacuta Data</field>
+            <field name="res_model">zacuta.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create new Zacuta Order.
+                </p>
+            </field>
+        </record>
+
+
+        
+         
+        <menuitem id="zacuta_connec_data_main_menu" name="Data"
+                  parent="zacuta_instance_configuration"
+                  action="zacuta_order_action"
+                  groups="base.group_user"/>
+        
+       
+
+
+      
+  </data>
+</odoo>

@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_zacuta_instance,access.zacuta.instance,model_zacuta_instance,,1,1,1,1
+access_zacuta_order,access.zacuta.order,model_zacuta_order,,1,1,1,1
+access_zacuta_rider_line,access.zacuta.rider.line,model_zacuta_rider_line,,1,1,1,1
+access_zacuta_shipper_line,access.zacuta.shipper.line,model_zacuta_shipper_line,,1,1,1,1
+access_zacuta_order_line,access.zacuta.order.line,model_zacuta_order_line,,1,1,1,1
+access_zacuta_pay_line,access.zacuta.pay.line,model_zacuta_pay_line,,1,1,1,1
+
+
