@@ -1,0 +1,96 @@
+<odoo>
+  <data>
+      
+      <!-- Form View -->
+        <record id="zacuta_instance_form_view" model="ir.ui.view">
+            <field name="name">zacuta.instance.form.view</field>
+            <field name="model">zacuta.instance</field>
+            <field name="arch" type="xml">
+                <form string="Instance">
+                    <header>
+                       <field name="state" widget="statusbar"
+                               statusbar_visible="draft,active,close" clickable='1'/>
+                        <button name="action_check_connection" string="Check Connection"
+                                type="object" class="btn-primary"
+                                />
+                        <button name="action_fetch_data" string="Download Data"
+                                type="object" class="btn-primary" states="active"
+                                />
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Name ...."/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="url"  />
+                                <field name="debit_account"  />
+                                <field name="delivery_charges"  />
+                                <field name="journal_id"  />
+                            </group>
+                            
+                            <group>
+                                <field name="token"   />
+                                <field name="credit_account"  />
+                                <field name="weigh_charges"  />
+                                 <field name="je_journal_id"  />
+
+                            </group>
+                           
+                        </group>
+                        
+                    </sheet>
+                    
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View -->
+        <record id="zacuta_instance_tree_view" model="ir.ui.view">
+            <field name="name">zacuta.instance.tree.view</field>
+            <field name="model">zacuta.instance</field>
+            <field name="arch" type="xml">
+                <tree string="Instance">                 
+                    <field name="name"/>
+                    <field name="url"  />
+                    <field name="token" />
+                </tree>
+            </field>
+        </record>
+      
+
+        <record id="zacuta_instance_action" model="ir.actions.act_window">
+            <field name="name">Zacuta Instance</field>
+            <field name="res_model">zacuta.instance</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create new Zacuta Instance.
+                </p>
+            </field>
+        </record>
+
+
+        <!-- MenuItems -->
+        
+        
+        <menuitem id="zacuta_instance_configuration" name="Zacuta"
+                  parent="account_accountant.menu_accounting"
+                  />
+        
+        
+       
+         
+        <menuitem id="zacuta_connec_main_menu" name="Instance"
+                  parent="zacuta_instance_configuration"
+                  action="zacuta_instance_action"
+                  groups="base.group_user"/>
+        
+       
+
+
+      
+  </data>
+</odoo>
