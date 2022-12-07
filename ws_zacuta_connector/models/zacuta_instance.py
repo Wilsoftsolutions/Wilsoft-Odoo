@@ -107,8 +107,9 @@ class ZacutaConnector(models.Model):
                     shipper_list.append(data['shipper'])
                     shippera = ''
                     if shipper_list and data['shipper']!=None:
-                        shippera=shipper['name']
+                        
                         for shipper in shipper_list:
+                            shippera=shipper['name']
                             shipper_vals = {
                                 'id': shipper['id'],
                                 'name': shipper['name'],
