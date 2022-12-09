@@ -102,12 +102,10 @@ class ZacutaConnector(models.Model):
                             'order_id': order.id,
                         }
                         order_line = self.env['zacuta.order.line'].create(product_vals)
-
                     shipper_list = []
                     shipper_list.append(data['shipper'])
                     shippera = ''
-                    if shipper_list and data['shipper']!=None:
-                        
+                    if shipper_list and data['shipper']!=None:                        
                         for shipper in shipper_list:
                             shippera=shipper['name']
                             shipper_vals = {
@@ -146,8 +144,13 @@ class ZacutaConnector(models.Model):
                        'state': 'post',
                     })   
                     predebit= self.delivery_charges
-                    if float(order.weight)>1:
-                        predebit = float(self.delivery_charges) + ((float(order.weight)-1) * float(self.weigh_charges))   
+                    if float(order.weight)>1000:
+                        weight_calc = ((order.weight/1000)-1)    
+                        predebit = float(self.delivery_charges) + ((float(weight_calc)) * float(self.weigh_charges)) 
+                    if float(order.weight)==2: 
+                        predebit= self.delivery_charges + float(self.weigh_charges)  
+                    if float(order.weight)==3: 
+                        predebit= self.delivery_charges + (float(self.weigh_charges) * 2)    
                     precredit=predebit
                     order = order.zid 
                     invoicea = inv.name
@@ -157,6 +160,7 @@ class ZacutaConnector(models.Model):
                         vals = {
                             'journal_id': self.journal_id.id,
                             'payment_type': 'inbound',
+                            'partner_id': inv.partner_id.id,
                             'date': data['booking_date'],
                             'amount': float(data['cod_amount']),
                         }  
