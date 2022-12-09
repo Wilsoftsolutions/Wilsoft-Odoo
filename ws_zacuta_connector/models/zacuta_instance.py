@@ -145,7 +145,7 @@ class ZacutaConnector(models.Model):
                     })   
                     predebit= self.delivery_charges
                     if float(order.weight)>1000:
-                        weight_calc = ((order.weight/1000)-1)    
+                        weight_calc = ((float(order.weight)/1000)-1)    
                         predebit = float(self.delivery_charges) + ((float(weight_calc)) * float(self.weigh_charges)) 
                     if float(order.weight)==2: 
                         predebit= self.delivery_charges + float(self.weigh_charges)  
