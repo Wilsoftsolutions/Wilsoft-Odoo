@@ -153,7 +153,8 @@ class ZacutaConnector(models.Model):
                     if float(order.weight)==3: 
                         predebit= self.delivery_charges + (float(self.weigh_charges) * 2)    
                     precredit=predebit
-                    order = order.zid 
+                    order = order
+                    
                     invoicea = inv.name
                     qty = data['weight']
                     self.action_post_commission_jv(predebit, precredit, order, invoicea, qty, shippera)
@@ -162,6 +163,7 @@ class ZacutaConnector(models.Model):
                             'journal_id': self.journal_id.id,
                             'payment_type': 'inbound',
                             'partner_id': inv.partner_id.id,
+                            'zacuta_id': order.id,
                             'date': data['booking_date'],
                             'amount': float(data['cod_amount']),
                         }  
@@ -190,7 +192,8 @@ class ZacutaConnector(models.Model):
             move_vals = {
                'date': fields.date.today(),
                'journal_id': self.je_journal_id.id,
-                'ref': str(order) +' Invoice# '+ str(invoicea),
+               'zacuta_id': order.id,
+               'ref': str(order.zid) +' Invoice# '+ str(invoicea),
             }
             move = self.env['account.move'].create(move_vals)
             debit_line = (0, 0, {
