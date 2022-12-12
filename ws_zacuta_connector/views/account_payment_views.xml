@@ -1,0 +1,17 @@
+<odoo>
+  <data>
+      
+         <record id="payment_tree_view_zacuta" model="ir.ui.view">
+			<field name="name">account.payment.tree.zacuta</field>
+			<field name="model">account.payment</field>
+			<field name="inherit_id" ref="account.view_account_payment_tree"/>
+			<field name="arch" type="xml">
+			    <xpath expr="//field[@name='name']" position="after">
+                      <field name="zacuta_id"  optional='hide'/>
+			    </xpath>
+                            
+			</field>
+		</record>
+      
+  </data>
+</odoo>

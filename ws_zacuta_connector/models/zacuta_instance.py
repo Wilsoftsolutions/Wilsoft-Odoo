@@ -41,7 +41,8 @@ class ZacutaConnector(models.Model):
         invoices = self.env['account.move'].search([('payment_state','=','not_paid'),('ref','!=',' '),('invoice_date','>=','2022-12-01'),('state','=','posted')])
         for inv in invoices:
             for data in final_list['bookings']:
-                if data['status'] in ('DELIVERED','Delivered') and inv.ref==data['order_id']:
+                existing_record = self.env['zacuta.order'].search([('zid','=',data['id'])])
+                if data['status'] in ('DELIVERED','Delivered') and inv.ref==data['order_id'] and not existing_record:
                     vals = {
                        'zid': data['id'],
                        'user_id': data['user_id'],
