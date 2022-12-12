@@ -199,8 +199,8 @@ class ZacutaConnector(models.Model):
             move = self.env['account.move'].create(move_vals)
             debit_line = (0, 0, {
                    'name': 'Quantity '+str(qty)+' Zacuta Commission on '+str(fields.date.today()),
-                    'account_id': self.debit_account.id,
-                    'journal_id': self.je_journal_id.id,
+                    'account_id': zacuta_instance.debit_account.id,
+                    'journal_id': zacuta_instance.je_journal_id.id,
                     'date': fields.date.today(),
                     'debit': debit,
                     'credit': 0,
@@ -209,8 +209,8 @@ class ZacutaConnector(models.Model):
             debit_sum += debit_line[2]['debit'] - debit_line[2]['credit']
             credit_line = (0, 0, {
                    'name': 'Shipper: '+str(shippera)+' Zacuta Commission '+str(fields.date.today()),
-                    'account_id': self.credit_account.id,
-                    'journal_id': self.je_journal_id.id,
+                    'account_id': zacuta_instance.credit_account.id,
+                    'journal_id': zacuta_instance.je_journal_id.id,
                     'date': fields.date.today(),
                     'debit': 0,
                     'credit': credit,
