@@ -144,14 +144,14 @@ class ZacutaConnector(models.Model):
                     order.update({
                        'state': 'post',
                     })   
-                    predebit= self.delivery_charges
+                    predebit= zacuta_instance.delivery_charges
                     if float(order.weight)>1000:
                         weight_calc = ((float(order.weight)/1000)-1)    
-                        predebit = float(self.delivery_charges) + ((float(weight_calc)) * float(self.weigh_charges)) 
+                        predebit = float(self.delivery_charges) + ((float(weight_calc)) * float(zacuta_instance.weigh_charges)) 
                     if float(order.weight)==2: 
-                        predebit= self.delivery_charges + float(self.weigh_charges)  
+                        predebit= zacuta_instance.delivery_charges + float(zacuta_instance.weigh_charges)  
                     if float(order.weight)==3: 
-                        predebit= self.delivery_charges + (float(self.weigh_charges) * 2)    
+                        predebit= zacuta_instance.delivery_charges + (float(zacuta_instance.weigh_charges) * 2)    
                     precredit=predebit
                     order = order
                     
