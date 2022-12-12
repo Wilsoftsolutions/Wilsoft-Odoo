@@ -160,7 +160,7 @@ class ZacutaConnector(models.Model):
                     self.action_post_commission_jv(predebit, precredit, order, invoicea, qty, shippera)
                     if float(data['cod_amount']) > 0: 
                         vals = {
-                            'journal_id': self.journal_id.id,
+                            'journal_id': zacuta_instance.journal_id.id,
                             'payment_type': 'inbound',
                             'partner_id': inv.partner_id.id,
                             'zacuta_id': order.id,
@@ -185,19 +185,20 @@ class ZacutaConnector(models.Model):
                         
                         
     def action_post_commission_jv(self, debit, credit, order, invoicea, qty, shippera):
+        zacuta_instance = self.env['zacuta.instance'].search([], limit=1)
         line_ids = []
         debit_sum = 0.0
         credit_sum = 0.0
-        if self.je_journal_id and self.debit_account and self.credit_account:
+        if zacuta_instance.je_journal_id and zacuta_instance.debit_account and zacuta_instance.credit_account:
             move_vals = {
                'date': fields.date.today(),
-               'journal_id': self.je_journal_id.id,
+               'journal_id': zacuta_instance.je_journal_id.id,
                'zacuta_id': order.id,
                'ref': str(order.zid) +' Invoice# '+ str(invoicea),
             }
             move = self.env['account.move'].create(move_vals)
             debit_line = (0, 0, {
-                   'name': 'Quantity '+str(qty)+' Zacuta Commission on'+str(fields.date.today()),
+                   'name': 'Quantity '+str(qty)+' Zacuta Commission on '+str(fields.date.today()),
                     'account_id': self.debit_account.id,
                     'journal_id': self.je_journal_id.id,
                     'date': fields.date.today(),
