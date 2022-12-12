@@ -38,10 +38,11 @@ class ZacutaConnector(models.Model):
         data_list = req.content
         final_list = json.loads(data_list)
         inner_count = 0
-        invoices = self.env['account.move'].search([('payment_state','=','not_paid'),('ref','!=',' '),('invoice_date','>=','2022-12-01')])
+        invoices = self.env['account.move'].search([('payment_state','=','not_paid'),('ref','!=',' '),('invoice_date','>=','2022-12-01'),('state','=','posted')])
         for inv in invoices:
             for data in final_list['bookings']:
-                if data['status']=='DELIVERED' and inv.ref==data['order_id']:
+                existing_record = self.env['zacuta.order'].search([('zid','=',data['id'])])
+                if data['status'] in ('DELIVERED','Delivered') and inv.ref==data['order_id'] and not existing_record:
                     vals = {
                        'zid': data['id'],
                        'user_id': data['user_id'],
@@ -102,13 +103,12 @@ class ZacutaConnector(models.Model):
                             'order_id': order.id,
                         }
                         order_line = self.env['zacuta.order.line'].create(product_vals)
-
                     shipper_list = []
                     shipper_list.append(data['shipper'])
                     shippera = ''
-                    if shipper_list and data['shipper']!=None:
-                        shippera=shipper['name']
+                    if shipper_list and data['shipper']!=None:                        
                         for shipper in shipper_list:
+                            shippera=shipper['name']
                             shipper_vals = {
                                 'id': shipper['id'],
                                 'name': shipper['name'],
@@ -145,10 +145,16 @@ class ZacutaConnector(models.Model):
                        'state': 'post',
                     })   
                     predebit= self.delivery_charges
-                    if float(order.weight)>1:
-                        predebit = float(self.delivery_charges) + ((float(order.weight)-1) * float(self.weigh_charges))   
+                    if float(order.weight)>1000:
+                        weight_calc = ((float(order.weight)/1000)-1)    
+                        predebit = float(self.delivery_charges) + ((float(weight_calc)) * float(self.weigh_charges)) 
+                    if float(order.weight)==2: 
+                        predebit= self.delivery_charges + float(self.weigh_charges)  
+                    if float(order.weight)==3: 
+                        predebit= self.delivery_charges + (float(self.weigh_charges) * 2)    
                     precredit=predebit
-                    order = order.zid 
+                    order = order
+                    
                     invoicea = inv.name
                     qty = data['weight']
                     self.action_post_commission_jv(predebit, precredit, order, invoicea, qty, shippera)
@@ -156,6 +162,8 @@ class ZacutaConnector(models.Model):
                         vals = {
                             'journal_id': self.journal_id.id,
                             'payment_type': 'inbound',
+                            'partner_id': inv.partner_id.id,
+                            'zacuta_id': order.id,
                             'date': data['booking_date'],
                             'amount': float(data['cod_amount']),
                         }  
@@ -184,7 +192,8 @@ class ZacutaConnector(models.Model):
             move_vals = {
                'date': fields.date.today(),
                'journal_id': self.je_journal_id.id,
-                'ref': str(order) +' Invoice# '+ str(invoicea),
+               'zacuta_id': order.id,
+               'ref': str(order.zid) +' Invoice# '+ str(invoicea),
             }
             move = self.env['account.move'].create(move_vals)
             debit_line = (0, 0, {
