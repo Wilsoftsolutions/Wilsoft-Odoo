@@ -9,6 +9,8 @@ class HREmployeePublic(models.Model):
     
     leave_ded = fields.Boolean(string='Not Leave Deduction')
     stop_salary = fields.Boolean(string='Stop Salary')
+    is_advance_expense = fields.Boolean(string='Advance Expense')
+    employee_family_ids = fields.One2many('hr.employee.family', 'employee_id', string='Employee Family')
     
 
 class HREmployee(models.Model):
@@ -16,7 +18,7 @@ class HREmployee(models.Model):
     
     leave_ded = fields.Boolean(string='Not Leave Deduction')
     stop_salary = fields.Boolean(string='Stop Salary')
-    
+    policy_id = fields.Many2one('hr.policy.configuration', string='Policy')
     
     
     def action_send_reminder_email_notification(self):
