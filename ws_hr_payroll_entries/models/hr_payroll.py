@@ -2,6 +2,8 @@
 
 from odoo import models, fields, api, _
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError, UserError
 
 
 class HrPayslip(models.Model):
@@ -82,44 +84,54 @@ class HrPayslip(models.Model):
 
     
     def action_leave_deduction(self):
-        day = (payslip.date_to - payslip.date_from).days + 1
-        start_date = payslip.date_from
+        day = (self.date_to - self.date_from).days + 1
+        start_date = self.date_from
         rest_day_count=0
+        max_relaxation=self.employee_id.policy_id.number_of_late
+        relxation_count=0
         for ia in range(day):
             start_date = start_date + timedelta(1)
-            exist_att = self.env['hr.attendance'].search([('employee_id','=',emp.id),('att_date','=',start_date),('worked_hours','>',0)], limit=1)
+            exist_att = self.env['hr.attendance'].search([('employee_id','=',self.employee_id.id),('att_date','=',start_date),('worked_hours','>',0)], limit=1)
             if exist_att:
                 checking_date = exist_att.check_in + relativedelta(hours=+5)
-
-                if checking_date.strftime('%H:%M').replace(':','.') > str(payslip.employee_id.policy_id.grace_period):
-                    leave_type = self.env['hr.leave.type'].search([('unpaid_leave','=',True)], limit=1)
-                    leave_types = self.env['hr.leave.type'].search([('leave_priority','!=',0)], order='leave_priority ASC')
-                    for type in leave_types:
-                        total_allocations = 0
-                        total_leaves = 0 
-                        allocation = self.env['hr.leave.allocation'].search([('employee_id','=',emp.id),('state','=','validate'),('holiday_status_id','=',type.id),('date_from','>=',payslip.date_from.replace(day=1, month=1),('date_to','<=',payslip.date_from.replace(day=31, month=12)])
-                        leaves = self.env['hr.leave'].search([('employee_id','=',emp.id),('state','=','validate'),('holiday_status_id','=',type.id),('request_date_from','>=',payslip.date_from.replace(day=1, month=1),,('request_date_to','<=',payslip.date_from.replace(day=31, month=12)])
-                        for alloc in allocation:
-                            total_allocations += alloc.number_of_days
-                        for leav in leaves:
-                            total_leaves += leav.number_of_days                                              
-                        remaining_alloc =  total_allocations - total_leaves   
-                        if   total_allocations >  total_leaves and remaining_alloc > payslip.employee_id.policy_id.leave_ded: 
-                            leave_type = type
-                            break;
-                    line_vals = {
-                        'employee_id': emp.id,
-                        'number_of_days': payslip.employee_id.policy_id.leave_ded,
-                        'request_date_from': exist_att.check_in,
-                        'request_date_to': exist_att.check_in,
-                        'holiday_status_id': leave_type.id,
-                        'name': 'Leave Deduction Due To Late Arrival',
-                    }
-                    leave = self.env['hr.leave'].create(line_vals)
-                    leave.update({
-                        'number_of_days': payslip.employee_id.policy_id.leave_ded,
-                    })
-                    leave.action_approve()
-                    if leave.state!='validate':
-                        leave.action_validate()
+                
+                if str(checking_date.strftime('%H.%M')) > str(self.employee_id.policy_id.grace_period):
+                    relxation_count += 1
+                    if max_relaxation < relxation_count: 
+                        leave_type = self.env['hr.leave.type'].search([('unpaid_leave','=',True)], limit=1)
+                        leave_types = self.env['hr.leave.type'].search([('leave_priority','!=',0),('unpaid_leave','=',True)], order='leave_priority ASC')
+                        for type in leave_types:
+                            total_allocations = 0
+                            total_leaves = 0 
+                            allocation = self.env['hr.leave.allocation'].search([('employee_id','=',self.employee_id.id),('state','=','validate'),('holiday_status_id','=',type.id),('date_from','>=',self.date_from.replace(day=1, month=1)),('date_to','<=',self.date_from.replace(day=31, month=12))])
+                            leaves = self.env['hr.leave'].search([('employee_id','=',self.employee_id.id),('state','=','validate'),('holiday_status_id','=',type.id),('request_date_from','>=',self.date_from.replace(day=1, month=1)),('request_date_to','<=',self.date_from.replace(day=31, month=12)) ])
+                            for alloc in allocation:
+                                total_allocations += alloc.number_of_days
+                            for leav in leaves:
+                                total_leaves += leav.number_of_days                                              
+                            remaining_alloc =  total_allocations - total_leaves   
+                            if   total_allocations >  total_leaves and remaining_alloc > self.employee_id.policy_id.leave_ded: 
+                                leave_type = type
+                                break;
+                        leaves = self.env['hr.leave'].search([('employee_id','=',self.employee_id.id),('request_date_from','>=',start_date ),('request_date_to' ,'<=', start_date) ])
+                        if leaves:
+                            pass
+                        else:
+                            line_vals = {
+                                'employee_id': self.employee_id.id,
+                                'number_of_days': self.employee_id.policy_id.leave_ded,
+                                'date_from': exist_att.check_in,
+                                'date_to': exist_att.check_in + relativedelta(hours=+4),
+                                'request_date_from': exist_att.att_date,
+                                'request_date_to': exist_att.att_date,
+                                'holiday_status_id': leave_type.id,
+                                'name': 'Leave Deduction Due To Late Arrival',
+                            }
+                            leave = self.env['hr.leave'].create(line_vals)
+                            leave.update({
+                                'number_of_days': self.employee_id.policy_id.leave_ded,
+                            })
+                            leave.action_approve()
+                            if leave.state!='validate':
+                                leave.action_validate()
             
