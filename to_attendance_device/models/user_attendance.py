@@ -42,7 +42,7 @@ class UserAttendance(models.Model):
          "The Timestamp and User must be unique per Device"),
     ]
     
-    @api.constrains('att_date')
+    @api.constrains('att_date','timestamp')
     def _check_att_date(self):
         """ attendance date updation. """
         for attendance in self:
@@ -61,7 +61,7 @@ class UserAttendance(models.Model):
         employees = self.env['hr.employee'].search([])
         for emp in employees:
             month_datetime = fields.date.today() - timedelta(5)
-            for month_date in range(4):
+            for month_date in range(5):
                 attendance_date1 =  month_datetime + timedelta(month_date)
                 check_in_attendance = self.env['user.attendance'].search([('is_attendance_created','=',False),('employee_id' ,'=', emp.id),('att_date','=',attendance_date1)], order='timestamp ASC', limit=1)
                 check_out_attendance = self.env['user.attendance'].search([('is_attendance_created','=',False),('employee_id' ,'=', emp.id),('att_date','=',attendance_date1)], order='timestamp DESC', limit=1)
