@@ -10,6 +10,7 @@
                 </xpath>                
                 <xpath expr="//field[@name='user_id']" position="after">
                     <field name="employee_type_id"  />
+                    <field name="is_hr_approval"  />
                 </xpath>
          </field>
     </record>
