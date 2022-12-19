@@ -133,12 +133,12 @@ class CustomerPortal(CustomerPortal):
         if not filterby:
             filterby = 'all'
         domain = searchbar_filters.get(filterby, searchbar_filters.get('all'))['domain']
-#         domain = []
+        domain = []
         if date_begin and date_end:
             domain += [('create_date', '>', date_begin), ('create_date', '<=', date_end)]   
             
-        domain += [('employee_id.user_id','=',http.request.env.context.get('uid'))] 
-        domain += [('state','=', 'done' )]       
+        #domain += [('employee_id.user_id','=',http.request.env.context.get('uid'))] 
+        #domain += [('state','=', 'done' )]       
         # search
         if search and search_in:
             search_domain = []
