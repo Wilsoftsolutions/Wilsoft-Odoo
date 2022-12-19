@@ -32,7 +32,7 @@ class HrEmployeePublic(models.Model):
     
     
     employee_type_id = fields.Many2one('emp.type.category',  string='Expense Category', domain="[('company_id','=',company_id)]"  )
-    
+    is_hr_approval = fields.Boolean(string='HR Approval')    
     
 class HrEmployee(models.Model):
     _name = 'emp.type.category'
