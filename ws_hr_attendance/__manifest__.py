@@ -18,10 +18,10 @@
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
     'category': 'Attendance',
-    'version': '15.0.0.2',
+    'version': '15.0.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'hr_attendance','de_portal_hr_service_actions','de_hr_payroll_policy'],
+    'depends': ['base', 'hr_attendance','de_portal_hr_service_actions'],
 
     # always loaded
     'data': [
