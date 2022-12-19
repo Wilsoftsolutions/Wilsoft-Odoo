@@ -12,7 +12,7 @@
     'author': "dynexcel",
     'website': "https://www.dynexcel.com",
     'category': 'Uncategorized',
-    'depends': ['portal','hr','rating','base','hr_expense'],
+    'depends': ['portal','hr','rating','base','hr_expense','de_hr_payroll_policy'],
     'data': [
         'security/ir.model.access.csv',
         'views/hr_service_menu.xml',

@@ -25,6 +25,7 @@
                 'portal',
                 'rating',
                 'de_portal_hr_service_actions',
+                'de_hr_payroll_policy',
                 'resource',
                 'digest',
                 'base',

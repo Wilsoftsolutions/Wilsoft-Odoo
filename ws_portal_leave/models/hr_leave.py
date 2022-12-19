@@ -36,20 +36,28 @@ class HrLeave(models.Model):
                 'company_id': self.employee_id.company_id.id,
             }  
             approval = self.env['hr.approval.request'].sudo().create(approval_vals)
-            for approver in self.holiday_status_id.category_id.approver_ids:
-                user = approver.user_id.id
-                if approver.user_type=='manager':
-                    user = self.employee_id.parent_id.user_id.id 
-                if approver.user_type=='hod':
-                    user = self.employee_id.department_id.manager_id.user_id.id 
-                if not user:
-                    raise UserError('You are not Allow to submit Request.User Configuration missing on Approval category or Employee Profile. Please contact to the HR Department.')
+            if line.employee_id.is_hr_approval==True and line.employee_id.company_id.hr_id:
                 approver_vals = {
-                    'user_id': user,
+                    'user_id': line.employee_id.company_id.hr_id.id  ,
                     'approver_id': approval.id,
                     'user_status': 'new',
                 }
-                approver_line = self.env['hr.approver.line'].sudo().create(approver_vals)
+                approver_line = self.env['hr.approver.line'].sudo().create(approver_vals) 
+            else: 
+                for approver in self.holiday_status_id.category_id.approver_ids:
+                    user = approver.user_id.id
+                    if approver.user_type=='manager':
+                        user = self.employee_id.parent_id.user_id.id 
+                    if approver.user_type=='hod':
+                        user = self.employee_id.department_id.manager_id.user_id.id 
+                    if not user:
+                        raise UserError('You are not Allow to submit Request.User Configuration missing on Approval category or Employee Profile. Please contact to the HR Department.')
+                    approver_vals = {
+                        'user_id': user,
+                        'approver_id': approval.id,
+                        'user_status': 'new',
+                    }
+                    approver_line = self.env['hr.approver.line'].sudo().create(approver_vals)
             approval.action_submit()
             self.update({
                 'approval_request_id': approval.id,

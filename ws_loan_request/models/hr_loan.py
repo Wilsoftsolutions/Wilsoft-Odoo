@@ -139,18 +139,27 @@ class HrLoan(models.Model):
                     'company_id': line.employee_id.company_id.id,
                 }  
                 approval = self.env['hr.approval.request'].sudo().create(approval_vals)
-                for approver in servicedata.approver_ids:
-                    user = approver.user_id.id
-                    if approver.user_type=='manager':
-                        user = line.employee_id.parent_id.user_id.id 
-                    if approver.user_type=='hod':
-                        user = line.employee_id.department_id.manager_id.user_id.id     
+
+                if line.employee_id.is_hr_approval==True and line.employee_id.company_id.hr_id:
                     approver_vals = {
-                        'user_id': user,
+                        'user_id': line.employee_id.company_id.hr_id.id  ,
                         'approver_id': approval.id,
                         'user_status': 'new',
                     }
-                    approver_line = self.env['hr.approver.line'].sudo().create(approver_vals)
+                    approver_line = self.env['hr.approver.line'].sudo().create(approver_vals)  
+                else:
+                    for approver in servicedata.approver_ids:
+                        user = approver.user_id.id
+                        if approver.user_type=='manager':
+                            user = line.employee_id.parent_id.user_id.id 
+                        if approver.user_type=='hod':
+                            user = line.employee_id.department_id.manager_id.user_id.id     
+                        approver_vals = {
+                            'user_id': user,
+                            'approver_id': approval.id,
+                            'user_status': 'new',
+                        }
+                        approver_line = self.env['hr.approver.line'].sudo().create(approver_vals)
                 approval.action_submit()
                 line.update({
                     'approval_request_id': approval.id,
