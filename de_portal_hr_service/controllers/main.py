@@ -125,7 +125,7 @@ class CustomerPortal(CustomerPortal):
     @http.route('/my/model/record/<int:service_id>/<int:model_id>/<int:record_id>', type='http', auth='public', website=True)
     def portal_my_hr_service_record(self, page=1, service_id=None, model_id=None, record_id=None, access_token=None, **kw):
         try:
-            service_sudo = self._document_check_access('hr.service', service_id, access_token)
+            service_sudo = request.env['hr.service'].sudo().search([('id','=',service_id)],limit=1)
         except (AccessError, MissingError):
             return request.redirect('/my')
         Record = request.env[service_sudo.header_model_id.model]
