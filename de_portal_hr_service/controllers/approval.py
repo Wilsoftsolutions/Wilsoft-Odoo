@@ -50,7 +50,7 @@ class CustomerPortal(CustomerPortal):
     def _prepare_home_portal_values(self, counters):
         values = super()._prepare_home_portal_values(counters)
         if 'approval_count' in counters:
-            values['approval_count'] = request.env['hr.approval.request'].search_count([])
+            values['approval_count'] = request.env['hr.approval.request'].sudo().search_count([])
         
         return values
     
