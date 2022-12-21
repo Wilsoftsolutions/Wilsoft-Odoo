@@ -112,6 +112,7 @@ class HrLeaveType(models.Model):
     
     leave_priority = fields.Integer(string='Attendance Deduction (Priority)')
     unpaid_leave = fields.Boolean(string='Unpaid Leave')
+    is_deduct = fields.Boolean(string='Is Deduct')
     
     
         
