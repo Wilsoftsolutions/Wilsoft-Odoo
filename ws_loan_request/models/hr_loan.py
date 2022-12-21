@@ -86,8 +86,8 @@ class HrLoan(models.Model):
     
     def compute_installment(self):
         """This automatically create the installment the employee need to pay to
-        company based on payment start date and the no of installments.
-            """
+           company based on payment start date and the no of installments.
+        """
         for loan in self:
             loan.loan_lines.unlink()
             date_start = datetime.strptime(str(loan.payment_date), '%Y-%m-%d')
