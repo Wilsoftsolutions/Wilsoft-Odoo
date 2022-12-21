@@ -19,7 +19,7 @@ class HREmployee(models.Model):
     
     leave_ded = fields.Boolean(string='Not Leave Deduction')
     stop_salary = fields.Boolean(string='Stop Salary')
-    
+    policy_id = fields.Many2one('hr.policy.configuration', string='Policy')
     
     
     def action_send_reminder_email_notification(self):
