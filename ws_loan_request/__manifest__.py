@@ -20,7 +20,7 @@
     'version': '15.0.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','hr','hr_payroll'],
+    'depends': ['base','hr','hr_payroll','de_portal_hr_service_actions'],
 
     # always loaded
     'data': [

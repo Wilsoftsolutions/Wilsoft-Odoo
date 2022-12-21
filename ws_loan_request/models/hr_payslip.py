@@ -16,6 +16,13 @@ from odoo.tools.misc import format_date
 from odoo.tools.safe_eval import safe_eval
 
 class HrPayslip(models.Model):
+    _inherit = 'hr.payslip.input'
+
+    loan_line_id = fields.Many2one('hr.loan.line', string='Loan Lines')    
+
+    
+
+class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
             
             

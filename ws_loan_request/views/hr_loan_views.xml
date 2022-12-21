@@ -1,5 +1,19 @@
 <odoo>
   <data>
+
+
+   <record id="hr_payslip_line_form_view" model="ir.ui.view">
+        <field name="name">hr.payslip.form.view</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='input_line_ids']//tree//field[@name='payslip_id']" position="after">
+               <field name="loan_line_id" invisible='1'/>
+            </xpath>
+        </field>
+    </record>
+
+
           <!--Loan Tree view-->
     <record id="hr_loan_tree_view" model="ir.ui.view">
         <field name="name">hr.loan.tree</field>
