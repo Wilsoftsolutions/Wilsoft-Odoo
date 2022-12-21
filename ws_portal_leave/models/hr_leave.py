@@ -26,7 +26,7 @@ class HrLeave(models.Model):
     def action_confirm_data(self):
         if self.holiday_status_id.category_id:
             approval_vals = {
-                'name': 'Duration '+str(self.number_of_days)+' Days',
+                'name': 'Duration '+str(self.request_date_from.strftime('%d-%b-%y'))+' to '+str(self.request_date_to.strftime('%d-%b-%y')) +' '  +str(self.number_of_days)+' Days',
                 'description': 'Reason '+str(self.name),
                 'user_id': self.employee_id.user_id.id,
                 'model_id': 'hr.leave',
