@@ -6,6 +6,25 @@ from dateutil.relativedelta import relativedelta
 from odoo.exceptions import ValidationError, UserError
 
 
+class HrPayslipEmployees(models.TransientModel):
+    _inherit = 'hr.payslip.employees'
+
+    
+    def _get_available_contracts_domain(self):
+        return [('contract_ids.state', 'in', ('open', 'close')), ('company_id', '=', self.env.company.id)]
+
+    def _get_employees(self):
+        active_employee_ids = self.env.context.get('active_employee_ids', False)
+        if active_employee_ids:
+            employees_slip = self.env['hr.employee'].browse(active_employee_ids)
+            employees_end = employees_slip.search([('stop_salary','=',False)])
+            return employees_end
+        # YTI check dates too
+        final_emp_list = self.env['hr.employee'].search(self._get_available_contracts_domain())
+        final_emp = final_emp_list.search([('stop_salary','=',False)])
+        return final_emp
+
+
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
     
@@ -14,6 +33,7 @@ class HrPayslip(models.Model):
         for payslip in self:
             data=[]
             
+                
             """Attendance Count"""
             attendances = self.env['hr.attendance'].search([('employee_id','=',payslip.employee_id.id),('att_date','>=',payslip.date_from),('att_date','<=',payslip.date_to)])
             attendance_day=0
@@ -67,13 +87,21 @@ class HrPayslip(models.Model):
             total_days = attendance_day + leave_day + rest_day_count
             absent_day = (day - total_days)
             absent_day_end = self.env['hr.work.entry.type'].search([('code','=','OUT')], limit=1)
-            
-            data.append((0,0,{
-              'payslip_id': payslip.id,
-              'work_entry_type_id': absent_day_end.id,
-              'name': absent_day_end.name,
-              'number_of_days':absent_day,
-            }))
+            if payslip.employee_id.leave_ded==False:
+                data.append((0,0,{
+                  'payslip_id': payslip.id,
+                  'work_entry_type_id': absent_day_end.id,
+                  'name': absent_day_end.name,
+                  'number_of_days':absent_day,
+                }))
+            else:
+                att_enda = self.env['hr.work.entry.type'].search([('code','=','WORK100')], limit=1)    
+                data.append((0,0,{
+                  'payslip_id': payslip.id,
+                  'work_entry_type_id': att_enda.id,
+                  'name': att_enda.name,
+                  'number_of_days':absent_day,
+                }))    
             payslip.worked_days_line_ids.unlink() 
             payslip.worked_days_line_ids=data
             payslip.action_leave_deduction()
