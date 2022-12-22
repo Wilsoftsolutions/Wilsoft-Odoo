@@ -192,7 +192,7 @@ class BatchslipDetail(models.Model):
                                     extra_amount += sheet2_extra_rule.amount
                     else: 
                         if extra_amount>0:
-                            sheet2.write(sheet2_row, sheet2_extra_col, str('{0:,}'.format(int(round(extra_amount))) if extra_amount !=0 else '-'), format_right)
+                            sheet2.write(sheet2_row, sheet2_extra_col, '{0:,}'.format(int(round(extra_amount)) if extra_amount !=0 else '-'), format_right)
                             sheet2_extra_col +=1
                         extra_amount = 0
                         extra_line_duplicate = extra_value.detail_sequence
@@ -218,7 +218,7 @@ class BatchslipDetail(models.Model):
                                     comp_amount += sheet2_rule.amount
                     else:   
                         if comp_amount>0:
-                            sheet2.write(sheet2_row, sheet2_comp_col, str('{0:,}'.format(int(round(comp_amount))) if comp_amount !=0 else '-'), format_right)
+                            sheet2.write(sheet2_row, sheet2_comp_col, '{0:,}'.format(int(round(comp_amount)) if comp_amount !=0 else '-'), format_right)
                             total_compansation_amount += comp_amount
                             sheet2_comp_col += 1
                         comp_amount = 0
@@ -229,7 +229,7 @@ class BatchslipDetail(models.Model):
                                 if comp_value.id == sheet2_rule.salary_rule_id.id:
                                     comp_amount += sheet2_rule.amount
                                     
-                sheet2.write(sheet2_row, sheet2_comp_col, str('{0:,}'.format(int(round(total_compansation_amount)))), format_right)
+                sheet2.write(sheet2_row, sheet2_comp_col, '{0:,}'.format(int(round(total_compansation_amount))), format_right)
                 grand_total_compansation_amount +=round(total_compansation_amount)
                 sheet2_comp_col += 1
                 sheet2_ded_col = sheet2_comp_col
@@ -240,7 +240,7 @@ class BatchslipDetail(models.Model):
                         pass
                     else:
                         if ded_amount>0:
-                            sheet2.write(sheet2_row, sheet2_ded_col, str('{0:,}'.format(int(round(ded_amount))) if ded_amount !=0 else '-'), format_right)
+                            sheet2.write(sheet2_row, sheet2_ded_col, '{0:,}'.format(int(round(ded_amount)) if ded_amount !=0 else '-'), format_right)
                             total_deduction_amount += ded_amount
                             sheet2_ded_col += 1
                         ded_amount = 0
@@ -253,10 +253,10 @@ class BatchslipDetail(models.Model):
                                     
                     
                     
-                sheet2.write(sheet2_row, sheet2_ded_col, str('{0:,}'.format(int(round(total_deduction_amount)))), format_right)
+                sheet2.write(sheet2_row, sheet2_ded_col, '{0:,}'.format(int(round(total_deduction_amount))), format_right)
                 grand_total_deduction_amount +=round(total_deduction_amount)
                 sheet2_ded_col += 1
-                sheet2.write(sheet2_row, sheet2_ded_col, str('{0:,}'.format(int(round(net_payable_sheet2)))), format_right)
+                sheet2.write(sheet2_row, sheet2_ded_col, '{0:,}'.format(int(round(net_payable_sheet2))), format_right)
                 total_net_payable_sheet2 +=round(net_payable_sheet2)
                 sheet2_sr_no += 1
                 sheet2_row += 1
@@ -270,8 +270,7 @@ class BatchslipDetail(models.Model):
         sheet2.write(sheet2_row, 5, str(), format1)
         sheet2.write(sheet2_row, 6, str(), format1)
         sheet2.write(sheet2_row, 7, str(), format1)
-        sheet2.write(sheet2_row, 8, str(), format1)
-        sheet2.write(sheet2_row, 9, str(), format1)
+
        
         grand_total_compansation_amount_list = []
         grand_total_deduction_amount_list = []
@@ -345,7 +344,7 @@ class BatchslipDetail(models.Model):
                             if  ded_rule.salary_rule_id.id==grand_rule.id:
                                 grand_compansation_total_amount += ded_rule.amount     
                     
-        grand_extra_col = 10 
+        grand_extra_col = 8 
         for grand_extra in grand_extra_total_amount_list:
             sheet2.write(sheet2_row, grand_extra_col, str('{0:,}'.format(int(round(grand_extra)))), format_total)
             grand_extra_col += 1
