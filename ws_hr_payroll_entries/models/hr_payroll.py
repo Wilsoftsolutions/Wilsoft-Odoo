@@ -68,7 +68,7 @@ class HrPayslip(models.Model):
             for ia in range(day):
                 start_date = start_date + timedelta(1)
                 attendance_present = self.env['resource.calendar.attendance'].sudo().search([('dayofweek','=',start_date.weekday())], limit=1)
-                attendd=self.env['hr.attendance'].search([('employee_id' ,'=', payslip.employee_id.id),('att_date' ,'=', start_date)]) 
+                attendd=self.env['hr.attendance'].search([('employee_id' ,'=', payslip.employee_id.id),('att_date' ,'=', start_date)], limit=1) 
                 remain_day = 0 
                 if attendd:
                     remain_day = 1 - attendd.att_count
