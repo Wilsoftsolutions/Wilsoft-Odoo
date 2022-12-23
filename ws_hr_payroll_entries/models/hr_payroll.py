@@ -48,7 +48,7 @@ class HrPayslip(models.Model):
             }))
             
             """Leave Count"""
-            leaves = self.env['hr.leave'].search([('employee_id','=',payslip.employee_id.id),('date_from','>=',payslip.date_from),('date_to','<=',payslip.date_to)])
+            leaves = self.env['hr.leave'].search([('employee_id','=',payslip.employee_id.id),('date_from','>=',payslip.date_from),('date_to','<=',payslip.date_to),('state','=','validate')])
             leave_day=0
             
             for lv in leaves:
@@ -67,7 +67,7 @@ class HrPayslip(models.Model):
             rest_day_count=0
             for ia in range(day):
                 start_date = start_date + timedelta(1)
-                attendance_present = self.env['resource.calendar.attendance'].sudo().search([('dayofweek','=',start_date.weekday())], limit=1)
+                attendance_present = self.env['resource.calendar.attendance'].sudo().search([('dayofweek','=',start_date.weekday()),('calendar_id','=',payslip.employee_id.resource_calendar_id.id)], limit=1)
                 attendd=self.env['hr.attendance'].search([('employee_id' ,'=', payslip.employee_id.id),('att_date' ,'=', start_date)], limit=1) 
                 remain_day = 0 
                 if attendd:
