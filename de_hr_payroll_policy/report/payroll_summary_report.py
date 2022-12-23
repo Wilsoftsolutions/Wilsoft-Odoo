@@ -188,7 +188,7 @@ class BatchslipDetail(models.Model):
                         for sheet2_extra_rule in slip.line_ids:
                             if extra_value.id == sheet2_extra_rule.salary_rule_id.rule_type_id.id:
                                 extra_amount += sheet2_extra_rule.amount
-                    sheet2.write(sheet2_row, sheet2_extra_col, '{0:,}'.format(int(round(extra_amount)) if extra_amount !=0 else '-'), format_right)
+                    sheet2.write(sheet2_row, sheet2_extra_col, '{0:,}'.format(int(round(extra_amount)) if extra_amount !=0 else '-', format_right)
                     sheet2_extra_col +=1
 
                                 
@@ -204,7 +204,7 @@ class BatchslipDetail(models.Model):
                         for sheet2_rule in slip.line_ids:
                             if comp_value.id == sheet2_rule.salary_rule_id.rule_type_id.id:
                                 comp_amount += sheet2_rule.amount
-                    sheet2.write(sheet2_row, sheet2_comp_col, '{0:,}'.format(int(round(comp_amount)) if comp_amount !=0 else '-'), format_right)
+                    sheet2.write(sheet2_row, sheet2_comp_col, '{0:,}'.format(int(round(comp_amount)) if comp_amount !=0 else '-', format_right)
                     total_compansation_amount += comp_amount
                     sheet2_comp_col += 1
                         
@@ -221,7 +221,7 @@ class BatchslipDetail(models.Model):
                         for sheet2_ded_rule in slip.line_ids:
                             if ded_value.id == sheet2_ded_rule.salary_rule_id.rule_type_id.id:
                                 ded_amount += sheet2_ded_rule.amount
-                    sheet2.write(sheet2_row, sheet2_ded_col, '{0:,}'.format(int(round(ded_amount)) if ded_amount !=0 else '-'), format_right)
+                    sheet2.write(sheet2_row, sheet2_ded_col, '{0:,}'.format(int(round(ded_amount)) if ded_amount !=0 else '-', format_right)
                     total_deduction_amount += ded_amount
                     sheet2_ded_col += 1
                         
