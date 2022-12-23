@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+          
+        <record id="view_hr_attendance_form_type_priority" model="ir.ui.view">
+        <field name="name">hr.attendance.form.priority</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree" />
+        <field name="arch" type="xml">
+               <xpath expr="//field[@name='employee_id']" position="after">               
+                    <field name="is_validated" invisible='1' />
+               </xpath>
+            
+             </field>
+          </record>
+    </data>
+</odoo>

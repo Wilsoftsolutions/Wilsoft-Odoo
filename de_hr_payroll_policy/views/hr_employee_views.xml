@@ -1,0 +1,34 @@
+<odoo>
+  <data>
+        <record id="view_hr_employee_form_stop_salary" model="ir.ui.view">
+        <field name="name">hr.employee.form.stop</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                       <field name="leave_ded" />
+                       <field name="policy_id" />
+                       <field name="stop_salary" />
+            </xpath>
+            
+            <xpath expr="//notebook" position="inside">
+                <page string="Dependent">
+                    <field name="employee_family_ids">
+                        <tree editable="bottom">
+                            <field name="name" />
+                            <field name="employee_id" invisible='1' />
+                            <field name="mobile"  />
+                            <field name="phone" />
+                            <field name="email"/>
+                            <field name="relation_ship" />
+                            <field name="date_of_birth" />
+                        </tree>
+                        </field>
+                </page>
+             </xpath>
+            
+            
+             </field>
+          </record>
+  </data>
+</odoo>

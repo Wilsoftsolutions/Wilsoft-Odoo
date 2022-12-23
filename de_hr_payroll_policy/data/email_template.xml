@@ -1,0 +1,137 @@
+<odoo>
+    <data>
+          
+         <record id="mail_template_employee_birth_day" model="mail.template">
+            <field name="name">Happy Birth Day</field>
+            <field name="model_id" ref="de_hr_payroll_policy.model_hr_employee"/>
+            <field name="subject">${object.name.name}: Happy Birth Day</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${ctx.get('employee_to_name', 'employee')},
+                        <br/><br/>
+                        This System Generated Happy Birth Day Notification 
+                        <br/>
+                        <br/>
+                        This is system generated email, Kindly do not reply.                        
+                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">${object.lang}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+        
+        <record id="mail_template_employee_birth_day_hr" model="mail.template">
+            <field name="name">Happy Birth Day</field>
+            <field name="model_id" ref="de_hr_payroll_policy.model_hr_employee"/>
+            <field name="subject">${object.name.name}: Happy Birth Day</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${ctx.get('employee_to_name', 'employee')},
+                        <br/><br/>
+                        Employee ${object.employee} have Birth Day on  ${object.birth_date} Notification 
+                        <br/>
+                        <br/>
+                        This is system generated email, Kindly do not reply.                        
+                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">${object.lang}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+        
+        
+        <record id="mail_template_employee_work_day_hr" model="mail.template">
+            <field name="name">Work Anniversary Day</field>
+            <field name="model_id" ref="de_hr_payroll_policy.model_hr_employee"/>
+            <field name="subject">${object.name.name}: Work Anniversary</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${ctx.get('employee_to_name', 'employee')},
+                        <br/><br/>
+                        Employee ${object.employee} have Work anniversary Day on  ${object.birth_date} Notification 
+                        <br/>
+                        <br/>
+                        This is system generated email, Kindly do not reply.                        
+                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">${object.lang}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+        
+        <record id="mail_template_employee_work_day" model="mail.template">
+            <field name="name">Work Anniversary Day</field>
+            <field name="model_id" ref="de_hr_payroll_policy.model_hr_employee"/>
+            <field name="subject">${object.name.name}: Work Anniversary</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${ctx.get('employee_to_name', 'employee')},
+                        <br/><br/>
+                        Happy Work anniversary Day on  ${object.birth_date} Notification 
+                        <br/>
+                        <br/>
+                        This is system generated email, Kindly do not reply.                        
+                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">${object.lang}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+        
+        
+        
+        <record id="mail_template_employee_retirement_age" model="mail.template">
+            <field name="name">Retirement Notification</field>
+            <field name="model_id" ref="de_hr_payroll_policy.model_hr_employee"/>
+            <field name="subject">${object.name.name}: Retirement Notification</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${ctx.get('employee_to_name', 'employee')},
+                        <br/><br/>
+                        Employee ${object.birth_date} have reached to retirement age  on  ${object.retire_date} Notification 
+                        <br/>
+                        <br/>
+                        This is system generated email, Kindly do not reply.                        
+                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">${object.lang}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+        
+        
+        
+        <record id="mail_template_employee_probation_notification" model="mail.template">
+            <field name="name">Probation End Notification</field>
+            <field name="model_id" ref="de_hr_payroll_policy.model_hr_employee"/>
+            <field name="subject">${object.name.name}: Probation End  Notification</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${ctx.get('employee_to_name', 'employee')},
+                        <br/><br/>
+                        Employee ${object.birth_date} have Probation Period End  on  ${object.retire_date} Notification 
+                        <br/>
+                        <br/>
+                        This is system generated email, Kindly do not reply.                        
+                        <tr><td style="padding:15px 20px 10px 20px;">${(object.signature or '')| safe}</td></tr>
+                    </p>
+                </div>
+            </field>
+            <field name="lang">${object.lang}</field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+
+        
+    </data>
+</odoo>
