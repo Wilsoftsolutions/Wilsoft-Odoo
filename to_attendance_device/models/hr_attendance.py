@@ -51,7 +51,8 @@ class HrAttendance(models.Model):
                 att_count = 0
             if  attendance.worked_hours==0.0:
                 att_count = 0
-            if str(policy.grace_period) <= str(attendance.check_in.strftime('%H.%M')):
+            test_check_in =  attendance.check_in + relativedelta(hours=+5)
+            if str(policy.grace_period) <= str(test_check_in.strftime('%H.%M')):
                 attendance.update({'attendance_status': 'late', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
             else:
                 attendance.update({'attendance_status': 'normal', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
