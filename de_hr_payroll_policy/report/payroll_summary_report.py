@@ -238,8 +238,9 @@ class BatchslipDetail(models.Model):
         grand_total_compansation_amount_list = []
         grand_total_deduction_amount_list = []
         grand_extra_total_amount_list = []
-        grand_extra_total_amount = 0
+        
         for grand_extra_rule in uniq_extra_rule:
+            grand_extra_total_amount = 0
             for emp in employees:
                 payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
                 for slip in payslips:
@@ -248,8 +249,9 @@ class BatchslipDetail(models.Model):
                             grand_extra_total_amount += slip_extra_rule.amount 
             grand_extra_total_amount_list.append(grand_extra_total_amount)
                 
-        grand_ded_total_amount = 0
+        
         for grand_ded_rule in uniq_deduction_rule:
+            grand_ded_total_amount = 0
             for emp in employees:
                 payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
                 for slip in payslips:
@@ -259,8 +261,9 @@ class BatchslipDetail(models.Model):
             grand_total_deduction_amount_list.append(grand_ded_total_amount) 
                 
                                 
-        grand_compansation_total_amount = 0
+        
         for grand_rule in uniq_compansation_rule:
+            grand_compansation_total_amount = 0
             for emp in employees:
                 payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
 
