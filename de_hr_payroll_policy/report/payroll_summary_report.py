@@ -23,10 +23,10 @@ class BatchslipDetail(models.Model):
         employees=self.env['hr.employee'].search([('company_id','=',data.company_id.id)])
         if data.employee_ids:
             employees=self.env['hr.employee'].search([('id','in',data.employee_ids.ids)])
-        extra_payroll_rule= self.env['hr.salary.rule'].search([('detail_report','=',True),('detail_deduction','!=',True),('detail_compansation','!=',True)], order='detail_sequence asc')
+        extra_payroll_rule= self.env['rule.parent.type'].search([('detail_report','=',True),('detail_deduction','!=',True),('detail_compansation','!=',True)], order='detail_sequence asc')
 
-        deduction_rule= self.env['hr.salary.rule'].search([('detail_deduction','=',True)], order='detail_sequence asc')
-        compansation_rule= self.env['hr.salary.rule'].search([('detail_compansation','=',True)], order='detail_sequence asc')
+        deduction_rule= self.env['rule.parent.type'].search([('detail_deduction','=',True)], order='detail_sequence asc')
+        compansation_rule= self.env['rule.parent.type'].search([('detail_compansation','=',True)], order='detail_sequence asc')
         deduction_rule_list=[]
         compansation_rule_list=[]
         extra_rule_list=[]    
@@ -36,7 +36,7 @@ class BatchslipDetail(models.Model):
                 payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
                 for extra_slip in payslips:
                     for extra_slip_rule in extra_slip.line_ids:
-                        if extra_slip_rule.salary_rule_id.id==extra_rule.id:
+                        if extra_slip_rule.salary_rule_id.rule_type_id.id==extra_rule.id:
                             extra_rule_amount +=   extra_slip_rule.amount 
             if extra_rule_amount !=0:
                 extra_rule_list.append(extra_rule.id)        
@@ -46,7 +46,7 @@ class BatchslipDetail(models.Model):
                 payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
                 for compansation_slip in payslips:
                     for compansation_rule in compansation_slip.line_ids:
-                        if compansation_rule.salary_rule_id.id==comp_rule.id:
+                        if compansation_rule.salary_rule_id.rule_type_id.id==comp_rule.id:
                             comp_rule_amount +=   compansation_rule.amount  
                         
             if comp_rule_amount !=0:
@@ -58,7 +58,7 @@ class BatchslipDetail(models.Model):
                 payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
                 for ded_slip in payslips:
                     for deduction_rule in ded_slip.line_ids:
-                        if deduction_rule.salary_rule_id.id==ded_rule.id:
+                        if deduction_rule.salary_rule_id.rule_type_id.id==ded_rule.id:
                             ded_rule_amount +=   deduction_rule.amount  
                         
             if ded_rule_amount !=0:
@@ -67,9 +67,9 @@ class BatchslipDetail(models.Model):
         uniq_compansation_rule_list = set(compansation_rule_list)   
         uniq_deduction_rule_list = set(deduction_rule_list) 
         uniq_extra_rule_list = set(extra_rule_list) 
-        uniq_deduction_rule= self.env['hr.salary.rule'].search([('id','in',list(uniq_deduction_rule_list))], order='detail_sequence asc')
-        uniq_compansation_rule= self.env['hr.salary.rule'].search([('id','in',list(uniq_compansation_rule_list))], order='detail_sequence asc')
-        uniq_extra_rule= self.env['hr.salary.rule'].search([('id','in',list(uniq_extra_rule_list))], order='detail_sequence asc')
+        uniq_deduction_rule= self.env['rule.parent.type'].search([('id','in',list(uniq_deduction_rule_list))], order='detail_sequence asc')
+        uniq_compansation_rule= self.env['rule.parent.type'].search([('id','in',list(uniq_compansation_rule_list))], order='detail_sequence asc')
+        uniq_extra_rule= self.env['rule.parent.type'].search([('id','in',list(uniq_extra_rule_list))], order='detail_sequence asc')
         
 
         sheet2_row=1
@@ -181,75 +181,51 @@ class BatchslipDetail(models.Model):
 
                 
                 sheet2_extra_col = 8
-                extra_amount = 0
-                extra_line_duplicate = 0
                 for extra_value in uniq_extra_rule:
-                    if extra_value.detail_sequence==extra_line_duplicate:
-                        payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
-                        for slip in payslips:
-                            for sheet2_extra_rule in slip.line_ids:
-                                if extra_value.id == sheet2_extra_rule.salary_rule_id.id:
-                                    extra_amount += sheet2_extra_rule.amount
-                    else: 
-                        if extra_amount>0:
-                            sheet2.write(sheet2_row, sheet2_extra_col, '{0:,}'.format(int(round(extra_amount)) if extra_amount !=0 else '-'), format_right)
-                            sheet2_extra_col +=1
-                        extra_amount = 0
-                        extra_line_duplicate = extra_value.detail_sequence
-                        payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
-                        for slip in payslips:
-                            for sheet2_extra_rule in slip.line_ids:
-                                if extra_value.id == sheet2_extra_rule.salary_rule_id.id:
-                                    extra_amount += sheet2_extra_rule.amount
+                    extra_amount = 0
+                    payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
+                    for slip in payslips:
+                        for sheet2_extra_rule in slip.line_ids:
+                            if extra_value.id == sheet2_extra_rule.salary_rule_id.rule_type_id.id:
+                                extra_amount += sheet2_extra_rule.amount
+                    sheet2.write(sheet2_row, sheet2_extra_col, '{0:,}'.format(int(round(extra_amount)) if extra_amount !=0 else '-'), format_right)
+                    sheet2_extra_col +=1
+
                                 
                     
 
                 sheet2_comp_col = sheet2_extra_col
                 total_compansation_amount = 0
                 total_deduction_amount = 0
-                comp_line_duplicate = 0
-                comp_amount = 0
                 for comp_value in uniq_compansation_rule:
-                    if comp_line_duplicate==comp_value.detail_sequence:
-                        payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
-                        for slip in payslips:
-                            for sheet2_rule in slip.line_ids:
-                                if comp_value.id == sheet2_rule.salary_rule_id.id:
-                                    comp_amount += sheet2_rule.amount
-                    else:   
-                        if comp_amount>0:
-                            sheet2.write(sheet2_row, sheet2_comp_col, '{0:,}'.format(int(round(comp_amount)) if comp_amount !=0 else '-'), format_right)
-                            total_compansation_amount += comp_amount
-                            sheet2_comp_col += 1
-                        comp_amount = 0
-                        comp_line_duplicate = comp_value.detail_sequence
-                        payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
-                        for slip in payslips:
-                            for sheet2_rule in slip.line_ids:
-                                if comp_value.id == sheet2_rule.salary_rule_id.id:
-                                    comp_amount += sheet2_rule.amount
+                    comp_amount = 0
+                    payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
+                    for slip in payslips:
+                        for sheet2_rule in slip.line_ids:
+                            if comp_value.id == sheet2_rule.salary_rule_id.rule_type_id.id:
+                                comp_amount += sheet2_rule.amount
+                    sheet2.write(sheet2_row, sheet2_comp_col, '{0:,}'.format(int(round(comp_amount)) if comp_amount !=0 else '-'), format_right)
+                    total_compansation_amount += comp_amount
+                    sheet2_comp_col += 1
+                        
                                     
                 sheet2.write(sheet2_row, sheet2_comp_col, '{0:,}'.format(int(round(total_compansation_amount))), format_right)
                 grand_total_compansation_amount +=round(total_compansation_amount)
                 sheet2_comp_col += 1
                 sheet2_ded_col = sheet2_comp_col
-                ded_line_duplicate = 0
-                ded_amount=0
+                
                 for ded_value in uniq_deduction_rule:
-                    if ded_value.detail_sequence==ded_line_duplicate:
-                        pass
-                    else:
-                        if ded_amount>0:
-                            sheet2.write(sheet2_row, sheet2_ded_col, '{0:,}'.format(int(round(ded_amount)) if ded_amount !=0 else '-'), format_right)
-                            total_deduction_amount += ded_amount
-                            sheet2_ded_col += 1
-                        ded_amount = 0
-                        ded_line_duplicate = ded_value.detail_sequence
-                        payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
-                        for slip in payslips:
-                            for sheet2_ded_rule in slip.line_ids:
-                                if ded_value.id == sheet2_ded_rule.salary_rule_id.id:
-                                    ded_amount += sheet2_ded_rule.amount
+                    ded_amount=0
+                    payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
+                    for slip in payslips:
+                        for sheet2_ded_rule in slip.line_ids:
+                            if ded_value.id == sheet2_ded_rule.salary_rule_id.rule_type_id.id:
+                                ded_amount += sheet2_ded_rule.amount
+                    sheet2.write(sheet2_row, sheet2_ded_col, '{0:,}'.format(int(round(ded_amount)) if ded_amount !=0 else '-'), format_right)
+                    total_deduction_amount += ded_amount
+                    sheet2_ded_col += 1
+                        
+                        
                                     
                     
                     
@@ -275,74 +251,38 @@ class BatchslipDetail(models.Model):
         grand_total_compansation_amount_list = []
         grand_total_deduction_amount_list = []
         grand_extra_total_amount_list = []
-        grand_ded_line_duplicate = 0
         grand_extra_total_amount = 0
         for grand_extra_rule in uniq_extra_rule:
-            if grand_ded_line_duplicate==grand_extra_rule.detail_sequence: 
-                for emp in employees:
-                    payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
-                    for slip in payslips:
-                        for slip_extra_rule in slip.line_ids:
-                            if  slip_extra_rule.salary_rule_id.id==grand_extra_rule.id:
-                                grand_extra_total_amount += slip_extra_rule.amount 
-            else:
-                if grand_extra_total_amount>0:
-                    grand_extra_total_amount_list.append(grand_extra_total_amount)
-                    grand_extra_total_amount = 0
-                grand_ded_line_duplicate=grand_extra_rule.detail_sequence
-                for emp in employees:
-                    payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
-                    for slip in payslips:
-                        for slip_extra_rule in slip.line_ids:
-                            if  slip_extra_rule.salary_rule_id.id==grand_extra_rule.id:
-                                grand_extra_total_amount += slip_extra_rule.amount
+            for emp in employees:
+                payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
+                for slip in payslips:
+                    for slip_extra_rule in slip.line_ids:
+                        if  slip_extra_rule.salary_rule_id.rule_type_id.id==grand_extra_rule.id:
+                            grand_extra_total_amount += slip_extra_rule.amount 
+            grand_extra_total_amount_list.append(grand_extra_total_amount)
                 
         grand_ded_total_amount = 0
-        grand_ded_total_duplicate = 0
         for grand_ded_rule in uniq_deduction_rule:
-            if grand_ded_rule.detail_sequence==grand_ded_total_duplicate:
-                for emp in employees:
-                    payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
-                    for slip in payslips:
-                        for slip_rule in slip.line_ids:
-                            if  slip_rule.salary_rule_id.id==grand_ded_rule.id:
-                                grand_ded_total_amount += slip_rule.amount
-            else:
-                if grand_ded_total_amount>0:
-                    grand_total_deduction_amount_list.append(grand_ded_total_amount) 
-                    grand_ded_total_amount = 0
-                grand_ded_total_duplicate = grand_ded_rule.detail_sequence  
+            for emp in employees:
+                payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
+                for slip in payslips:
+                    for slip_rule in slip.line_ids:
+                        if  slip_rule.salary_rule_id.rule_type_id.id==grand_ded_rule.id:
+                            grand_ded_total_amount += slip_rule.amount
+            grand_total_deduction_amount_list.append(grand_ded_total_amount) 
                 
-                for emp in employees:
-                    payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
-                    for slip in payslips:
-                        for slip_rule in slip.line_ids:
-                            if  slip_rule.salary_rule_id.id==grand_ded_rule.id:
-                                grand_ded_total_amount += slip_rule.amount
                                 
         grand_compansation_total_amount = 0
-        grand_comp_total_duplicate = 0                
         for grand_rule in uniq_compansation_rule:
-            if grand_rule.detail_sequence==grand_comp_total_duplicate:
-                for emp in employees:
-                    payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
+            for emp in employees:
+                payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
 
-                    for ded_slip in payslips:
-                        for ded_rule in ded_slip.line_ids:
-                            if  ded_rule.salary_rule_id.id==grand_rule.id:
-                                grand_compansation_total_amount += ded_rule.amount 
-            else:
-                if grand_compansation_total_amount>0:
-                    grand_total_compansation_amount_list.append(grand_compansation_total_amount) 
-                    grand_compansation_total_amount = 0
-                grand_comp_total_duplicate = grand_rule.detail_sequence
-                for emp in employees:
-                    payslips = self.env['hr.payslip'].search([('employee_id','=',emp.id),('date_to','>=',data.date_from),('date_to','<=',data.date_to),('state','in',('verify','done','paid'))])
-
-                    for ded_slip in payslips:
-                        for ded_rule in ded_slip.line_ids:
-                            if  ded_rule.salary_rule_id.id==grand_rule.id:
-                                grand_compansation_total_amount += ded_rule.amount     
+                for ded_slip in payslips:
+                    for ded_rule in ded_slip.line_ids:
+                        if  ded_rule.salary_rule_id.rule_type_id.id==grand_rule.id:
+                            grand_compansation_total_amount += ded_rule.amount 
+            grand_total_compansation_amount_list.append(grand_compansation_total_amount) 
+                       
                     
         grand_extra_col = 8 
         for grand_extra in grand_extra_total_amount_list:

@@ -4,3 +4,4 @@ access_hr_policy_configuration,access.hr.policy.configuration,model_hr_policy_co
 access_policy_day_attendance,access.policy.day.attendance,model_policy_day_attendance,,1,1,1,1
 access_policy_day_break,access.policy.day.break,model_policy_day_break,,1,1,1,1
 access_hr_employee_family,access.hr.employee.family,model_hr_employee_family,,1,1,1,1
+access_rule_parent_type,access.rule.parent.type,model_rule_parent_type,,1,1,1,1

@@ -26,6 +26,7 @@
         'security/ir.model.access.csv',
         'data/email_template.xml',
         'views/hr_employee_views.xml',
+        'views/rule_parent_type_views.xml',
         'views/hr_attendance_views.xml',
         'views/hr_leave_type_views.xml',
         'views/hr_salary_rule_views.xml',
