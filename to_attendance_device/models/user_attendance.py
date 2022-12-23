@@ -60,8 +60,8 @@ class UserAttendance(models.Model):
     def action_validate_attendance(self):
         employees = self.env['hr.employee'].search([])
         for emp in employees:
-            month_datetime = fields.date.today() - timedelta(45)
-            for month_date in range(45):
+            month_datetime = fields.date.today() - timedelta(10)
+            for month_date in range(10):
                 attendance_date1 =  month_datetime + timedelta(month_date)
                 check_in_attendance = self.env['user.attendance'].search([('is_attendance_created','=',False),('employee_id' ,'=', emp.id),('att_date','=',attendance_date1)], order='timestamp ASC', limit=1)
                 check_out_attendance = self.env['user.attendance'].search([('is_attendance_created','=',False),('employee_id' ,'=', emp.id),('att_date','=',attendance_date1)], order='timestamp DESC', limit=1)
