@@ -1,6 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_batch_slip_report,access.batch.slip.report,model_batch_slip_report,,1,1,1,1
-access_hr_policy_configuration,access.hr.policy.configuration,model_hr_policy_configuration,,1,1,1,1
-access_policy_day_attendance,access.policy.day.attendance,model_policy_day_attendance,,1,1,1,1
-access_policy_day_break,access.policy.day.break,model_policy_day_break,,1,1,1,1
-access_hr_employee_family,access.hr.employee.family,model_hr_employee_family,,1,1,1,1
