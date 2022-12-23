@@ -63,7 +63,7 @@ class PortalAttendanceReport(models.AbstractModel):
                     current_shift = employee.resource_calendar_id 
                  
                 is_rest_day = 0
-                attendance_present = self.env['resource.calendar.attendance'].sudo().search([('dayofweek','=',start_date.weekday())], limit=1)
+                attendance_present = self.env['resource.calendar.attendance'].sudo().search([('dayofweek','=',start_date.weekday()),('calendar_id','=',current_shift.id)], limit=1)
 #                 raise UserError(str(attendance_present.dayofweek))
                 if not attendance_present:
                     is_rest_day = 1                              
