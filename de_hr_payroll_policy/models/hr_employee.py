@@ -9,6 +9,7 @@ class HREmployeePublic(models.Model):
     
     leave_ded = fields.Boolean(string='Not Leave Deduction')
     stop_salary = fields.Boolean(string='Stop Salary')
+      
     is_advance_expense = fields.Boolean(string='Advance Expense')
     employee_family_ids = fields.One2many('hr.employee.family', 'employee_id', string='Employee Family')
     
