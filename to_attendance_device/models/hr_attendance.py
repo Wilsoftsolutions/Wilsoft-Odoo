@@ -1,6 +1,7 @@
 from collections import defaultdict
 from datetime import datetime, timedelta
 from operator import itemgetter
+from dateutil.relativedelta import relativedelta
 
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
 
