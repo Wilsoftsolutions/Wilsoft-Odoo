@@ -26,7 +26,7 @@ class MaterialRequestLine(models.Model):
 				rec.allow_update = True
 
 	note = fields.Text(string='comments')
-	product_id = fields.Many2one('product.product', 'Product', required=True)
+	product_id = fields.Many2one('product.product', 'Product', required=True, domain=[('qty_available','!=',0)])
 	description = fields.Char('Description', size=256)
 	product_qty = fields.Float('Requested Qty',digits=dp.get_precision('Product Unit of Measure'))
 	approved_qty = fields.Float('Approved Qty',digits=dp.get_precision('Product Unit of Measure'))
