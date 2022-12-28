@@ -113,7 +113,7 @@ class HrLoan(models.Model):
                 line.update({
                     'installment': line.loan_type_id.installment,
                 })
-            servicedata = self.env['category.approval'].sudo().search([('name','=',line.name),('company_id','=',line.employee_id.company_id.id)], limit=1)
+            servicedata = self.env['category.approval'].sudo().search([('name','=',line.loan_type_id.name),('company_id','=',line.employee_id.company_id.id)], limit=1)
             if not servicedata:
                 categ_vals = {
                     'name': line.loan_type_id.name,
