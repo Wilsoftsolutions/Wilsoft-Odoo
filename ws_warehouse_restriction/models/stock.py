@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from odoo.exceptions import UserError
 from openerp import models, fields, api, _
 from openerp.exceptions import Warning
 
@@ -31,11 +31,10 @@ class stock_move(models.Model):
 
             user_locations = rec.env.user.stock_location_ids
             if rec.env.user.restrict_locations:
-                message = _(
-                    'Invalid Location. You cannot process this move since you do '
-                    'not control the location "%s". '
-                    'Please contact your Adminstrator.')
+                message ='Invalid Location. You cannot process this move since you do not control the location Please contact your Adminstrator.'
                 if rec.location_id not in user_locations:
-                    raise Warning(message % rec.location_id.name)
+                    message ='Invalid Location. You cannot process this move since you do not control the location '+str(rec.location_id.name)+' Please contact your Adminstrator.'
+                    raise UserError(str(message))
                 elif rec.location_dest_id not in user_locations:
-                    raise Warning(message % rec.location_dest_id.name)
+                    message ='Invalid Location. You cannot process this move since you do not control the location '+str(rec.location_dest_id.name)+' Please contact your Adminstrator.'
+                    raise UserError(str(message))
