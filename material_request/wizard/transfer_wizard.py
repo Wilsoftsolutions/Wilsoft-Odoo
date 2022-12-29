@@ -58,12 +58,12 @@ class CreateTransfer(models.TransientModel):
             request_rec = self.env['material.request'].browse(active_id)
             if request_rec:
                 for tline in request_rec.line_ids:
-                    stquantity = self.env['stock.quant'].search([('product_id','=',tline.product_id.id),       ('location_id','=',self.source_loc_id.id)])
+                    stquantity = self.env['stock.quant'].search([('product_id','=',tline.product_id.id),('location_id','=',self.source_loc_id.id)])
                     available_qty=0
                     for qty in stquantity:
                         available_qty+=qty.available_quantity
                     if available_qty < tline.approved_qty:
-                        raise UserError('You are not allowed to enter more QTY: '+str(available_qty)+' '+str(tline.product_id.name))
+                        raise UserError('Not allowed to enter more QTY : '+str(available_qty)+' '+str(tline.product_id.name))
                 picking_id = Picking.create({
                     'partner_id': self.partner_id and self.partner_id.id or False,
                     'owner_id': self.partner_id and self.partner_id.id or False,
