@@ -64,7 +64,7 @@ class HrLoan(models.Model):
     @api.constrains('loan_amount')
     def _check_loan_amount(self):
         for line in self:
-            loan_exist = self.env['hr.loan'].search([('employee_id','=',line.employee_id.id),('date','>', line.date-timedelta(30) ),('state','!=','draft')], limit=1)
+            loan_exist = self.env['hr.loan'].search([('loan_type_id','=',line.loan_type_id.id),('employee_id','=',line.employee_id.id),('date','>', line.date-timedelta(30) ),('state','!=','draft')], limit=1)
             if loan_exist and line.loan_type_id.per_month==True:
                 raise UserError('Already Loan Request Exist in System! '+ str(loan_exist.name)+' Not Allow to request Advance twice in a single month. Please Select Date greater than '+str(loan_exist.date+timedelta(30)))
             contract = self.env['hr.contract'].search([('employee_id','=',line.employee_id.id),('state','=','open')], limit=1)
@@ -113,7 +113,7 @@ class HrLoan(models.Model):
                 line.update({
                     'installment': line.loan_type_id.installment,
                 })
-            servicedata = self.env['category.approval'].sudo().search([('name','=',line.name),('company_id','=',line.employee_id.company_id.id)], limit=1)
+            servicedata = self.env['category.approval'].sudo().search([('name','=',line.loan_type_id.name),('company_id','=',line.employee_id.company_id.id)], limit=1)
             if not servicedata:
                 categ_vals = {
                     'name': line.loan_type_id.name,

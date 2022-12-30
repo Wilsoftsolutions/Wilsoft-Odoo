@@ -43,7 +43,7 @@ class CreateTransfer(models.TransientModel):
                 return pick_type_rec.default_location_dest_id and pick_type_rec.default_location_dest_id.id
         return False
 
-    partner_id = fields.Many2one('res.partner', 'Owner', default=_get_default_supplier, help="If you want to set Owner in picking")
+    partner_id = fields.Many2one('res.partner', 'Owner',  help="If you want to set Owner in picking")
     picking_type_id = fields.Many2one('stock.picking.type', 'Deliver To', required=True, default=_get_default_type, help="select any internal picking type")
     source_loc_id = fields.Many2one('stock.location', 'Source Location', required=True, default=_get_default_source)
     dest_location_id = fields.Many2one('stock.location', 'Destination Location', required=True, default=_get_default_destination)
@@ -57,6 +57,13 @@ class CreateTransfer(models.TransientModel):
         if context.get('active_model') == 'material.request' and active_id:
             request_rec = self.env['material.request'].browse(active_id)
             if request_rec:
+                for tline in request_rec.line_ids:
+                    stquantity = self.env['stock.quant'].search([('product_id','=',tline.product_id.id),('location_id','=',self.source_loc_id.id)])
+                    available_qty=0
+                    for qty in stquantity:
+                        available_qty+=qty.available_quantity
+                    if available_qty < tline.approved_qty:
+                        raise UserError('Not allowed to enter more QTY : '+str(available_qty)+' '+str(tline.product_id.name))
                 picking_id = Picking.create({
                     'partner_id': self.partner_id and self.partner_id.id or False,
                     'owner_id': self.partner_id and self.partner_id.id or False,
@@ -81,6 +88,7 @@ class CreateTransfer(models.TransientModel):
                                         'picking_id': picking_id and picking_id.id or False
                                     })
                     picking_id.move_lines = [(6, 0, move_lines.ids)]
+                    picking_id.action_confirm()
                     message = _("Your Internal Transfer <a href=# data-oe-model=stock.picking data-oe-id=%d>%s</a> has been created") % (picking_id.id, picking_id.name)
                     request_rec.state = 'done'
                     request_rec.message_post(body=message)
