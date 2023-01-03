@@ -38,7 +38,7 @@ class ZacutaConnector(models.Model):
         data_list = req.content
         final_list = json.loads(data_list)
         inner_count = 0
-        invoices = self.env['account.move'].search([('payment_state','=','not_paid'),('ref','!=',' '),('invoice_date','>=','2022-12-01'),('invoice_date','<=','2022-12-11'),('state','=','posted')])
+        invoices = self.env['account.move'].search([('payment_state','=','not_paid'),('ref','!=',' '),('invoice_date','>=','2022-12-11'),('invoice_date','<=','2022-12-22'),('state','=','posted')])
         for inv in invoices:
             for data in final_list['bookings']:
                 existing_record = self.env['zacuta.order'].search([('zid','=',data['id'])])
