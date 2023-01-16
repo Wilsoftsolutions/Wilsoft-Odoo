@@ -58,12 +58,14 @@ class PortalAttendanceReport(models.AbstractModel):
                 remarks = 'Absent'
                 absent = '1'
                 rest_day = 'N'
+                
+                    
                 current_shift = self.env['resource.calendar'].sudo().search([('company_id','=',employee.company_id.id)], limit=1)
                 if employee.resource_calendar_id: 
                     current_shift = employee.resource_calendar_id 
                  
                 is_rest_day = 0
-                attendance_present = self.env['resource.calendar.attendance'].sudo().search([('dayofweek','=',start_date.weekday())], limit=1)
+                attendance_present = self.env['resource.calendar.attendance'].sudo().search([('dayofweek','=',start_date.weekday()),('calendar_id','=',current_shift.id)], limit=1)
 #                 raise UserError(str(attendance_present.dayofweek))
                 if not attendance_present:
                     is_rest_day = 1                              
@@ -85,7 +87,7 @@ class PortalAttendanceReport(models.AbstractModel):
                         if is_rest_day==1:
                             rest_day_count -=1
                 working_hours = 0
-                exist_attendances=self.env['hr.attendance'].sudo().search([('employee_id','=',employee.id),('att_date','=',start_date)])
+                exist_attendances=self.env['hr.attendance'].sudo().search([('employee_id','=',employee.id),('att_date','=',start_date)], order='check_in asc')
                 leaves = self.env['hr.leave'].sudo().search([('employee_id','=',employee.id),('request_date_from','<=', start_date),('request_date_to','>=', start_date),('state','in',('confirm','validate'))])
                 check_in_time = ''
                 check_out_time = ''
@@ -98,6 +100,7 @@ class PortalAttendanceReport(models.AbstractModel):
                         leave_status = 'confirm'  
                     leave_number_of_days += leave_day.number_of_days                          
                 rectification = self.env['hr.attendance.rectify'].sudo().search([('employee_id','=',employee.id),('check_in','<=', start_date),('check_out','>=', start_date),('state','in',('submitted','approved'))], limit=1)
+                rest_day='Normal' 
                 for attendee in exist_attendances:
                     check_in_time = attendee.check_in
                     check_out_time = attendee.check_out    
@@ -105,7 +108,11 @@ class PortalAttendanceReport(models.AbstractModel):
                         check_in_time = attendee.check_in + relativedelta(hours=+5)
                     if attendee.check_out: 
                         check_out_time = attendee.check_out + relativedelta(hours=+5)
-                    working_hours += attendee.worked_hours
+                    working_hours += attendee.worked_hours                    
+                    
+                    if attendee.attendance_status=='late':
+                        rest_day='Late'    
+                    
                 if   (working_hours >= (current_shift.hours_per_day-1.6)):
                     remarks = 'Attendance Present'
                     attendance_day_count += 1
