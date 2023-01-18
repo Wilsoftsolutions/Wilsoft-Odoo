@@ -101,9 +101,10 @@ class PortalAttendanceReport(models.AbstractModel):
                     leave_number_of_days += leave_day.number_of_days                          
                 rectification = self.env['hr.attendance.rectify'].sudo().search([('employee_id','=',employee.id),('check_in','<=', start_date),('check_out','>=', start_date),('state','in',('submitted','approved'))], limit=1)
                 rest_day='Normal' 
+                check_in_time = ''
+                check_out_time = '' 
                 for attendee in exist_attendances:
-                    check_in_time = attendee.check_in
-                    check_out_time = attendee.check_out    
+                      
                     if attendee.check_in:
                         check_in_time = attendee.check_in + relativedelta(hours=+5)
                     if attendee.check_out: 
