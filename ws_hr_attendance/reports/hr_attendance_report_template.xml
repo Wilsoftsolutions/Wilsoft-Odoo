@@ -92,6 +92,8 @@
                                 <t t-if="attendance['rest_day']=='Late'">
                                   <td style="background-color:red;"><span t-esc="attendance['rest_day']"/></td>
                                 </t>
+                                
+                                
                                 <td ><span t-esc="attendance['present']"/></td>
                                 <t t-if="attendance['holiday']=='1'">
                                    <td style="background-color:LightGreen;">
