@@ -5,6 +5,8 @@ import json
 import requests
 import base64
 from odoo.exceptions import RedirectWarning, UserError, ValidationError, AccessError
+from datetime import datetime, timedelta
+
 
 
 class ZacutaConnector(models.Model):
@@ -21,12 +23,19 @@ class ZacutaConnector(models.Model):
     credit_account = fields.Many2one('account.account', string='Credit Account')
     delivery_charges = fields.Float(string='Delivery Charges')
     weigh_charges = fields.Float(string='Weight Charges')
+    start_date = fields.Date(string='Start Date')
+    end_date = fields.Date(string='End Date')
+    status_list = fields.Char(string='Status')
     state = fields.Selection([
         ('draft', 'Draft'),
         ('active', 'Active'),
         ('close', 'Closed'),], string="Status",
                              default="draft")
     
+    def action_update_date(self):
+        for line in self:
+            line.start_date = fields.date.today()-timedelta(20)
+            line.end_date = fields.date.today()-timedelta(1)
     
     
     def action_fetch_data(self):
@@ -34,15 +43,17 @@ class ZacutaConnector(models.Model):
         zacuta_instance = self.env['zacuta.instance'].search([], limit=1)
         header.update({'ApiToken': str(zacuta_instance.token)})
         url = str(zacuta_instance.url)
-        req = requests.request('POST', url, headers=header)
+        req = requests.request('POST', url, headers=header, verify=False)
         data_list = req.content
         final_list = json.loads(data_list)
         inner_count = 0
-        invoices = self.env['account.move'].search([('payment_state','=','not_paid'),('ref','!=',' '),('invoice_date','>=','2022-12-01'),('state','=','posted')])
+        
+        invoices = self.env['account.move'].search([('payment_state','=','not_paid'),('ref','!=',' '),('invoice_date','>=',zacuta_instance.start_date),('invoice_date','<=',zacuta_instance.end_date),('state','=','posted')])
         for inv in invoices:
-            for data in final_list['bookings']:
+            initial_list = list(filter(lambda person: person['order_id'] == inv.ref, final_list['bookings']))            
+            for data in initial_list:
                 existing_record = self.env['zacuta.order'].search([('zid','=',data['id'])])
-                if data['status'] in ('DELIVERED','Delivered') and inv.ref==data['order_id'] and not existing_record:
+                if data['status'] in zacuta_instance.status_list  and inv.ref==data['order_id'] and not existing_record:
                     vals = {
                        'zid': data['id'],
                        'user_id': data['user_id'],
@@ -144,23 +155,24 @@ class ZacutaConnector(models.Model):
                     order.update({
                        'state': 'post',
                     })   
-                    predebit= self.delivery_charges
+                    predebit= zacuta_instance.delivery_charges
                     if float(order.weight)>1000:
                         weight_calc = ((float(order.weight)/1000)-1)    
-                        predebit = float(self.delivery_charges) + ((float(weight_calc)) * float(self.weigh_charges)) 
+                        predebit = float(self.delivery_charges) + ((float(weight_calc)) * float(zacuta_instance.weigh_charges)) 
                     if float(order.weight)==2: 
-                        predebit= self.delivery_charges + float(self.weigh_charges)  
+                        predebit= zacuta_instance.delivery_charges + float(zacuta_instance.weigh_charges)  
                     if float(order.weight)==3: 
-                        predebit= self.delivery_charges + (float(self.weigh_charges) * 2)    
+                        predebit= zacuta_instance.delivery_charges + (float(zacuta_instance.weigh_charges) * 2)    
                     precredit=predebit
                     order = order
                     
                     invoicea = inv.name
                     qty = data['weight']
                     self.action_post_commission_jv(predebit, precredit, order, invoicea, qty, shippera)
-                    if float(data['cod_amount']) > 0: 
+                    
+                    if float(data['cod_amount']) > 0 and data['status'] in ('DELIVERED','Delivered'): 
                         vals = {
-                            'journal_id': self.journal_id.id,
+                            'journal_id': zacuta_instance.journal_id.id,
                             'payment_type': 'inbound',
                             'partner_id': inv.partner_id.id,
                             'zacuta_id': order.id,
@@ -181,25 +193,26 @@ class ZacutaConnector(models.Model):
                             (credit_line + inv_line)\
                                 .filtered_domain([('account_id', '=', credit_line.account_id.id), ('reconciled', '=', False)])\
                                 .reconcile()
-                        
+        zacuta_instance.action_update_date()                
                         
                         
     def action_post_commission_jv(self, debit, credit, order, invoicea, qty, shippera):
+        zacuta_instance = self.env['zacuta.instance'].search([], limit=1)
         line_ids = []
         debit_sum = 0.0
         credit_sum = 0.0
-        if self.je_journal_id and self.debit_account and self.credit_account:
+        if zacuta_instance.je_journal_id and zacuta_instance.debit_account and zacuta_instance.credit_account:
             move_vals = {
                'date': fields.date.today(),
-               'journal_id': self.je_journal_id.id,
+               'journal_id': zacuta_instance.je_journal_id.id,
                'zacuta_id': order.id,
                'ref': str(order.zid) +' Invoice# '+ str(invoicea),
             }
             move = self.env['account.move'].create(move_vals)
             debit_line = (0, 0, {
-                   'name': 'Quantity '+str(qty)+' Zacuta Commission on'+str(fields.date.today()),
-                    'account_id': self.debit_account.id,
-                    'journal_id': self.je_journal_id.id,
+                   'name': 'Quantity '+str(qty)+' Zacuta Commission on '+str(fields.date.today()),
+                    'account_id': zacuta_instance.debit_account.id,
+                    'journal_id': zacuta_instance.je_journal_id.id,
                     'date': fields.date.today(),
                     'debit': debit,
                     'credit': 0,
@@ -208,8 +221,8 @@ class ZacutaConnector(models.Model):
             debit_sum += debit_line[2]['debit'] - debit_line[2]['credit']
             credit_line = (0, 0, {
                    'name': 'Shipper: '+str(shippera)+' Zacuta Commission '+str(fields.date.today()),
-                    'account_id': self.credit_account.id,
-                    'journal_id': self.je_journal_id.id,
+                    'account_id': zacuta_instance.credit_account.id,
+                    'journal_id': zacuta_instance.je_journal_id.id,
                     'date': fields.date.today(),
                     'debit': 0,
                     'credit': credit,

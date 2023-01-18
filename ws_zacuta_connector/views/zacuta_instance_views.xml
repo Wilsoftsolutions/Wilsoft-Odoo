@@ -29,6 +29,8 @@
                                 <field name="debit_account"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="delivery_charges"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="journal_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="start_date"  />
+                                <field name="status_list"  />
                             </group>
                             
                             <group>
@@ -36,6 +38,7 @@
                                 <field name="credit_account"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                 <field name="weigh_charges"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                                  <field name="je_journal_id"  attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="end_date"  />
 
                             </group>
                            
