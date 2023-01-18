@@ -85,7 +85,8 @@
                                 <td ><span t-esc="attendance['check_out']"  /></td>
                                 <td ><span t-esc="round(attendance['hours'],2)"/></td>
                                 <td><span t-esc="attendance['shift']"/></td>
-                                <t t-if="attendance['holiday']!='1'">
+                                
+                                
                                 <t t-if="attendance['rest_day']=='Normal'">
                                   <td ><span t-esc="attendance['rest_day']"/></td>
                                 </t>
