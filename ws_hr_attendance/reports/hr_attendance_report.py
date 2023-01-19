@@ -103,10 +103,12 @@ class PortalAttendanceReport(models.AbstractModel):
                 rest_day='Normal' 
                 check_in_time = ''
                 check_out_time = '' 
+                inner_count_fisr=0
                 for attendee in exist_attendances:
-                      
+                    inner_count_fisr+=1  
                     if attendee.check_in:
-                        check_in_time = attendee.check_in + relativedelta(hours=+5)
+                        if inner_count_fisr==1:
+                            check_in_time = attendee.check_in + relativedelta(hours=+5)
                     if attendee.check_out: 
                         check_out_time = attendee.check_out + relativedelta(hours=+5)
                     working_hours += attendee.worked_hours                    
