@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 
 class TransferReport(models.AbstractModel):
-    _name = 'report.ws_material_request_report.trmtrl_xlx'
+    _name = 'report.ws_material_request_report.mtreq_xlx'
     _description = 'Transfer Report'
     _inherit = 'report.report_xlsx.abstract'
     
