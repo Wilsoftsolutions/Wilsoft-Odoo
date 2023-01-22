@@ -1,0 +1,12 @@
+
+<odoo>
+     <report id="open_movement_report"
+            model="report.ws_material_request_report.mvt_xlx"
+            string="Transfer Report"
+            report_type="xlsx"
+            name="ws_material_request_report.mvt_xlx"
+            file="ws_material_request_report.mvt_xlx"
+    />
+    
+    
+</odoo>

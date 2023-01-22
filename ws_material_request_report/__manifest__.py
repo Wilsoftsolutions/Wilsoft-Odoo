@@ -27,6 +27,8 @@
         'security/ir.model.access.csv',
         'wizard/material_report_wizard.xml',
         'wizard/stock_trans_wizard.xml',
+        'wizard/stock_movement_wizard.xml',
+        'report/stock_movement_report.xml',
         'report/material_report.xml',
         'report/transfer_report.xml',
     ],
