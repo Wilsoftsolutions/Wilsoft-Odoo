@@ -32,12 +32,14 @@
 							<group>
 								<field name="date" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 								<field name="city" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                                <field name="description" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
 							</group>
 
 							<group class="offset-5">
 								<field name="claimed_remark" attrs="{'readonly': [('state', '!=', 'draft')]}"  options="{'no_create': True, 'no_create_edit':True}" />
 								<field name="qc_remark" attrs="{'readonly': [('state', '!=', 'waiting_for_approval')]}"  options="{'no_create': True, 'no_create_edit':True}" />
-							</group>
+							        <field name="current_location" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                                        </group>
 
 						</group>
 

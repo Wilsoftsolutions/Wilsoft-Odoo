@@ -16,6 +16,8 @@ class PlannedFormModel(models.Model):
     prepared_by = fields.Many2one("res.users", string="Prepared By", default=lambda self: self.env.user )
     qc_by = fields.Many2one('res.users',"QC By", readonly=True)
     total_amount = fields.Float("Total" , store=True)
+    current_location = fields.Char(string='Current Location')
+    description = fields.Char(string='Description')
 
     state = fields.Selection([
         ('draft', 'Draft'),

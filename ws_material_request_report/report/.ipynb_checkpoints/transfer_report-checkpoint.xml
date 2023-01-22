@@ -1,0 +1,12 @@
+
+<odoo>
+     <report id="open_transfer_report"
+            model="report.ws_material_request_report.trans_xlx"
+            string="Transfer Report"
+            report_type="xlsx"
+            name="ws_material_request_report.trans_xlx"
+            file="ws_material_request_report.trans_xlx"
+    />
+    
+    
+</odoo>

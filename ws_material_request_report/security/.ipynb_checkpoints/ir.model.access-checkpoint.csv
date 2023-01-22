@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_material_report_wizard,access.material.report.wizard,model_material_report_wizard,,1,1,1,1
+access_transfer_report_wizard,access.transfer.report.wizard,model_transfer_report_wizard,,1,1,1,1
+access_stock_movement_wizard,access.stock.movement.wizard,model_stock_movement_wizard,,1,1,1,1
