@@ -48,7 +48,7 @@ class ZacutaConnector(models.Model):
         final_list = json.loads(data_list)
         inner_count = 0
         
-        invoices = self.env['account.move'].search([('payment_state','=','not_paid'),('ref','!=',' '),('invoice_date','>=',zacuta_instance.start_date),('invoice_date','<=',zacuta_instance.end_date),('state','=','posted')])
+        invoices = self.env['account.move'].search([('ref','!=',' '),('invoice_date','>=',zacuta_instance.start_date),('invoice_date','<=',zacuta_instance.end_date),('state','=','posted')])
         for inv in invoices:
             initial_list = list(filter(lambda person: person['order_id'] == inv.ref, final_list['bookings']))            
             for data in initial_list:
@@ -182,17 +182,18 @@ class ZacutaConnector(models.Model):
                         payment = self.env['account.payment'].create(vals)
                         payment.action_post()
                         inv_line=0
-                        for je_line in inv.line_ids:
-                            if je_line.debit!=0:
-                                inv_line=self.env['account.move.line'].search([('move_id','=',je_line.move_id.id),('debit','!=',0)])    
-                        credit_line=0
-                        for payline in payment.line_ids:
-                            if payline.credit!=0:
-                                credit_line=self.env['account.move.line'].search([('move_id','=',payline.move_id.id),('credit','!=',0)]) 
-                        if credit_line:        
-                            (credit_line + inv_line)\
-                                .filtered_domain([('account_id', '=', credit_line.account_id.id), ('reconciled', '=', False)])\
-                                .reconcile()
+                        if inv.payment_state=='not_paid':
+                            for je_line in inv.line_ids:
+                                if je_line.debit!=0:
+                                    inv_line=self.env['account.move.line'].search([('move_id','=',je_line.move_id.id),('debit','!=',0)])    
+                            credit_line=0
+                            for payline in payment.line_ids:
+                                if payline.credit!=0:
+                                    credit_line=self.env['account.move.line'].search([('move_id','=',payline.move_id.id),('credit','!=',0)]) 
+                            if credit_line:        
+                                (credit_line + inv_line)\
+                                    .filtered_domain([('account_id', '=', credit_line.account_id.id), ('reconciled', '=', False)])\
+                                    .reconcile()
         zacuta_instance.action_update_date()                
                         
                         
