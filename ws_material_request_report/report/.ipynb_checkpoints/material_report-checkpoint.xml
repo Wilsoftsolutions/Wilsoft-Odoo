@@ -1,0 +1,12 @@
+
+<odoo>
+     <report id="open_material_report"
+            model="report.ws_material_request_report.mtreq_xlx"
+            string="Material Request Report"
+            report_type="xlsx"
+            name="ws_material_request_report.mtreq_xlx"
+            file="ws_material_request_report.mtreq_xlx"
+    />
+    
+    
+</odoo>
