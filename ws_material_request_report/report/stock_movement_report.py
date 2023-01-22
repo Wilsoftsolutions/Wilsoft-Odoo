@@ -16,7 +16,7 @@ class StockMovementReport(models.AbstractModel):
         sheet = workbook.add_worksheet('Stock Movement Report')
         bold = workbook. add_format({'bold': True, 'align': 'center','bg_color': '#FFFF99','border': True})
         title = workbook.add_format({'bold': True, 'align': 'center', 'border': True})
-        header_row_style = workbook.add_format({'bold': True, 'align': 'center', 'border':True})
+        header_row_style = workbook.add_format({'bold': True, 'align': 'center', 'border':True,})
         format2 = workbook.add_format({'align': 'center'})
         format3 = workbook.add_format({'align': 'center','bold': True,'border': True,})
         sheet.write(0, 1,'DATE FROM ' ,title)
@@ -29,7 +29,7 @@ class StockMovementReport(models.AbstractModel):
         sheet.write(0, 5, str([loc.name for loc in docs.location_ids]) ,title)
 
         sheet.write(0, 7,  'CATEGORY ' ,title)
-        sheet.write(0, 8, str(docs.categ_id.name) ,title)
+        sheet.write(0, 8, str(docs.categ_id.name if docs.categ_id else '-') ,title)
         
         sheet.set_column(1, 38, 20)
         total_amount_sum= 0  
@@ -44,24 +44,25 @@ class StockMovementReport(models.AbstractModel):
         sheet.write(3, 6, '', header_row_style)
         sheet.write(3, 7, '', header_row_style)
         sheet.write(3, 8, '', header_row_style)
+        
         #Opening Stock
-        sheet.merge_range(3,3, 9,11, 'Opening Stock', header_row_style)       
+        sheet.merge_range(3,9, 3,11, 'Opening Stock', header_row_style)       
         #Purchases
-        sheet.merge_range(3,3, 12,14, 'Purchases', header_row_style)
+        sheet.merge_range(3,12, 3,14, 'Purchases', header_row_style)
         #Transfer In
-        sheet.merge_range(3,3, 15,17, 'Transfer In', header_row_style)
+        sheet.merge_range(3,15, 3,17, 'Transfer In', header_row_style)
         #Sales Return
-        sheet.merge_range(3,3, 18,20, 'Sales Return', header_row_style)
+        sheet.merge_range(3,18, 3,20, 'Sales Return', header_row_style)
         #Sales
-        sheet.merge_range(3,3, 21,25, 'Sales', header_row_style)
+        sheet.merge_range(3,21, 3,25, 'Sales', header_row_style)
         #Transfer Out
-        sheet.merge_range(3,3, 27,28, 'Transfer Out', header_row_style)
+        sheet.merge_range(3,27, 3,28, 'Transfer Out', header_row_style)
         #Adjustment
-        sheet.merge_range(3,3, 29,31, 'Adjustment', header_row_style)        
+        sheet.merge_range(3,29, 3,31, 'Adjustment', header_row_style)        
         #Closing Stock
-        sheet.merge_range(3,3, 32,34, 'Closing Stock', header_row_style)
+        sheet.merge_range(3,32, 3,34, 'Closing Stock', header_row_style)
         #Stock in Transit
-        sheet.merge_range(3,3, 35,37, 'Stock in Transit', header_row_style)        
+        sheet.merge_range(3,35, 3,37, 'Stock in Transit', header_row_style)        
         
         sheet.write(4, 0, 'SR#', header_row_style)
         sheet.write(4, 1, 'Item Code', header_row_style)
