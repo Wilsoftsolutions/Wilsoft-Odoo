@@ -1,8 +1,8 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hr_service_hr,access.hr.service.hr,model_hr_service,hr.group_hr_user,1,1,1,1
-access_hr_service_items_hr,access.hr.service.items.hr,model_hr_service_items,hr.group_hr_user,1,1,1,1
-access_hr_service_record_line_hr,access.hr.service.record.line.hr,model_hr_service_record_line,hr.group_hr_user,1,1,1,1
-access_hr_service_record_line_items_hr,access.hr.service.record.line.items.hr,model_hr_service_record_line_items,hr.group_hr_user,1,1,1,1
+access_hr_service_hr,access.hr.service.hr,model_hr_service,,1,1,1,1
+access_hr_service_items_hr,access.hr.service.items.hr,model_hr_service_items,,1,1,1,1
+access_hr_service_record_line_hr,access.hr.service.record.line.hr,model_hr_service_record_line,,1,1,1,1
+access_hr_service_record_line_items_hr,access.hr.service.record.line.items.hr,model_hr_service_record_line_items,,1,1,1,1
 
 access_hr_service_portal,access.hr.service.portal,model_hr_service,base.group_portal,1,0,0,0
 access_hr_service_items_portal,access.hr.service.items.portal,model_hr_service_items,base.group_portal,1,0,0,0
@@ -16,6 +16,9 @@ access_ir_model,access.ir.model,model_ir_model,,1,1,1,1
 access_hr_expense,access.hr.expense,model_hr_expense,,1,1,1,1
 access_product_template,access.product.template,model_product_template,,1,1,1,1
 access_emp_type_category,access.emp.type.category,model_emp_type_category,,1,1,1,1
+access_hr_employee,access.hr.employee,model_hr_employee,,1,1,1,1
+access_hr_employee_public,access.hr.employee.public,model_hr_employee_public,,1,1,1,1
+
 
 
 
