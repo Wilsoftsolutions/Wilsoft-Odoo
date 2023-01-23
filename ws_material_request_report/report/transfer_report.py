@@ -51,13 +51,13 @@ class TransferReport(models.AbstractModel):
         sr_no=1
         row=4
         move_lines = self.env['stock.move.line']
-        transfers = move_lines.search([('date','>=',docs.date_from),('date','<=',docs.date_to)], order='date DESC')
+        transfers = move_lines.search([('date','>=',docs.date_from),('date','<=',docs.date_to),('state','=','done')], order='date DESC')
         if docs.categ_id and docs.location_ids:
-            transfers = move_lines.search([('date','>=',docs.date_from),('date','<=',docs.date_to),('product_id.categ_id','=',docs.categ_id.id),('location_id','in',docs.location_ids.ids)], order='date DESC')
+            transfers = move_lines.search([('date','>=',docs.date_from),('date','<=',docs.date_to),('product_id.categ_id','=',docs.categ_id.id),('location_id','in',docs.location_ids.ids),('state','=','done')], order='date DESC')
         elif docs.categ_id:
-            transfers = move_lines.search([('date','>=',docs.date_from),('date','<=',docs.date_to),('product_id.categ_id','=',docs.categ_id.id)], order='date DESC')
+            transfers = move_lines.search([('date','>=',docs.date_from),('date','<=',docs.date_to),('product_id.categ_id','=',docs.categ_id.id),('state','=','done')], order='date DESC')
         elif  docs.location_ids:
-            transfers = move_lines.search([('date','>=',docs.date_from),('date','<=',docs.date_to),('location_id','in',docs.location_ids.ids)], order='date DESC')
+            transfers = move_lines.search([('date','>=',docs.date_from),('date','<=',docs.date_to),('location_id','in',docs.location_ids.ids),('state','=','done')], order='date DESC')
         for line in transfers:  
             sheet.write(row, 0, str(sr_no), format2)
             sheet.write(row, 1, str(line.location_id.name), format2)
