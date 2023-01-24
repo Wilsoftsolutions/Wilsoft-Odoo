@@ -114,55 +114,80 @@ class StockMovementReport(models.AbstractModel):
         
         sr_no=1
         row=5
-        
-        sheet.write(row, 0, str(), header_row_style)
-        sheet.write(row, 1, str(), header_row_style)
-        sheet.write(row, 2, str(), header_row_style)
-        sheet.write(row, 3, str(), header_row_style)
-        sheet.write(row, 4, str(), header_row_style)
-        sheet.write(row, 5, str(), header_row_style)
-        sheet.write(row, 6, str(), header_row_style)
-        sheet.write(row, 7, str(), header_row_style)
-        sheet.write(row, 8, str(), header_row_style)
-        #Opening Stock
-        sheet.write(row, 9,str(), header_row_style)
-        sheet.write(row, 10, str(), header_row_style)
-        sheet.write(row, 11, str(), header_row_style)
-        #Purchases
-        sheet.write(row, 12, str(), header_row_style)
-        sheet.write(row, 13, str(), header_row_style)
-        sheet.write(row, 14, str(), header_row_style)
-        #Transfer In
-        sheet.write(row, 15, str(), header_row_style)
-        sheet.write(row, 16, str(), header_row_style)
-        sheet.write(row, 17, str(), header_row_style)
-        #Sales Return
-        sheet.write(row, 18, str(), header_row_style)
-        sheet.write(row, 19, str(), header_row_style)
-        sheet.write(row, 20, str(), header_row_style)
-        #Sales
-        sheet.write(row, 21, str(), header_row_style)
-        sheet.write(row, 22, str(), header_row_style)
-        sheet.write(row, 23, str(), header_row_style)
-        sheet.write(row, 24, str(), header_row_style)
-        sheet.write(row, 25, str(), header_row_style)
-        #Transfer Out
-        sheet.write(row, 26, str(), header_row_style)
-        sheet.write(row, 27, str(), header_row_style)
-        sheet.write(row, 28, str(), header_row_style)
-        #Adjustment
-        sheet.write(row, 29, str(), header_row_style)
-        sheet.write(row, 30, str(), header_row_style)
-        sheet.write(row, 31, str(), header_row_style)
-        #Closing Stock
-        sheet.write(row, 32, str(), header_row_style)
-        sheet.write(row, 33, str(), header_row_style)
-        sheet.write(row, 34, str(), header_row_style)
-        #stock in Transit
-        sheet.write(row, 35, str(), header_row_style)
-        sheet.write(row, 36, str(), header_row_style)
-        sheet.write(row, 37, str(), header_row_style)
-        
+        self.env.cr.execute("""SELECT p.id as pid, p.default_code as code, tmpl.name as nname, categ.name as categ_name, p.season as season, uom.name as uom_name, 
+                               tmpl.list_price as retail_price,
+                               SUM(CASE WHEN quant.inventory_date < '"""+str(docs.date_from)+"""' 
+                                               THEN quant.quantity ELSE 0 END) as opening_stock, 
+                               SUM(CASE WHEN quant.inventory_date >'"""+str(docs.date_from)+"""' AND quant.inventory_date <'"""+str(docs.date_to)+"""' 
+                                       THEN quant.quantity ELSE 0 END) as closing_stock,
+                               SUM(pline.product_qty) as purchase_qty, SUM(pline.price_unit) as po_unit_price, SUM(pline.product_qty*pline.price_unit) as po_total,
+                               SUM(sline.product_uom_qty) as so_qty, SUM(sline.price_unit) as so_unit_price, SUM(sline.product_uom_qty*sline.price_unit) as so_total 
+                               from product_product as p
+                                
+                               LEFT JOIN purchase_order_line pline ON p.id=pline.product_id
+                               LEFT JOIN purchase_order po ON pline.order_id=po.id
+                               
+                               LEFT JOIN sale_order_line sline ON p.id=sline.product_id
+                               LEFT JOIN sale_order so ON sline.order_id=so.id
+                               LEFT JOIN product_template tmpl ON p.product_tmpl_id=tmpl.id
+                               LEFT JOIN product_category categ ON tmpl.categ_id=categ.id
+                               LEFT JOIN stock_quant quant ON p.id=quant.product_id
+                               LEFT JOIN uom_uom uom ON tmpl.uom_id=uom.id 
+                               LEFT JOIN stock_move_line mvline ON p.id=mvline.product_id 
+                               WHERE po.state='done' AND so.state='done'
+                               GROUP BY pid, code, nname, categ_name, season, uom_name, retail_price limit 100;
+                               """)
+        product_list = self.env.cr.fetchall()
+        for product in product_list:           
+            sheet.write(row, 0, str(sr_no), format2)
+            sheet.write(row, 1, str(product[1] ), format2)
+            sheet.write(row, 2, str(product[2]), format2)
+            sheet.write(row, 3, str(product[3]), format2)
+            sheet.write(row, 4, str(product[4]), format2)
+            sheet.write(row, 5, str(product[4]), format2)
+            sheet.write(row, 6, str(product[4]), format2)
+            sheet.write(row, 7, str(product[5]), format2)
+            sheet.write(row, 8, str(product[6]), format2)
+            #Opening Stock
+            sheet.write(row, 9,str(product[7]), format2)
+            sheet.write(row, 10, str(product[6]), format2)
+            sheet.write(row, 11, str(product[7]*product[6]), format2)
+            #Purchases
+            sheet.write(row, 12, str(product[9]), format2)
+            sheet.write(row, 13, str(product[10]), format2)
+            sheet.write(row, 14, str(product[11]), format2)
+            #Transfer In
+            sheet.write(row, 15, str(product[12]), format2)
+            sheet.write(row, 16, str(product[13]), format2)
+            sheet.write(row, 17, str(product[14]), format2)
+            #Sales Return
+            sheet.write(row, 18, str(product[14]), format2)
+            sheet.write(row, 19, str(product[14]), format2)
+            sheet.write(row, 20, str(product[14]), format2)
+            #Sales
+            sheet.write(row, 21, str(product[14]), format2)
+            sheet.write(row, 22, str(product[14]), format2)
+            sheet.write(row, 23, str(product[14]), format2)
+            sheet.write(row, 24, str(product[14]), format2)
+            sheet.write(row, 25, str(), format2)
+            #Transfer Out
+            sheet.write(row, 26, str(), format2)
+            sheet.write(row, 27, str(), format2)
+            sheet.write(row, 28, str(), format2)
+            #Adjustment
+            sheet.write(row, 29, str(), format2)
+            sheet.write(row, 30, str(), format2)
+            sheet.write(row, 31, str(), format2)
+            #Closing Stock
+            sheet.write(row, 32, str(product[8]), format2)
+            sheet.write(row, 33, str(product[6]), format2)
+            sheet.write(row, 34, str(product[8]*product[6]), format2)
+            #stock in Transit
+            sheet.write(row, 35, str(), format2)
+            sheet.write(row, 36, str(), format2)
+            sheet.write(row, 37, str(), format2)
+            row+=1
+            sr_no+=1
         #Total
         sheet.write(row, 0, str(), header_row_style)
         sheet.write(row, 1, str(), header_row_style)

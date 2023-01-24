@@ -8,8 +8,8 @@ class StockMovementWizard(models.Model):
     _description = 'Stock Movement Wizard'
     
     
-    date_from = fields.Datetime(string='Date From', required=True,  default=fields.date.today().replace(day=1) )
-    date_to = fields.Datetime(string='Date To', required=True,  default=fields.date.today() )
+    date_from = fields.Date(string='Date From', required=True,  default=fields.date.today().replace(day=1) )
+    date_to = fields.Date(string='Date To', required=True,  default=fields.date.today() )
     categ_id = fields.Many2one('product.category', string='Category')
     location_ids = fields.Many2many('stock.location', string='Locations')
     
