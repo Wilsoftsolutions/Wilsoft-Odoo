@@ -66,7 +66,12 @@ class HrApprovalRequest(models.Model):
                     })
             model = self.env['ir.model'].sudo().search([('model','=',line.model_id)], limit=1) 
             record = self.env[model.model].search([('id','=',line.record_id)], limit=1)
-            record.action_refuse()
+            if model.model=='hr.expense.sheet':
+                record.update({'state': 'cancel'})
+                for linea in record.expense_line_ids:
+                    linea.update({'state': 'cancel'})    
+            else:
+                record.action_refuse()
             return line.write({'state': 'refused'})
 
     def action_submit(self):
