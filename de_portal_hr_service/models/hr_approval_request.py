@@ -100,7 +100,10 @@ class HrApprovalRequest(models.Model):
 #                 raise UserError(str(approver_count)+' test '+)
                 model = self.env['ir.model'].sudo().search([('model','=',self.model_id)], limit=1) 
                 record = self.env[model.model].search([('id','=',data.record_id)], limit=1)
-                record.action_approve()
+                if model.model=='hr.expense.sheet':
+                    record.approve_expense_sheets()
+                else:
+                    record.action_approve()
                 data.write({'state': 'approved'})
 
     def unlink(self):
