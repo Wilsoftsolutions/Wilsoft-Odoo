@@ -62,7 +62,7 @@ class HrExpenseSheet(models.Model):
                 approval = self.env['hr.approval.request'].sudo().create(approval_vals)
                 if line.employee_id.is_hr_approval==True and line.employee_id.company_id.hr_id:
                     approver_vals = {
-                        'user_id': line.employee_id.company_id.hr_id.id  ,
+                        'user_id': line.employee_id.company_id.hr_id.user_id.id  ,
                         'approver_id': approval.id,
                         'user_status': 'new',
                     }
