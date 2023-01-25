@@ -100,7 +100,7 @@ class HrAttendanceRectify(models.Model):
             if servicedata.approver_ids:
                 approval_vals = {
                     'name': ' Duration '+str(line.check_in + relativedelta(hours =+ 5)  )+' to '+str(line.check_out + relativedelta(hours =+ 5) ),
-                    'description': 'Attendance Rectification '+str(line.partial)+' '+str(line.employee_id.name),
+                    'description': 'Attendance Rectification '+str(line.reason)+' '+str(line.partial)+' '+str(line.employee_id.name),
                     'user_id': line.employee_id.user_id.id,
                     'model_id': 'hr.attendance.rectify',
                     'record_id': line.id,
