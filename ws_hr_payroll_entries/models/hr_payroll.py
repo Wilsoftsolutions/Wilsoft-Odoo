@@ -63,12 +63,13 @@ class HrPayslip(models.Model):
             
             """Rest Day Count"""
             day = (payslip.date_to - payslip.date_from).days + 1
+            dayss = (payslip.date_to - payslip.date_from).days + 1
             start_date = payslip.date_from
             if payslip.contract_id.date_start > payslip.date_from:
-                day = (payslip.date_to - payslip.contract_id.date_start).days + 1
+                dayss = (payslip.date_to - payslip.contract_id.date_start).days + 1
                 start_date = payslip.contract_id.date_start
             rest_day_count=0
-            for ia in range(day):
+            for ia in range(dayss):
                 start_date = start_date + timedelta(1)
                 attendance_present = self.env['resource.calendar.attendance'].sudo().search([('dayofweek','=',start_date.weekday()),('calendar_id','=',payslip.employee_id.resource_calendar_id.id)], limit=1)
                 attendd=self.env['hr.attendance'].search([('employee_id' ,'=', payslip.employee_id.id),('att_date' ,'=', start_date)], limit=1) 
