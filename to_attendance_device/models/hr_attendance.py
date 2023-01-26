@@ -71,7 +71,7 @@ class HrAttendance(models.Model):
                 for upd_att in exist_record:
                     inn_record_count+=1
                     if inn_record_count==1:
-                        
+                        leves = self.env['hr.leave']
                         upd_att.update({'attendance_status': 'late', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
             else:
                 inn_record_count=0
