@@ -63,9 +63,10 @@ class HrPayslip(models.Model):
             
             """Rest Day Count"""
             day = (payslip.date_to - payslip.date_from).days + 1
+            start_date = payslip.date_from
             if payslip.contract_id.date_start > payslip.date_from:
                 day = (payslip.date_to - payslip.contract_id.date_start).days + 1
-            start_date = payslip.date_from
+                start_date = payslip.contract_id.date_start
             rest_day_count=0
             for ia in range(day):
                 start_date = start_date + timedelta(1)
