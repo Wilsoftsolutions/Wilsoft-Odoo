@@ -37,8 +37,14 @@ class HrAttendance(models.Model):
     def _compute_attendance_Status(self):
         """ verifies if check_in is earlier than check_out. """
         for attendance in self:
+            working_hrs=0 
+            record_count=0
+            exist_record=self.env['hr.attendance'].search([('employee_id','=',attendance.employee_id.id),('att_date','=',attendance.att_date)], order='check_in asc')
+            for ext_l in exist_record:
+                record_count+=1
+                working_hrs += ext_l.worked_hours
             policy = self.env['hr.policy.configuration'].search([('company_id' ,'=', attendance.employee_id.company_id.id),('is_active','=',True)], limit=1)
-            policy_day = self.env['policy.day.attendance'].search([('policy_id' ,'=', policy.id),('hours','<=',attendance.worked_hours)], order='hours DESC', limit=1)
+            policy_day = self.env['policy.day.attendance'].search([('policy_id' ,'=', policy.id),('hours','<=',working_hrs)], order='hours DESC', limit=1)
             att_count = 1
             if policy_day.type=='1':
                 att_count = 1
@@ -53,10 +59,23 @@ class HrAttendance(models.Model):
             if  attendance.worked_hours==0.0:
                 att_count = 0
             test_check_in =  attendance.check_in + relativedelta(hours=+5)
+            exist_record=self.env['hr.attendance'].search([('employee_id','=',attendance.employee_id.id),('att_date','=',attendance.att_date)], order='check_in asc')
+            
+            test_check_in =  attendance.check_in + relativedelta(hours=+5)
+            for ext_att in exist_record:
+                test_check_in =  ext_att.check_in + relativedelta(hours=+5)     
+                break
             if float(policy.grace_period) <= float(test_check_in.strftime('%H.%M')):
-                attendance.update({'attendance_status': 'late', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
+                inn_record_count=0 
+                for upd_att in exist_record:
+                    inn_record_count+=1
+                    if record_count==1:
+                        upd_att.update({'attendance_status': 'late', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
             else:
-                attendance.update({'attendance_status': 'normal', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
+                for upd_att in exist_record:
+                    inn_record_count+=1
+                    if record_count==1:
+                        upd_att.update({'attendance_status': 'Normal', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
     
         
     @api.constrains('check_in', 'check_out')
