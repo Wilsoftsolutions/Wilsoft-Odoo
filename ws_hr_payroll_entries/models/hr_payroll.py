@@ -131,7 +131,7 @@ class HrPayslip(models.Model):
                         for type in leave_types:
                             total_allocations = 0
                             total_leaves = 0 
-                            allocation = self.env['hr.leave.allocation'].search([('employee_id','=',self.employee_id.id),('state','=','validate'),('holiday_status_id','=',type.id),('date_from','>=',self.date_from.replace(day=1, month=1)),('date_to','<=',self.date_from.replace(day=31, month=12))])
+                            allocation = self.env['hr.leave.allocation'].search([('employee_id','=',self.employee_id.id),('state','=','validate'),('holiday_status_id','=',type.id),('date_from','>=',self.date_from.replace(day=1, month=7)),('date_to','<=',self.date_from.replace(day=30, month=6))])
                             leaves = self.env['hr.leave'].search([('employee_id','=',self.employee_id.id),('state','=','validate'),('holiday_status_id','=',type.id),('request_date_from','>=',self.date_from.replace(day=1, month=1)),('request_date_to','<=',self.date_from.replace(day=31, month=12)) ])
                             for alloc in allocation:
                                 total_allocations += alloc.number_of_days
