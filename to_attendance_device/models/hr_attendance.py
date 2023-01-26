@@ -37,6 +37,7 @@ class HrAttendance(models.Model):
     def _compute_attendance_Status(self):
         """ verifies if check_in is earlier than check_out. """
         for attendance in self:
+            attendance.update({'attendance_status': 'normal', 'company_id': attendance.employee_id.company_id.id,'att_count': 0})
             working_hrs=0 
             record_count=0
             exist_record=self.env['hr.attendance'].search([('employee_id','=',attendance.employee_id.id),('att_date','=',attendance.att_date)], order='check_in asc')
