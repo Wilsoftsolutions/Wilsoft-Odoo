@@ -109,12 +109,13 @@ class PortalAttendanceReport(models.AbstractModel):
                     if attendee.check_in:
                         if inner_count_fisr==1:
                             check_in_time = attendee.check_in + relativedelta(hours=+5)
+                            if attendee.attendance_status=='late':
+                                rest_day='Late'  
                     if attendee.check_out: 
                         check_out_time = attendee.check_out + relativedelta(hours=+5)
                     working_hours += attendee.worked_hours                    
                     
-                    if attendee.attendance_status=='late':
-                        rest_day='Late'    
+                      
                     
                 if   (working_hours >= (current_shift.hours_per_day-1.6)):
                     remarks = 'Attendance Present'
