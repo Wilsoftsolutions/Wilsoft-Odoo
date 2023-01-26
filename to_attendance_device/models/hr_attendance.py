@@ -72,6 +72,7 @@ class HrAttendance(models.Model):
                     if record_count==1:
                         upd_att.update({'attendance_status': 'late', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
             else:
+                inn_record_count=0
                 for upd_att in exist_record:
                     inn_record_count+=1
                     if record_count==1:
