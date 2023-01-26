@@ -76,7 +76,7 @@ class HrAttendance(models.Model):
                 for upd_att in exist_record:
                     inn_record_count+=1
                     if record_count==1:
-                        upd_att.update({'attendance_status': 'Normal', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
+                        upd_att.update({'attendance_status': 'normal', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
     
         
     @api.constrains('check_in', 'check_out')

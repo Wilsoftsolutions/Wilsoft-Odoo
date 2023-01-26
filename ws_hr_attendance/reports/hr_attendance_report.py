@@ -105,6 +105,7 @@ class PortalAttendanceReport(models.AbstractModel):
                 check_out_time = '' 
                 inner_count_fisr=0
                 for attendee in exist_attendances:
+                    working_hours += attendee.worked_hours
                     inner_count_fisr+=1  
                     if attendee.check_in:
                         if inner_count_fisr==1:
@@ -113,7 +114,7 @@ class PortalAttendanceReport(models.AbstractModel):
                                 rest_day='Late'  
                     if attendee.check_out: 
                         check_out_time = attendee.check_out + relativedelta(hours=+5)
-                    working_hours += attendee.worked_hours                    
+                                        
                     
                       
                     
