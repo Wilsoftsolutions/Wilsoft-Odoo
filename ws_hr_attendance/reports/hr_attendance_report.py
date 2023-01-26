@@ -242,14 +242,15 @@ class PortalAttendanceReport(models.AbstractModel):
                     'rest_day': rest_day,
                     'remarks': remarks,
                 }) 
-                start_date = (start_date + timedelta(1))   
+                start_date = (start_date + timedelta(1))  
+            total_number_of_latea=total_number_of_late-2     
             employees_attendance.append({
                 'name': employee.name,
                 'employee_no': '',
-                'attendances': attendances-total_number_of_late,
+                'attendances': attendances-(total_number_of_latea*0.25),
                 'attendance_day_count': attendance_day_count,
                 'rest_day_count': rest_day_count,
-                'absent_day_count': absent_day_count+total_number_of_late,
+                'absent_day_count': absent_day_count+(total_number_of_latea*0.25),
                 'leave_day_count': leave_day_count,
             }) 
         
