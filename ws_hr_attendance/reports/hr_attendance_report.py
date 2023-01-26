@@ -122,7 +122,10 @@ class PortalAttendanceReport(models.AbstractModel):
                     attendance_day_count += 1
                     absent = '0'
                     if holiday == '1':
-                        rest_day_count -= 1     
+                        rest_day_count -= 1   
+                elif (working_hours < (current_shift.hours_per_day-0.16)) and (working_hours > (((current_shift.hours_per_day)/4)*3)):
+                    attendance_day_count += 0.75
+                    remarks = 'One Third Present'          
                 elif (working_hours < (current_shift.hours_per_day)) and (working_hours >((current_shift.hours_per_day)/2)):
                     attendance_day_count += 0.5
                     remarks = 'Half Present'    
