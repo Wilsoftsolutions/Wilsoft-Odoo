@@ -62,8 +62,14 @@ class HrAttendance(models.Model):
             for ext_att in exist_record:
                 test_check_out =  ext_att.check_in + relativedelta(hours=+5)     
                    
-            policy_dayin = self.env['policy.day.attendance.in'].search([('policy_id' ,'=', attendance.employee_id.policy_id.id),('date_from','<=',float(test_check_in.strftime('%H.%M')),('date_to','>=',float(test_check_in.strftime('%H.%M'))], order='date_from DESC', limit=1)
-            policy_dayout = self.env['policy.day.attendance.out'].search([('policy_id' ,'=', attendance.employee_id.policy_id.id),('date_from','<=',float(test_check_out.strftime('%H.%M')),('date_to','>=',float(test_check_out.strftime('%H.%M'))], order='date_from DESC', limit=1)
+            policy_dayin = self.env['policy.day.attendance.in'].search([
+            ('policy_id' ,'=', attendance.employee_id.policy_id.id),
+            ('date_from','<=',float(test_check_in.strftime('%H.%M'))),
+            ('date_to','>=',float(test_check_in.strftime('%H.%M')))], order='date_from DESC', limit=1)
+            policy_dayout = self.env['policy.day.attendance.out'].search([
+            ('policy_id' ,'=', attendance.employee_id.policy_id.id),
+            ('date_from','<=',float(test_check_out.strftime('%H.%M'))),
+            ('date_to','>=',float(test_check_out.strftime('%H.%M')))], order='date_from DESC', limit=1)
             
             att_count = 1
             in_att_count = 1
