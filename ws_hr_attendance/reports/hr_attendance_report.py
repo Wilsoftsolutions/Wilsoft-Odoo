@@ -53,7 +53,7 @@ class PortalAttendanceReport(models.AbstractModel):
             rest_day_count = 0
             absent_day_count = 0
             leave_day_count = 0
-            
+            number_absent_count_over = 0
             for dayline in range(delta_days):
                 holiday = '0'
                 remarks = 'Absent'
@@ -112,7 +112,7 @@ class PortalAttendanceReport(models.AbstractModel):
                         if inner_count_fisr==1:
                             check_in_time = attendee.check_in + relativedelta(hours=+5)
                             if attendee.attendance_status=='late':
-                                
+                                number_absent_count_over += 1  
                                 rest_day='Late'  
                     if attendee.check_out: 
                         check_out_time = attendee.check_out + relativedelta(hours=+5)
@@ -243,14 +243,16 @@ class PortalAttendanceReport(models.AbstractModel):
                     'remarks': remarks,
                 }) 
                 start_date = (start_date + timedelta(1))  
-                
+            number_absent_count_over = number_absent_count_over - 2
+            if number_absent_count_over < 0:
+                number_absent_count_over=0     
             employees_attendance.append({
                 'name': employee.name,
                 'employee_no': '',
-                'attendances': attendances,
+                'attendances': attendances - (number_absent_count_over*0.25),
                 'attendance_day_count': attendance_day_count,
                 'rest_day_count': rest_day_count,
-                'absent_day_count': absent_day_count,
+                'absent_day_count': absent_day_count + (number_absent_count_over*0.25),
                 'leave_day_count': leave_day_count,
             }) 
         
