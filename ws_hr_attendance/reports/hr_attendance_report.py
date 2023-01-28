@@ -245,14 +245,15 @@ class PortalAttendanceReport(models.AbstractModel):
                 start_date = (start_date + timedelta(1))  
             number_absent_count_over = number_absent_count_over - 2
             if number_absent_count_over < 0:
-                number_absent_count_over=0     
+                number_absent_count_over=0 
+            number_absent_count_over = number_absent_count_over*0.25        
             employees_attendance.append({
                 'name': employee.name,
                 'employee_no': '',
-                'attendances': attendances - (number_absent_count_over*0.25),
+                'attendances': float(attendances) - float(number_absent_count_over),
                 'attendance_day_count': attendance_day_count,
                 'rest_day_count': rest_day_count,
-                'absent_day_count': absent_day_count + (number_absent_count_over*0.25),
+                'absent_day_count': float(absent_day_count + (number_absent_count_over),
                 'leave_day_count': leave_day_count,
             }) 
         
