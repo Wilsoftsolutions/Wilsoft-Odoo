@@ -253,7 +253,7 @@ class PortalAttendanceReport(models.AbstractModel):
                 'attendances': float(attendances) - float(number_absent_count_over),
                 'attendance_day_count': attendance_day_count,
                 'rest_day_count': rest_day_count,
-                'absent_day_count': float(absent_day_count + (number_absent_count_over),
+                'absent_day_count': float(absent_day_count) + float(number_absent_count_over),
                 'leave_day_count': leave_day_count,
             }) 
         
