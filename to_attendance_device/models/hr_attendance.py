@@ -45,6 +45,7 @@ class HrAttendance(models.Model):
             working_hrs=0 
             record_count=0
             test_check_out=0
+            policy=attendance.employee_id.policy_id
             exist_record=self.env['hr.attendance'].search([('employee_id','=',attendance.employee_id.id),('att_date','=',attendance.att_date)], order='check_in asc')
             for ext_l in exist_record:
                 record_count+=1
