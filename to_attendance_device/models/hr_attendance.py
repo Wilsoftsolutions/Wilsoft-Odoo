@@ -66,7 +66,7 @@ class HrAttendance(models.Model):
             for ext_att in exist_record:
                 test_check_in =  ext_att.check_in + relativedelta(hours=+5)     
                 break
-            if float(policy.grace_period) <= float(test_check_in.strftime('%H.%M')):
+            if float(policy.grace_period) <= float(test_check_in.strftime('%H.%M')) and float(policy.max_grace_period) > float(test_check_in.strftime('%H.%M')):
                 inn_record_count=0 
                 for upd_att in exist_record:
                     inn_record_count+=1

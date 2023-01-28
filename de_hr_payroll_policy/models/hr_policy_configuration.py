@@ -14,6 +14,7 @@ class HRPolicyConfiguration(models.Model):
     name = fields.Char(string='Name', required=True)
     is_active = fields.Boolean(string='Active')
     grace_period = fields.Float(string='Day Grace Time', required=True)
+    max_grace_period = fields.Float(string='Grace Period End')
     number_of_late = fields.Float(string='Number of Late', required=True)
     leave_ded = fields.Float(string='Leave Deduction', required=True)
     shift_start_time = fields.Float(string='Shift Start Time', required=True)
