@@ -250,8 +250,8 @@ class PortalAttendanceReport(models.AbstractModel):
             employees_attendance.append({
                 'name': employee.name,
                 'employee_no': '',
-                'attendances': float(attendances) - float(number_absent_count_over),
-                'attendance_day_count': attendance_day_count,
+                'attendances': attendances,
+                'attendance_day_count': attendance_day_count - number_absent_count_over,
                 'rest_day_count': rest_day_count,
                 'absent_day_count': float(absent_day_count) + float(number_absent_count_over),
                 'leave_day_count': leave_day_count,
