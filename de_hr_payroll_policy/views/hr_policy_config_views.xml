@@ -24,6 +24,26 @@
                        </group>
                         
                         <notebook>
+                            <page string="Check In">
+                                <field  name="attendance_in_line_ids" >
+                                   <tree editable="bottom">
+                                     <field name="type"  />
+                                     <field name="policy_id"  invisible='1'/>  
+                                     <field name="date_from"  />
+                                     <field name="date_to"  />   
+                                   </tree> 
+                                </field>
+                            </page>
+                            <page string="Check Out">
+                                <field  name="attendance_out_line_ids" >
+                                   <tree editable="bottom">
+                                     <field name="type"  />
+                                     <field name="policy_id"  invisible='1'/>  
+                                     <field name="date_from"  /> 
+                                     <field name="date_to"  />  
+                                   </tree> 
+                                </field>
+                            </page>
                             <page string="Day Attendance">
                                 <field  name="attendance_line_ids" >
                                    <tree editable="bottom">

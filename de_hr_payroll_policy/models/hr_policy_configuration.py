@@ -16,11 +16,15 @@ class HRPolicyConfiguration(models.Model):
     grace_period = fields.Float(string='Day Grace Time', required=True)
     max_grace_period = fields.Float(string='Grace Period End')
     number_of_late = fields.Float(string='Number of Late', required=True)
+    
+    
     leave_ded = fields.Float(string='Leave Deduction', required=True)
     shift_start_time = fields.Float(string='Shift Start Time', required=True)
     shift_end_time = fields.Float(string='Shift End Time', required=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
     attendance_line_ids = fields.One2many('policy.day.attendance', 'policy_id', string='Day Attendance')
+    attendance_in_line_ids = fields.One2many('policy.day.attendance', 'policy_id', string='Day Attendance In')
+    attendance_out_line_ids = fields.One2many('policy.day.attendance', 'policy_id', string='Day Attendance Out')
     break_line_ids = fields.One2many('policy.day.break', 'policy_id' , string='Break Lines')
     
     
@@ -70,6 +74,39 @@ class HRPolicyConfiguration(models.Model):
                             leave.action_validate()
             
     
+ 
+class PolicyDayAttendance(models.Model):
+    _name = 'policy.day.attendance.in'
+    _description = 'Policy Day Attendance IN'  
+    
+    
+    type = fields.Selection([
+        ('1', 'Full'),
+        ('12', 'Half Day'),
+        ('13', 'One Third'),        
+        ('14', 'One Forth'),
+        ('15', 'Absent'),
+        ], string="Type", default="1", required=True)
+    date_from = fields.Float(string='Date From',  required=True) 
+    date_to = fields.Float(string='Date To',  required=True) 
+    policy_id = fields.Many2one('hr.policy.configuration', string='Policy') 
+    
+    
+class PolicyDayAttendance(models.Model):
+    _name = 'policy.day.attendance.out'
+    _description = 'Policy Day Attendance OUT'  
+    
+    
+    type = fields.Selection([
+        ('1', 'Full'),
+        ('12', 'Half Day'),
+        ('13', 'One Third'),        
+        ('14', 'One Forth'),
+        ('15', 'Absent'),
+        ], string="Type", default="1", required=True)
+    date_from = fields.Float(string='Date From',  required=True) 
+    date_to = fields.Float(string='Date To',  required=True) 
+    policy_id = fields.Many2one('hr.policy.configuration', string='Policy')     
     
 class PolicyDayAttendance(models.Model):
     _name = 'policy.day.attendance'

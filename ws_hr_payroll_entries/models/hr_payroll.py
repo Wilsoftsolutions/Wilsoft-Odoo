@@ -91,6 +91,8 @@ class HrPayslip(models.Model):
             """Absent Count"""
             total_days = attendance_day + leave_day + rest_day_count
             absent_day = (day - total_days)
+            if absent_day < 0:
+               absent_day=0
             absent_day_end = self.env['hr.work.entry.type'].search([('code','=','OUT')], limit=1)
             if payslip.employee_id.leave_ded==False:
                 data.append((0,0,{

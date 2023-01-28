@@ -25,10 +25,14 @@ class HrAttendance(models.Model):
     company_id = fields.Many2one('res.company', string='Company')
     att_count = fields.Float(string='Day')
     attendance_status = fields.Selection(selection=[
-            ('normal', 'Normal'),
-            ('late', 'late'),
+            ('1', 'Full'),
+            ('12', 'Half Day'),
+            ('13', 'One Third'),        
+            ('14', 'One Forth'),
+            ('15', 'Absent'),
+            ('16', 'Late'),
         ], string='Status',
-        default='normal', compute='_compute_attendance_Status')
+        default='1', compute='_compute_attendance_Status')
     
     
     
@@ -37,26 +41,15 @@ class HrAttendance(models.Model):
     def _compute_attendance_Status(self):
         """ verifies if check_in is earlier than check_out. """
         for attendance in self:
-            attendance.update({'attendance_status': 'normal', 'company_id': attendance.employee_id.company_id.id,'att_count': 0})
+            attendance.update({'attendance_status': '1', 'company_id': attendance.employee_id.company_id.id,'att_count': 0})
             working_hrs=0 
             record_count=0
+            test_check_out=0
             exist_record=self.env['hr.attendance'].search([('employee_id','=',attendance.employee_id.id),('att_date','=',attendance.att_date)], order='check_in asc')
             for ext_l in exist_record:
                 record_count+=1
                 working_hrs += ext_l.worked_hours
-            policy = self.env['hr.policy.configuration'].search([('company_id' ,'=', attendance.employee_id.company_id.id),('is_active','=',True)], limit=1)
-            policy_day = self.env['policy.day.attendance'].search([('policy_id' ,'=', policy.id),('hours','<=',working_hrs)], order='hours DESC', limit=1)
-            att_count = 1
-            if policy_day.type=='1':
-                att_count = 1
-            elif policy_day.type=='12':  
-                att_count = 0.5
-            elif policy_day.type=='13':
-                att_count = 0.75
-            elif policy_day.type=='14':
-                att_count = 0.25 
-            else:
-                att_count = 0
+            
             if  attendance.worked_hours==0.0:
                 att_count = 0
             test_check_in =  attendance.check_in + relativedelta(hours=+5)
@@ -66,19 +59,54 @@ class HrAttendance(models.Model):
             for ext_att in exist_record:
                 test_check_in =  ext_att.check_in + relativedelta(hours=+5)     
                 break
+            for ext_att in exist_record:
+                test_check_out =  ext_att.check_in + relativedelta(hours=+5)     
+                   
+            policy_dayin = self.env['policy.day.attendance.in'].search([('policy_id' ,'=', attendance.employee_id.policy_id.id),('date_from','<=',float(test_check_in.strftime('%H.%M')),('date_to','>=',float(test_check_in.strftime('%H.%M'))], order='date_from DESC', limit=1)
+            policy_dayout = self.env['policy.day.attendance.out'].search([('policy_id' ,'=', attendance.employee_id.policy_id.id),('date_from','<=',float(test_check_out.strftime('%H.%M')),('date_to','>=',float(test_check_out.strftime('%H.%M'))], order='date_from DESC', limit=1)
+            
+            att_count = 1
+            in_att_count = 1
+            out_att_count = 1
+            if policy_dayin.type=='1':
+                in_att_count = 1
+            elif policy_dayin.type=='12':  
+                in_att_count = 0.5
+            elif policy_dayin.type=='13':
+                in_att_count = 0.75
+            elif policy_dayin.type=='14':
+                in_att_count = 0.25 
+            else:
+                in_att_count = 0  
+                             
+            if policy_dayout.type=='1':
+                out_att_count = 1
+            elif policy_dayout.type=='12':  
+                out_att_count = 0.5
+            elif policy_dayout.type=='13':
+                out_att_count = 0.75
+            elif policy_dayout.type=='14':
+                out_att_count = 0.25 
+            else:
+                out_att_count = 0 
+                
+            if in_att_count < out_att_count:
+                att_count=in_att_count
+            else:
+                att_count=out_att_count                        
             if float(policy.grace_period) <= float(test_check_in.strftime('%H.%M')) and float(policy.max_grace_period) > float(test_check_in.strftime('%H.%M')):
                 inn_record_count=0 
                 for upd_att in exist_record:
                     inn_record_count+=1
                     if inn_record_count==1:
                         leves = self.env['hr.leave']
-                        upd_att.update({'attendance_status': 'late', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
+                        upd_att.update({'attendance_status': '16', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
             else:
                 inn_record_count=0
                 for upd_att in exist_record:
                     inn_record_count+=1
                     if inn_record_count==1:
-                        upd_att.update({'attendance_status': 'normal', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
+                        upd_att.update({'attendance_status': '1', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
     
         
     @api.constrains('check_in', 'check_out')
