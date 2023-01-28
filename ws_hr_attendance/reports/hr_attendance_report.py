@@ -243,7 +243,7 @@ class PortalAttendanceReport(models.AbstractModel):
                     'remarks': remarks,
                 }) 
                 start_date = (start_date + timedelta(1))  
-            number_absent_count_over = number_absent_count_over - 2
+            number_absent_count_over = number_absent_count_over - employee.policy_id.number_of_late
             if number_absent_count_over < 0:
                 number_absent_count_over=0 
             number_absent_count_over = number_absent_count_over*0.25        
