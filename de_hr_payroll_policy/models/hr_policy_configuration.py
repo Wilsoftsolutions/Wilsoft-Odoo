@@ -23,8 +23,8 @@ class HRPolicyConfiguration(models.Model):
     shift_end_time = fields.Float(string='Shift End Time', required=True)
     company_id = fields.Many2one('res.company', string='Company', required=True)
     attendance_line_ids = fields.One2many('policy.day.attendance', 'policy_id', string='Day Attendance')
-    attendance_in_line_ids = fields.One2many('policy.day.attendance', 'policy_id', string='Day Attendance In')
-    attendance_out_line_ids = fields.One2many('policy.day.attendance', 'policy_id', string='Day Attendance Out')
+    attendance_in_line_ids = fields.One2many('policy.day.attendance.in', 'policy_id', string='Day Attendance In')
+    attendance_out_line_ids = fields.One2many('policy.day.attendance.out', 'policy_id', string='Day Attendance Out')
     break_line_ids = fields.One2many('policy.day.break', 'policy_id' , string='Break Lines')
     
     
