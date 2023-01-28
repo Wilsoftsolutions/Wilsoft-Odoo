@@ -246,7 +246,7 @@ class PortalAttendanceReport(models.AbstractModel):
             number_absent_count_over = number_absent_count_over - employee.policy_id.number_of_late
             if number_absent_count_over < 0:
                 number_absent_count_over=0 
-            number_absent_count_over = number_absent_count_over*0.25        
+            number_absent_count_over = round(number_absent_count_over/2)*employee.policy_id.leave_ded        
             employees_attendance.append({
                 'name': employee.name,
                 'employee_no': '',
