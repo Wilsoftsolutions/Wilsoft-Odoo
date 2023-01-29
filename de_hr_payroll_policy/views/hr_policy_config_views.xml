@@ -17,6 +17,10 @@
                               <field name="is_active"  />
                         </group>
                         <group>
+                            <field name="shortgrace_period"   />   
+                            <field name="shortmax_grace_period" />    
+                            <field name="shortnumber_of_late" />
+                              
                             <field name="shift_start_time" />
                             <field name="shift_end_time" />
                             <field name="company_id" />  

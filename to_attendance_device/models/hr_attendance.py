@@ -75,32 +75,44 @@ class HrAttendance(models.Model):
             att_count = 1
             in_att_count = 1
             out_att_count = 1
+            status = '1'
             if policy_dayin.type=='1':
                 in_att_count = 1
+                status = '1'
             elif policy_dayin.type=='12':  
                 in_att_count = 0.5
+                status = '12'
             elif policy_dayin.type=='13':
                 in_att_count = 0.75
+                status = '13'
             elif policy_dayin.type=='14':
-                in_att_count = 0.25 
+                in_att_count = 0.25
+                status = '14' 
             else:
-                in_att_count = 0  
+                in_att_count = 0 
+                status = '1' 
                              
             if policy_dayout.type=='1':
                 out_att_count = 1
+                status = '11'
             elif policy_dayout.type=='12':  
                 out_att_count = 0.5
+                status = '12'
             elif policy_dayout.type=='13':
                 out_att_count = 0.75
+                status = '13'
             elif policy_dayout.type=='14':
-                out_att_count = 0.25 
+                out_att_count = 0.25
+                status = '14' 
             else:
                 out_att_count = 0 
                 
             if in_att_count < out_att_count:
                 att_count=in_att_count
+            elif in_att_count > out_att_count:
+                att_count=out_att_count    
             else:
-                att_count=out_att_count                        
+                att_count=in_att_count                        
             if float(policy.grace_period) <= float(test_check_in.strftime('%H.%M')) and float(policy.max_grace_period) > float(test_check_in.strftime('%H.%M')):
                 inn_record_count=0 
                 for upd_att in exist_record:
@@ -113,7 +125,7 @@ class HrAttendance(models.Model):
                 for upd_att in exist_record:
                     inn_record_count+=1
                     if inn_record_count==1:
-                        upd_att.update({'attendance_status': '1', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
+                        upd_att.update({'attendance_status': status, 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
     
         
     @api.constrains('check_in', 'check_out')
