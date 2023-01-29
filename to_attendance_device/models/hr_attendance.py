@@ -94,7 +94,7 @@ class HrAttendance(models.Model):
                              
             if policy_dayout.type=='1':
                 out_att_count = 1
-                status = '11'
+                status = '1'
             elif policy_dayout.type=='12':  
                 out_att_count = 0.5
                 status = '12'
