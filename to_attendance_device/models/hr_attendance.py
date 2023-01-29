@@ -87,7 +87,10 @@ class HrAttendance(models.Model):
                 status = '13'
             elif policy_dayin.type=='14':
                 in_att_count = 0.25
-                status = '14' 
+                status = '14'
+            elif policy_dayin.type=='16':
+                in_att_count = 1
+                status = '16'     
             else:
                 in_att_count = 0 
                 status = '1' 
@@ -104,6 +107,9 @@ class HrAttendance(models.Model):
             elif policy_dayout.type=='14':
                 out_att_count = 0.25
                 status = '14' 
+            elif policy_dayout.type=='16':
+                out_att_count = 1
+                status = '16'    
             else:
                 out_att_count = 0 
                 
