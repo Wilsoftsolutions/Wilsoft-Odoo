@@ -158,7 +158,22 @@ class ZacutaConnector(models.Model):
                     predebit= zacuta_instance.delivery_charges
                     if float(order.weight)>1000:
                         weight_calc = ((float(order.weight)/1000)-1)    
-                        predebit = float(self.delivery_charges) + ((float(weight_calc)) * float(zacuta_instance.weigh_charges)) 
+                        predebit = float(self.delivery_charges) 
+                        if weight_calc>1 and weight_calc<2:
+                            predebit += (((float(round(weight_calc))) * float(zacuta_instance.weigh_charges)) + (1 * float(zacuta_instance.weigh_charges)))
+                        elif weight_calc>2 and weight_calc<3:
+                            predebit += (((float(round(weight_calc))) * float(zacuta_instance.weigh_charges)) + (1 * float(zacuta_instance.weigh_charges)))
+                        elif weight_calc>3 and weight_calc<4:
+                            predebit += (((float(round(weight_calc))) * float(zacuta_instance.weigh_charges)) + (1 * float(zacuta_instance.weigh_charges)))
+                        elif weight_calc>4 and weight_calc<5:
+                            predebit += (((float(round(weight_calc))) * float(zacuta_instance.weigh_charges)) + (1 * float(zacuta_instance.weigh_charges)))
+                        elif weight_calc>5 and weight_calc<6:
+                            predebit += (((float(round(weight_calc))) * float(zacuta_instance.weigh_charges)) + (1 * float(zacuta_instance.weigh_charges)))
+                                              
+                        elif weight_calc>0 and weight_calc < 1:
+                            predebit += 1 * float(zacuta_instance.weigh_charges)) 
+                        else:
+                            predebit += float(round(weight_calc)) * float(zacuta_instance.weigh_charges))       
                     if float(order.weight)==2: 
                         predebit= zacuta_instance.delivery_charges + float(zacuta_instance.weigh_charges)  
                     if float(order.weight)==3: 
