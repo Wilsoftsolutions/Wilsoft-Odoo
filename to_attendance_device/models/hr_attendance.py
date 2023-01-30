@@ -118,13 +118,14 @@ class HrAttendance(models.Model):
             elif in_att_count > out_att_count:
                 att_count=out_att_count    
             else:
-                att_count=in_att_count                        
+                att_count=in_att_count 
+            if  working_hrs>8:
+                att_count=1                              
             if float(policy.grace_period) <= float(test_check_in.strftime('%H.%M')) and float(policy.max_grace_period) > float(test_check_in.strftime('%H.%M')):
                 inn_record_count=0 
                 for upd_att in exist_record:
                     inn_record_count+=1
                     if inn_record_count==1:
-                        leves = self.env['hr.leave']
                         upd_att.update({'attendance_status': '16', 'company_id': attendance.employee_id.company_id.id,'att_count': att_count})
             else:
                 inn_record_count=0
