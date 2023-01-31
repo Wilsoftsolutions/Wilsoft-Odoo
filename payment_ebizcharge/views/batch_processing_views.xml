@@ -1,0 +1,266 @@
+<odoo>
+    <data>
+        <record id="wizard_batch_process_message_view" model="ir.ui.view">
+            <field name="name">batch.process.message</field>
+            <field name="model">batch.process.message</field>
+            <field name="arch" type="xml">
+                <form string="Message">
+
+                    <div>
+                            <field name="success_count" nolabel="1" readonly="1"/> out of <field name="total" nolabel="1" readonly="1"/> invoices were successfully processed!
+                    </div>
+                    <br/>
+                    <field name="lines_ids" readonly="1"  color="green:record_message=='Success">
+                        <tree>
+                            <field name="customer_id"/>
+                            <field name="customer_name"/>
+                            <field name="invoice_no"/>
+                            <field name="status"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button string="Ok" class="oe_highlight" special="cancel" style="width:10%"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        <record id="wizard_batch_process_message_action" model="ir.actions.act_window">
+            <field name="name">Batch Process Result</field>
+            <field name="res_model">batch.process.message</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+        <record model="ir.ui.view" id="form_view_batch_processing">
+            <field name="name">Batch Processing</field>
+            <field name="model">batch.processing</field>
+            <field name="arch" type="xml">
+                <form string="Batch Processing" create="false" edit="false">
+                    <h1>Batch Processing for Invoices</h1>
+                    <br></br>
+                    <group>
+                        <group>
+                              <field name="select_customer"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <br></br>
+
+                    <button name="search_transaction" type="object"
+                    string="Refresh" class="oe_highlight"/>
+
+                    <br></br>
+                    <br></br>
+                    <notebook colspan="3">
+                        <page string="List" autofocus="autofocus">
+                            <div class="float-right" attrs="{'invisible': [ ('transaction_history_line','=',[])]}">
+                                <div class="o_setting_left_pane" style="width:20%; display:inline">
+                                    <field name="send_receipt" widget="boolean"/>
+                                </div>
+                                <div class="o_setting_right_pane" style="width:80%; display:inline">
+                                    <label for="send_receipt"/>
+                                </div>
+                            </div>
+                            <field name="transaction_history_line" widget="batch_processing" attrs="{'invisible': [ ('transaction_history_line','=',[])]}">
+                                <tree string="Invoices" editable="bottom" create="false" delete="false" limit="15">
+                                    <field name="invoice_id" invisible="1"/>
+                                    <field name="send_receipt" invisible="1"/>
+                                    <field name="default_card_id" invisible="1"/>
+                                    <field name="invoice_date" readonly="1"/>
+                                    <field name="name" readonly="1"/>
+                                    <field name="customer_name" readonly="1"/>
+                                    <field name="customer_id" readonly="1"/>
+                                    <field name="invoice_date_due" readonly="1"/>
+                                    <field name="currency_id" readonly="1" invisible="1"/>
+                                    <field name="amount" options="{'currency_field': 'currency_id'}" widget="monetary" readonly="1"/>
+                                    <field name="amount_residual" class="after_it" options="{'currency_field': 'currency_id'}" widget="monetary" readonly="1"/>
+                                    <field name="payment_method" invisible="1"/>
+                                    <field name="email" readonly="1"/>
+                                </tree>
+                            </field>
+                            <group attrs="{'invisible': [ ('transaction_history_line','!=',[])]}">
+                                    <div class="o_content">
+                                        <div class="o_view_nocontent">
+                                            <div class="o_nocontent_help">
+                                                <p class="o_view_nocontent_smiling_face">
+                                                    No invoices found.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </group>
+                        </page>
+                        <page name="batch_log" string="Log">
+                            <field name="transaction_log_lines" widget="batch_processing" attrs="{'invisible': [ ('transaction_log_lines','=',[])]}">
+                                <tree string="Logs"  create="false" delete="false" limit="15">
+                                    <field name="name" readonly="1"/>
+                                    <field name="customer_name" readonly="1"/>
+                                    <field name="customer_id" readonly="1"/>
+                                    <field name="date_paid" readonly="1"/>
+                                    <field name="currency_id" readonly="1" invisible="1"/>
+                                    <field name="amount_paid" options="{'currency_field': 'currency_id'}" widget="monetary" readonly="1"/>
+                                    <field name="payment_method" readonly="1"/>
+                                    <field name="auth_code" readonly="1"/>
+                                    <field name="trasaction_ref" readonly="1"/>
+                                    <field name="transaction_status" readonly="1"/>
+                                    <field name="email" readonly="1"/>
+                                </tree>
+                            </field>
+                            <group attrs="{'invisible': [ ('transaction_log_lines','!=',[])]}">
+                                <div class="o_content">
+                                    <div class="o_view_nocontent">
+                                        <div class="o_nocontent_help">
+                                            <p class="o_view_nocontent_smiling_face">
+                                                No record found.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </group>
+                        </page>
+                    </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="batch_processing_action" model="ir.actions.act_window">
+            <field name="name">Batch Processing Action </field>
+            <field name="res_model">batch.processing</field>
+            <field name='view_mode'>form</field>
+            <field name="target">inline</field>
+        </record>
+<!--        <record id="action_batch_processing_update" model="ir.actions.act_window">-->
+<!--            <field name="name">Batch Processing</field>-->
+<!--            <field name="res_model">batch.processing</field>-->
+<!--            <field name='view_mode'>form</field>-->
+<!--        </record>-->
+<!--        <record id="ebiz_invoice_batch_process_tree_view" model="ir.ui.view">-->
+<!--            <field name="name">download.ebiz.payments</field>-->
+<!--            <field name="model">account.move</field>-->
+<!--            <field name="arch" type="xml" >-->
+<!--                <tree create="false" delete="false" >-->
+<!--                    <field name="invoice_date" readonly="1" string="Invoice Date"/>-->
+<!--                    <field name="name" readonly="1"/>-->
+<!--                    <field name="partner_id" readonly="1" string="Customer"/>-->
+<!--                    <field name="customer_id" readonly="1"/>-->
+<!--                    <field name="invoice_date_due" readonly="1"/>-->
+<!--                    <field name="currency_id" readonly="1" invisible="1"/>-->
+<!--                    <field name="amount_total" options="{'currency_field': 'currency_id'}" widget="monetary" readonly="1" string="Invoice Total"/>-->
+<!--                    <field name="amount_residual" options="{'currency_field': 'currency_id'}" widget="monetary" readonly="1" string="Balance"/>-->
+<!--                    <field name="default_payment_method_name" readonly="1"/>-->
+<!--                    <field name="email" readonly="1"/>-->
+<!--                </tree>-->
+
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id="ebiz_invoice_batch_log_tree_view" model="ir.ui.view">-->
+<!--            <field name="name">sync.batch.log</field>-->
+<!--            <field name="model">sync.batch.log</field>-->
+<!--            <field name="arch" type="xml" >-->
+<!--                <tree string="Logs"  create="false" delete="false" limit="15">-->
+<!--                    <field name="name" readonly="1"/>-->
+<!--                    <field name="customer_name" readonly="1"/>-->
+<!--                    <field name="customer_id" readonly="1"/>-->
+<!--                    <field name="date_paid" readonly="1"/>-->
+<!--                    <field name="currency_id" readonly="1" invisible="1"/>-->
+<!--                    <field name="amount_paid" options="{'currency_field': 'currency_id'}" widget="monetary" readonly="1"/>-->
+<!--                    <field name="payment_method" readonly="1"/>-->
+<!--                    <field name="auth_code" readonly="1"/>-->
+<!--                    <field name="trasaction_ref" readonly="1"/>-->
+<!--                    <field name="transaction_status" readonly="1"/>-->
+<!--                    <field name="email" readonly="1"/>-->
+<!--                </tree>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id="ebiz_invoice_batch_process_search_view" model="ir.ui.view">-->
+<!--            <field name="name">download.ebiz.payments</field>-->
+<!--            <field name="model">account.move</field>-->
+<!--            <field name="arch" type="xml" >-->
+<!--                <search string="Payment Lines">-->
+<!--                    <field name="name" readonly="1"/>-->
+<!--                    <field name="partner_id" readonly="1"/>-->
+<!--                    <field name="customer_id" readonly="1"/>-->
+<!--                    <field name="default_payment_method_name" readonly="1"/>-->
+<!--                    <field name="email" readonly="1"/>-->
+<!--                    &lt;!&ndash; <filter string="One Week" name="one_week" domain="[('date_filter','=','1-week')]" help = "One Week"/>-->
+<!--                    <filter string="Two Weeks" name="two_week" domain="[('date_filter','=','2-week')]" help = "Two Weeks"/>-->
+<!--                    <filter string="One Month" name="one_month" domain="[('date_filter','=','1-month')]" help = "One Month"/>-->
+<!--                    <filter string="Two Months" name="two_month" domain="[('date_filter','=','2-month')]" help = "Two Months"/>-->
+<!--                    <filter string="Six Month" name="six_month" domain="[('date_filter','=','6-month')]" help = "Six Month"/>-->
+<!--                    <filter string="One Year" name="one_year" domain="[('date_filter','=','1-year')]" help = "One Year"/> &ndash;&gt;-->
+<!--                </search>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id="action_batch_processing_invoice" model="ir.actions.act_window">-->
+<!--            <field name="name">Batch Processing</field>-->
+<!--            <field name="res_model">account.move</field>-->
+<!--             <field name="domain">[('partner_id.payment_token_ids.token_type','=','credit'), ('partner_id.payment_token_ids.is_default','=',True),('payment_state', '!=', 'paid'),('state', '=', 'posted'), ('amount_residual', '>', 0)]</field>-->
+<!--            <field name='view_mode'>tree</field>-->
+<!--            <field name="context">{'ebiz_batch_process_action':1}</field>-->
+<!--            <field name='view_id' ref="ebiz_invoice_batch_process_tree_view"/>-->
+<!--            <field name='search_view_id' ref="ebiz_invoice_batch_process_search_view"/>-->
+<!--        </record>-->
+
+<!--        <record id="action_batch_processing_log" model="ir.actions.act_window">-->
+<!--            <field name="name">Logs</field>-->
+<!--            <field name="res_model">sync.batch.log</field>-->
+<!--            <field name='view_mode'>tree</field>-->
+<!--            <field name='view_id' ref="ebiz_invoice_batch_log_tree_view"/>-->
+<!--        </record>-->
+
+<!--        <record id="model_action_batch_process_invoice" model="ir.actions.server">-->
+<!--            <field name="name">Process</field>-->
+<!--            <field name="model_id" ref="payment_ebizcharge.model_account_move"/>-->
+<!--            <field name="binding_model_id" ref="payment_ebizcharge.model_account_move"/>-->
+<!--            <field name="binding_view_types">list</field>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">action = records.batch_process_invoice()</field>-->
+<!--        </record>-->
+
+        <menuitem id="batch_processing_menu_up"
+            name="Batch Processing for Invoices"
+            parent="ebiz_transactions_menu_main" action="batch_processing_action" />
+
+<!--        <menuitem id="batch_processing_invoice_list"-->
+<!--            name="Invoices"-->
+<!--            parent="batch_processing_menu_up"-->
+<!--            action="action_batch_processing_invoice"-->
+<!--            sequence="1"/>-->
+
+<!--        <menuitem id="batch_processing_log"-->
+<!--            name="Logs"-->
+<!--            parent="batch_processing_menu_up"-->
+<!--            action="action_batch_processing_log"-->
+<!--            sequence="1"/>-->
+
+        <record id="view_invoice_batch_send_receipt_form" model="ir.ui.view">
+            <field name="name">message.wizard</field>
+            <field name="model">ebiz.invoice.send.receipt</field>
+            <field name="arch" type="xml" >
+                <form string="Invoice Batch Process">
+                    <group class="oe_title">
+                        <field name="send_receipt"/>
+                    </group>
+                    <footer>
+                        <button name="proceed" string="Process" type="object" class="oe_highlight" style="width:10%"/>
+                        <button string="Cancel" special="cancel" style="width:10%"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_invoice_batch_send_receipt" model="ir.actions.act_window">
+            <field name="name">Lost Reason</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ebiz.invoice.send.receipt</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="payment_ebizcharge.view_invoice_batch_send_receipt_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

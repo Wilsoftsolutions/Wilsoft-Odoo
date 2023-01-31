@@ -1,0 +1,47 @@
+<odoo>
+    <data>
+
+
+         <record id="view_ebiz_request_payments_bulk" model="ir.ui.view">
+            <field name="name">Email Pay for Invoices</field>
+            <field name="model">ebiz.request.payment.bulk</field>
+            <field name="arch" type="xml" >
+                <form string="Email Pay for Invoices" edit="1">
+                    <group>
+                        <field name="payment_lines" readonly='0' widget="make_editable">
+                            <tree string="Payment Lines" editable="bottom"  edit="1" create="false" delete="false" limit="15">
+                                <field name="name" readonly="1"/>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="customer_name" readonly="1"/>
+                                <field name="amount_due" readonly="0" options="{'currency_field': 'currency_id'}" widget="monetary"/>
+                                <field name="email_id" class="my_editable_email_id" readonly="0"/>
+                            </tree>
+                        </field>
+                        <group>
+                            <field name="select_template" required="1" domain="[('template_type_id', '=', 'WebFormEmail')]" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                            <field name="email_subject"/>
+                        </group>
+
+                    </group>
+
+
+
+                    <footer>
+                        <button name="send_email" type="object" string="Send Email" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_ebiz_request_payments_bulk" model="ir.actions.act_window">
+            <field name="name">Email Pay for Invoices</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ebiz.request.payment.bulk</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_ebiz_request_payments_bulk"/>
+            <field name="context">{'compute_from_view': True}</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

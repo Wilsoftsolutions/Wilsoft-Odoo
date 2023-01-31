@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <data noupdate="1">
+            <record id="my_record_05" model="upload.customers">
+                <field name="add_filter">0</field>
+            </record>
+        </data>
+
+        <record model="ir.ui.view" id="form_view_request_upload_customers">
+            <field name="name">Upload Customers</field>
+            <field name="model">upload.customers</field>
+            <field name="arch" type="xml">
+                <form string="Upload Customers" create="false">
+                        <h1>Upload Customers</h1>
+                        <br></br>
+                        <notebook colspan="3">
+                            <page string="List" autofocus="autofocus">
+                                <field name="transaction_history_line" widget="upload_customer" attrs="{'invisible': [ ('transaction_history_line','=',[])]}">
+                                    <tree string="Transaction Lines" editable="bottom" create="false" delete="false" limit="15">
+                                        <field name="customer_name" readonly="1"/>
+                                        <field name="customer_id" readonly="1"/>
+                                        <field name="email_id" readonly="1"/>
+                                        <field name="customer_phone" readonly="1"/>
+                                        <field name="street" readonly="1"/>
+                                        <field name="customer_city" readonly="1"/>
+                                        <field name="country" readonly="1"/>
+                                        <field name="last_sync_date" readonly="1"/>
+                                        <field name="sync_status" readonly="1"/>
+                                    </tree>
+                                </field>
+
+                             <group attrs="{'invisible': [ ('transaction_history_line','!=',[])]}">
+                                    <div class="o_content" >
+                                        <div class="o_view_nocontent">
+                                            <div class="o_nocontent_help">
+                                                <p class="o_view_nocontent_smiling_face">
+                                                    No record found.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </group>
+                            </page>
+
+                            <page string="Logs">
+                                <field name="logs_line" widget="upload_customer" attrs="{'invisible': [ ('logs_line','=',[])]}">
+                                    <tree string="Transaction Lines" editable="bottom" create="false" delete="false" limit="15">
+                                        <field name="name" readonly="1"/>
+                                        <field name="customer_id" readonly="1"/>
+                                        <field name="street" readonly="1"/>
+                                        <field name="email_id" readonly="1"/>
+                                        <field name="customer_phone" readonly="1"/>
+<!--                                        <field name="user_id" readonly="1"/>-->
+                                        <field name="last_sync_date" readonly="1"/>
+                                        <field name="sync_status" readonly="1"/>
+                                    </tree>
+                                </field>
+                                <group attrs="{'invisible': [ ('logs_line','!=',[])]}">
+                                    <div class="o_content" >
+                                        <div class="o_view_nocontent">
+                                            <div class="o_nocontent_help">
+                                                <p class="o_view_nocontent_smiling_face">
+                                                    No logs found
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </group>
+
+                            </page>
+                        </notebook>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_res_partner_upload_customers" model="ir.actions.act_window">
+            <field name="name">Upload Customers</field>
+            <field name="res_model">upload.customers</field>
+             <field name="res_id" ref="my_record_05"/>
+             <field name="target">inline</field>
+            <field name='view_mode'>form,tree</field>
+        </record>
+
+
+        <menuitem id="menu_ebiz_upload_res_partner"
+            name="Upload Customers"
+            parent="ebiz_upload_menu_main"
+            action="action_res_partner_upload_customers"
+            sequence="1"/>
+
+    </data>
+</odoo>
