@@ -1,0 +1,99 @@
+<odoo>
+    <data>
+<!--        <record id="ebiz_sync_download_tree_view" model="ir.ui.view">-->
+<!--            <field name="name">download.ebiz.payments</field>-->
+<!--            <field name="model">ebiz.payments.lines</field>-->
+<!--            <field name="arch" type="xml" >-->
+<!--                <tree string="Payment Lines" edit="false" create="false" delete="false">-->
+<!--                    <field name="type_id" readonly="1"/>-->
+<!--                    <field name="invoice_number" readonly="1"/>-->
+<!--                    <field name="partner_id" readonly="1"/>-->
+<!--                    <field name="customer_id" readonly="1"/>-->
+<!--                    <field name="date_paid" readonly="1"/>-->
+<!--                    <field name="currency_id" invisible="1"/>-->
+<!--                    <field name="invoice_amount" readonly="1" options="{'currency_field': 'currency_id'}" widget="monetary"/>-->
+<!--                    <field name="paid_amount" readonly="1" options="{'currency_field': 'currency_id'}" widget="monetary"/>-->
+<!--                    <field name="amount_due" readonly="1" options="{'currency_field': 'currency_id'}" widget="monetary"/>-->
+<!--                    <field name="payment_method" readonly="1"/>-->
+<!--                    <field name="auth_code" readonly="1" />-->
+<!--                    <field name="ref_num" readonly="1" />-->
+<!--                    <field name="invoice_date" readonly="1" />-->
+<!--                    <field name="source" readonly="1" />-->
+<!--                </tree>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id="ebiz_sync_download_search_view" model="ir.ui.view">-->
+<!--            <field name="name">download.ebiz.payments</field>-->
+<!--            <field name="model">ebiz.payments.lines</field>-->
+<!--            <field name="arch" type="xml" >-->
+<!--                <search string="Payment Lines">-->
+<!--                    <field name="partner_id" />-->
+<!--                    <field name="invoice_number"/>-->
+<!--                    <field name="type_id"/>-->
+<!--                    <field name="payment_method"/>-->
+<!--                    <field name="source"/>-->
+
+<!--                    <filter string="Two Months" name="lasttwomonths" -->
+<!--                            domain="[-->
+<!--                            ('date_paid','&gt;=',(context_today()-relativedelta(months=2)).strftime('%Y-%m-%d')),-->
+<!--                            ('date_paid','&lt;=',(context_today()+relativedelta(days=1)).strftime('%Y-%m-%d'))-->
+<!--                            ]" />-->
+<!--                </search>-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+<!--        <record id="ebiz_sync_download_tree_action" model="ir.actions.act_window">-->
+<!--            <field name="name">Download Invoice Payments and Credit Notes</field>-->
+<!--            <field name="res_model">ebiz.payments.lines</field>-->
+<!--            <field name="context">{'search_default_lasttwomonths':1}</field>-->
+<!--            <field name='view_mode'>tree</field>-->
+<!--        </record>-->
+        
+
+<!--        <menuitem id="menu_ebiz_sync_download_payments"-->
+<!--        name="Download Invoice Payments and Credit Notes"-->
+<!--        parent="menu_download_ebiz"-->
+<!--        sequence="2"-->
+<!--        action="ebiz_sync_download_tree_action"/>-->
+       
+<!--        <record id="wizard_ebiz_download_message_view" model="ir.ui.view">-->
+<!--            <field name="name">download.pyament.message</field>-->
+<!--            <field name="model">download.pyament.message</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="Message">-->
+<!--                    <div>-->
+<!--                            <field name="succeeded" nolabel="1" readonly="1"/> out <field name="total" nolabel="1" readonly="1"/> invoices have been successfully imported into Odoo-->
+<!--                        </div>-->
+<!--                        <br/>-->
+<!--                    <field name="lines_ids" readonly="1"  color="green:record_message=='Success">-->
+<!--                        <tree>-->
+<!--                            <field name="customer_name"/>-->
+<!--                            <field name="customer_id"/>-->
+<!--                            <field name="invoice_no"/>-->
+<!--                            <field name="status"/>-->
+<!--                        </tree>-->
+<!--                    </field>-->
+<!--                    <footer>-->
+<!--                        <button string="Ok" class="oe_highlight" special="cancel" style="width:10%"/>-->
+<!--                    </footer>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+<!--        <record id="model_action_sync_download_payment" model="ir.actions.server">-->
+<!--            <field name="name">Import into Odoo</field>-->
+<!--            <field name="model_id" ref="payment_ebizcharge.model_ebiz_payments_lines"/>-->
+<!--            <field name="binding_model_id" ref="payment_ebizcharge.model_ebiz_payments_lines"/>-->
+<!--            <field name="binding_view_types">list</field>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="code">action = records.mark_as_applied()</field>-->
+<!--        </record>-->
+<!--        <record id="wizard_ebiz_download_message_action" model="ir.actions.act_window">-->
+<!--            <field name="name">Result</field>-->
+<!--            <field name="res_model">download.pyament.message</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="target">new</field>-->
+<!--        </record>-->
+    </data>
+</odoo>

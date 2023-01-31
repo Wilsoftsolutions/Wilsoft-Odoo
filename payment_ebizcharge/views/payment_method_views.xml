@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_form_ebiz_payment_method_bank" model="ir.ui.view">
+            <field name="name">ebiz.payment.bank.form</field>
+            <field name="model">ebiz.payment.bank</field>
+            <field name="arch" type="xml">
+                <form >
+                        <field name="account_holder_name" />
+                        <field name="account" />
+                        <field name="account_type" />
+                        <field name="routing" />
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tree_ebiz_payment_method_bank" model="ir.ui.view">
+            <field name="name">ebiz.payment.bank.form</field>
+            <field name="model">ebiz.payment.bank</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_holder_name" />
+                    <field name="account" />
+                    <field name="account_type" />
+                    <field name="routing" />
+                </tree>
+            </field>
+        </record>
+
+            <record id="view_form_ebiz_payment_method_credit" model="ir.ui.view">
+            <field name="name">ebiz.payment.bank.form</field>
+            <field name="model">ebiz.payment.bank</field>
+            <field name="arch" type="xml">
+                <form >
+                    <field name="account_holder_name" />
+                    <field name="card_number" />
+                    <field name="avs_street" />
+                    <field name="avs_zip" />
+                    <field name="card_expiration" />
+                    <field name="card_code" />
+                </form>
+            </field>
+        </record>
+
+        <record id="view_tree_ebiz_payment_methode_credit_card" model="ir.ui.view">
+            <field name="name">ebiz.payment.bank.form</field>
+            <field name="model">ebiz.payment.bank</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="account_holder_name" />
+                    <field name="card_number" />
+                    <field name="avs_street" />
+                    <field name="avs_zip" />
+                    <field name="card_expiration" />
+                    <field name="card_code" />
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

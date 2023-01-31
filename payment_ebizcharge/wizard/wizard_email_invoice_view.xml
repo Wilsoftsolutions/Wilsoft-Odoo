@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+         <record id="send_email_invoice_wizard" model="ir.ui.view">
+            <field name="name">Email Pay Request</field>
+            <field name="model">email.invoice</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <form string="Email Pay Request" create="false" edit="false">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="contacts_to" widget="many2many_tags" readonly="context.get('default_selection_check', True)"/>
+                                <field name="email_customer" invisible="context.get('default_selection_check')" readonly='0' required="1"/>
+                                <br></br>
+<!--                                <br></br>-->
+
+                                 <field name="amount" options="{'currency_field': 'currency_id'}" widget="monetary"/>
+                                <field name="select_template" required="1" domain="[('template_type_id', '=', 'WebFormEmail')]" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit':True}"/>
+                                <field name="email_subject"/>
+
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                            <button name="send_email" type="object" string="Send Email" class="oe_highlight" />
+                            <button string="Cancel" special="cancel" style="width:10%"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+
+
+<!--        <record id="send_email_invoice_wizard" model="ir.ui.view">-->
+<!--            <field name="name">Email Payment</field>-->
+<!--            <field name="model">multiple.email.invoice.payments</field>-->
+<!--            <field name="priority" eval="8"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="Email Payment" create="false" edit="false">-->
+<!--                    <sheet>-->
+<!--                        <group>-->
+<!--                            <group>-->
+<!--&lt;!&ndash;                                <field name="currency_id" invisible="1"/>&ndash;&gt;-->
+
+<!--                                <field name="invoicess_to" options="{'no_open': True}">-->
+<!--&lt;!&ndash;                                    <tree editable="bottom"  edit="1" create="false">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <field name="name"/>&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;                                        <field name="partner_id"/>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <field name="amount_residual_signed" string="Amount Due"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </tree>&ndash;&gt;-->
+<!--                                </field>-->
+
+
+<!--&lt;!&ndash;                                 <field name="amount" options="{'currency_field': 'currency_id'}" widget="monetary"/>&ndash;&gt;-->
+<!--                                <field name="select_template" required="1" domain="[('template_type_id', '=', 'WebFormEmail')]"/>-->
+<!--                                <field name="email_subject" readonly="1"/>-->
+
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                    </sheet>-->
+<!--                    <footer>-->
+<!--                            <button name="send_email" type="object" string="Send Email" class="oe_highlight" />-->
+<!--                            <button string="Discard" special="cancel" style="width:10%"/>-->
+<!--                    </footer>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+
+    </data>
+</odoo>

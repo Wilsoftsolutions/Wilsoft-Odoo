@@ -1,0 +1,95 @@
+<odoo>
+    <data>
+        <record id="view_process_ebiz_transaction_form" model="ir.ui.view">
+            <field name="name">wizard.order.process.transaction</field>
+            <field name="model">wizard.order.process.transaction</field>
+            <field name="arch" type="xml" >
+                <form string="Process Transaction">
+                    <group>
+                        <field name="sale_order_id" invisible="1"/>
+                        <field name="invoice_id" invisible="1"/>
+                        <field name="partner_id" invisible="1"/>
+                        <field name="allow_partial_payment" invisible="1"/>
+                        <field name="currency_id" invisible="1"/>
+                        <group>
+                            <field name="amount" attrs="{'readonly':[('allow_partial_payment', '=', False)]}" options="{'currency_field': 'currency_id'}" widget="monetary"/>
+                            
+                            <field name="transaction_command" attrs="{'invisible': ['|', ('is_check_or_credit','=','ach'), ('sale_order_id','=', False)],'required': [('is_check_or_credit','=','credit'), ('sale_order_id','!=', False)]}"/>
+                            <field name="inv_transaction_command" attrs="{'invisible': ['|', ('is_check_or_credit','=','ach'),('invoice_id','=', False)], 'required': [('is_check_or_credit','=','credit'), ('invoice_id','!=', False)]}"/>
+                        </group>
+                        <group>
+                            
+                            <field name="is_check_or_credit"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name = 'card' string="Credit Card" attrs="{'invisible': [('is_check_or_credit','=','ach')]}">
+                            <notebook>
+                                <page name="credit_card" string="Existing Credit Card">
+                                    <group>
+                                        <field name='card_id' domain="[('partner_id','=',partner_id),('token_type','=','credit')]"/>
+                                    </group>
+                                </page>
+                                <page name="new_credit_card" string="New Credit Card" >
+                                    <group>
+                                        <group>
+                                            <field name="card_account_holder_name" attrs="{'required': [('card_id','=', False),('is_check_or_credit','=', 'credit')]}" />
+                                            <field name="card_card_number" attrs="{'required': [('card_id','=', False),('is_check_or_credit','=', 'credit')]}"/>
+                                            
+                                            <field name="card_exp_month" attrs="{'required': [('card_id','=', False),('is_check_or_credit','=', 'credit')]}"/>
+                                            <field name="card_exp_year" attrs="{'required': [('card_id','=', False),('is_check_or_credit','=', 'credit')]}"/>
+                                        </group>
+                                        <group>
+                                            <field name="card_avs_street" attrs="{'required': [('card_id','=', False),('is_check_or_credit','=', 'credit')]}"/>
+                                            <field name="card_avs_zip" attrs="{'required': [('card_id','=', False),('is_check_or_credit','=', 'credit')]}"/>
+                                            <field name="card_card_code" attrs="{'required': [('card_id','=', False),('is_check_or_credit','=', 'credit')]}"/>
+                                        </group>
+                                    </group>
+                                </page>
+                            </notebook>
+                        </page>
+                        <page name = 'ach' string = 'Ebiz Bank' attrs="{'invisible': [('is_check_or_credit','=','credit')]}">
+                            <notebook>
+                                <page name="bank" string="Existing ACH">
+                                    <group>
+                                        <field name='ach_id' domain="[('partner_id','=',partner_id),('token_type','=','ach')]"/>
+                                    </group>
+                                </page>
+                                <page name="new_bank" string="Ebiz ACH">
+                                    <group>
+                                        <group>
+                                            <field name="ach_account_holder_name" attrs="{'required': [('ach_id','=', False),('is_check_or_credit','=', 'ach')]}" />
+                                            <field name="ach_account" attrs="{'required': [('ach_id','=', False),('is_check_or_credit','=', 'ach')]}"/>
+                                            <field name="ach_routing" attrs="{'required': [('ach_id','=', False),('is_check_or_credit','=', 'ach')]}"/>
+                                            <field name="ach_account_type" attrs="{'required': [('ach_id','=', False),('is_check_or_credit','=', 'ach')]}"/>
+                                        </group>
+<!--                                        <group>-->
+<!--                                            <field name="ach_drivers_license"/>-->
+<!--                                            <field name="ach_drivers_license_state"/>-->
+<!--                                            &lt;!&ndash; <field name="make_default_card" widget="boolean_toggle" attrs="{'required': [('ach_id','=', False),('is_check_or_credit','=', 'ach')]}"/> &ndash;&gt;-->
+<!--                                        </group>-->
+                                    </group>
+                                </page>
+                            </notebook>
+                        </page>
+                        
+                    </notebook>
+
+                    <footer>
+                        <button string="Process Payment" class="oe_highlight" type="object" name="process_transaction"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_process_ebiz_transaction" model="ir.actions.act_window">
+            <field name="name">Process Transaction</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.order.process.transaction</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_process_ebiz_transaction_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

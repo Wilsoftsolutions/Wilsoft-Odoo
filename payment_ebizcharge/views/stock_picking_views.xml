@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_ebiz_stock_picking_views" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <header position='inside'>
+                    <!-- <field name="sale_id" invisible="1"/> -->
+                    <field name="show_ebiz_return" invisible="1"/>
+                    <!-- <field name="ebiz_credit_done" invisible="1"/> -->
+
+                    <button name="process_credit_transaction" type="object"
+                        string="Process EBizCharge Return" class="oe_highlight"
+                        attrs="{'invisible': [ ('show_ebiz_return','=',False)]}"/>
+
+                </header>
+            </field>
+        </record>
+
+        
+    </data>
+</odoo>
