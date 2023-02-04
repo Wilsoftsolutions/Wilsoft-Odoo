@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="my_portal_menu_test" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Ahsan student test</t>
+                <t t-set="placeholder_count" t-value="'partner_count'"/>
+                <t t-set="url">/my/students</t>
+            </t>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="pos_orders_delivery_template" inherit_id="point_of_sale.template" xml:space="preserve">
+
+	    <t t-name="DeliveryDatePopup" owl="1">
+		<div role="dialog" class="modal-dialog">
+			<Draggable>
+				<div class="popup" style="min-width: 50%;">
+					<header class="title drag-handle">
+						Enter Delivery Date
+					</header>
+                    <main class="body traceback" style="font-family: 'Lato-Reg';">
+						<table class='reorder-product-list'
+                               style='width:100%;    text-align: center;line-height: 30px;'>
+							<tbody>
+								<tr class="orderline-table-head">
+									<td class="entered_item_qty">
+										<input type="date"
+                                               id="delivery_date_update"
+                                               name="delivery_date" style="margin: 5px;"
+                                               class="input-field delivery-date">
+										</input>
+									</td>
+
+                                    <input type="hidden" name="order_d" class="form-control"
+                                           t-att-value="order"/>
+
+                                    <input type="hidden" name="order_line" class="form-control"
+                                           t-att-value="orderlines"/>
+
+                                    <!--                                    <td class="entered_item_qty">-->
+                                    <!--										<input type="date"-->
+                                    <!--                                               id="delivery_date_update"-->
+                                    <!--                                               name="delivery_date" style="margin: 5px;"-->
+                                    <!--                                               class="input-field delivery-date">-->
+                                    <!--										</input>-->
+                                    <!--									</td>-->
+
+								</tr>
+							</tbody>
+						</table>
+
+                        <!--                        <p style="color: #0075AC; text-align: center;">Delivery Date-->
+                        <!--						<select class='drop-type' name='id' id='delivery_date'-->
+                        <!--                                style="float: right; font-size : 35px; width: 20%; border-radius:5px;">-->
+                        <!--							<t t-foreach='env.pos.delivery_date' t-as='type'-->
+                        <!--                               t-key="type.id">-->
+                        <!--								<option t-att-value='type.id'>-->
+                        <!--									<t t-esc='type.delivery_date'/>-->
+                        <!--								</option>-->
+                        <!--							</t>-->
+                        <!--						</select>-->
+                        <!--					</p>-->
+
+					</main>
+                    <footer class="footer">
+						<div class="button cancel odoo-theme-button" t-on-click="cancel">
+							Close
+						</div>
+
+                        <div class="button confirm odoo-theme-button" t-on-click="do_update_delivery_date">
+							Update
+						</div>
+					</footer>
+				</div>
+			</Draggable>
+		</div>
+	</t>
+
+
+
+
+<!--		<t t-name="DateDeliveryPop" owl="1">-->
+    <!--		<div role="dialog" class="modal-dialog">-->
+    <!--			<Draggable>-->
+    <!--				<div class="popup" style="min-width: 50%;">-->
+    <!--					<header class="title drag-handle">-->
+    <!--						My test-->
+    <!--					</header>-->
+    <!--                    <main class="body traceback" style="font-family: 'Lato-Reg';">-->
+    <!--						<table class='reorder-product-list'-->
+    <!--                               style='width:100%;    text-align: center;line-height: 30px;'>-->
+    <!--							<tbody>-->
+    <!--								<tr class="orderline-table-head">-->
+    <!--									<td class="entered_item_qty">-->
+    <!--										<input type="date"-->
+    <!--                                               id="test_delivery_date_update"-->
+    <!--                                               name="delivery_date" style="margin: 5px;"-->
+    <!--                                               class="input-field delivery-date">-->
+    <!--										</input>-->
+    <!--									</td>-->
+
+    <!--                                    &lt;!&ndash;                                    <input type="hidden" name="order_d" class="form-control"&ndash;&gt;-->
+    <!--                                    &lt;!&ndash;                                           t-att-value="order"/>&ndash;&gt;-->
+
+    <!--                                    &lt;!&ndash;                                    <input type="hidden" name="order_line" class="form-control"&ndash;&gt;-->
+    <!--                                    &lt;!&ndash;                                           t-att-value="orderlines"/>&ndash;&gt;-->
+
+    <!--                                    &lt;!&ndash;                                    <td class="entered_item_qty">&ndash;&gt;-->
+    <!--                                    &lt;!&ndash;										<input type="date"&ndash;&gt;-->
+    <!--                                    &lt;!&ndash;                                               id="delivery_date_update"&ndash;&gt;-->
+    <!--                                    &lt;!&ndash;                                               name="delivery_date" style="margin: 5px;"&ndash;&gt;-->
+    <!--                                    &lt;!&ndash;                                               class="input-field delivery-date">&ndash;&gt;-->
+    <!--                                    &lt;!&ndash;										</input>&ndash;&gt;-->
+    <!--                                    &lt;!&ndash;									</td>&ndash;&gt;-->
+
+    <!--								</tr>-->
+    <!--							</tbody>-->
+    <!--						</table>-->
+
+    <!--                        &lt;!&ndash;                        <p style="color: #0075AC; text-align: center;">Delivery Date&ndash;&gt;-->
+    <!--                        &lt;!&ndash;						<select class='drop-type' name='id' id='delivery_date'&ndash;&gt;-->
+    <!--                        &lt;!&ndash;                                style="float: right; font-size : 35px; width: 20%; border-radius:5px;">&ndash;&gt;-->
+    <!--                        &lt;!&ndash;							<t t-foreach='env.pos.delivery_date' t-as='type'&ndash;&gt;-->
+    <!--                        &lt;!&ndash;                               t-key="type.id">&ndash;&gt;-->
+    <!--                        &lt;!&ndash;								<option t-att-value='type.id'>&ndash;&gt;-->
+    <!--                        &lt;!&ndash;									<t t-esc='type.delivery_date'/>&ndash;&gt;-->
+    <!--                        &lt;!&ndash;								</option>&ndash;&gt;-->
+    <!--                        &lt;!&ndash;							</t>&ndash;&gt;-->
+    <!--                        &lt;!&ndash;						</select>&ndash;&gt;-->
+    <!--                        &lt;!&ndash;					</p>&ndash;&gt;-->
+
+    <!--					</main>-->
+    <!--                    <footer class="footer">-->
+    <!--						<div class="button cancel odoo-theme-button" t-on-click="cancel">-->
+    <!--							Close-->
+    <!--						</div>-->
+
+    <!--                        <div class="button confirm odoo-theme-button" t-on-click="do_update_deliverdat">-->
+    <!--							Update-->
+    <!--						</div>-->
+    <!--					</footer>-->
+    <!--				</div>-->
+    <!--			</Draggable>-->
+    <!--		</div>-->
+    <!--	</t>-->
+
+
+
+</templates>
+
+
