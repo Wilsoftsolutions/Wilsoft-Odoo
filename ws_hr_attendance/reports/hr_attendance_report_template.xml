@@ -66,10 +66,7 @@
                         <th>DAYS</th>
                         <th>CHECK IN</th>
                         <th>CHECK OUT</th>
-                        <th>Hours </th>
-                        <th>Shift Allocated</th>
-                        <th>Status </th>
-                        <th>PRESENT</th>
+                        <th>Hours </th>                        
                         <th>Remarks</th>
                     </tr>
                 </thead>
@@ -84,18 +81,6 @@
                                 <td ><span t-esc="attendance['check_in']"  /></td>
                                 <td ><span t-esc="attendance['check_out']"  /></td>
                                 <td ><span t-esc="round(attendance['hours'],2)"/></td>
-                                <td><span t-esc="attendance['shift']"/></td>
-                                
-                                
-                                <t t-if="attendance['rest_day']=='Normal'">
-                                  <td ><span t-esc="attendance['rest_day']"/></td>
-                                </t>
-                                <t t-if="attendance['rest_day']=='Late'">
-                                  <td style="background-color:red;"><span t-esc="attendance['rest_day']"/></td>
-                                </t>
-                                
-                                
-                                <td ><span t-esc="attendance['present']"/></td>
                                 <t t-if="attendance['holiday']=='1'">
                                    <td style="background-color:LightGreen;">
                                        <span t-esc="attendance['remarks']"/>

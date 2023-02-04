@@ -43,7 +43,7 @@ class PortalAttendanceReport(models.AbstractModel):
             attendances = []
             remarks = 'Absent'
             holiday = '0'
-            rest_day = '0'
+            rest_day = 'Absent'
             absent = '1'
             delta_days = (date_to - date_from).days + 1
             start_date = date_from
@@ -58,16 +58,13 @@ class PortalAttendanceReport(models.AbstractModel):
                 holiday = '0'
                 remarks = 'Absent'
                 absent = '1'
-                rest_day = 'N'
-                
-                    
+                rest_day = 'N'   
                 current_shift = self.env['resource.calendar'].sudo().search([('company_id','=',employee.company_id.id)], limit=1)
                 if employee.resource_calendar_id: 
                     current_shift = employee.resource_calendar_id 
                  
                 is_rest_day = 0
                 attendance_present = self.env['resource.calendar.attendance'].sudo().search([('dayofweek','=',start_date.weekday()),('calendar_id','=',current_shift.id)], limit=1)
-#                 raise UserError(str(attendance_present.dayofweek))
                 if not attendance_present:
                     is_rest_day = 1                              
                 if is_rest_day==1:
@@ -89,154 +86,57 @@ class PortalAttendanceReport(models.AbstractModel):
                             rest_day_count -=1
                 working_hours = 0
                 exist_attendances=self.env['hr.attendance'].sudo().search([('employee_id','=',employee.id),('att_date','=',start_date)], order='check_in asc')
-                leaves = self.env['hr.leave'].sudo().search([('employee_id','=',employee.id),('request_date_from','<=', start_date),('request_date_to','>=', start_date),('state','in',('confirm','validate'))])
+                
                 check_in_time = ''
                 check_out_time = ''
-                leave_number_of_days = 0
-                leave_status = ''
-                for leave_day in leaves:
-                    if leave_day.state=='validate':
-                        leave_status = 'validate'    
-                    elif leave_day.state=='confirm':
-                        leave_status = 'confirm'  
-                    leave_number_of_days += leave_day.number_of_days                          
-                rectification = self.env['hr.attendance.rectify'].sudo().search([('employee_id','=',employee.id),('check_in','<=', start_date),('check_out','>=', start_date),('state','in',('submitted','approved'))], limit=1)
+                
+                   
                 rest_day='Normal' 
                 check_in_time = ''
                 check_out_time = '' 
                 inner_count_fisr=0
                 for attendee in exist_attendances:
                     working_hours += attendee.worked_hours
+                    attendance_day_count += attendee.att_count
+                    if attendee.attendance_status=='1':
+                        remarks = 'Present'
+                        absent='0'
+                    elif attendee.attendance_status=='12':
+                        remarks = 'Half Day Present'
+                    elif attendee.attendance_status=='13':
+                        remarks = 'One Third Present'
+                    elif attendee.attendance_status=='14':
+                        remarks = 'One Fourth Present'
+                    elif attendee.attendance_status=='15':
+                        remarks = 'Absent'
+                    elif attendee.attendance_status=='16':
+                        remarks = 'Late' 
+                        
                     inner_count_fisr+=1  
                     if attendee.check_in:
                         if inner_count_fisr==1:
                             check_in_time = attendee.check_in + relativedelta(hours=+5)
-                            if attendee.attendance_status=='late':
+                            if attendee.attendance_status=='16':
                                 number_absent_count_over += 1  
                                 rest_day='Late'  
                     if attendee.check_out: 
                         check_out_time = attendee.check_out + relativedelta(hours=+5)
                                         
+                leaves = self.env['hr.leave'].sudo().search( [('employee_id','=',employee.id),('request_date_from','<=', start_date),('request_date_to','>=', start_date),('state','=','validate')] )
+                if absent=='1':
+                    for leave in leaves:
+                        leave_day_count += leave.number_of_days 
+                        remarks = 'Leave'
+                        absent='0'
                     
-                      
-                    
-                if   (working_hours >= (current_shift.hours_per_day-0.16)):
-                    remarks = 'Attendance Present'
-                    attendance_day_count += 1
-                    absent = '0'
-                    if holiday == '1':
-                        rest_day_count -= 1   
-                elif (working_hours < (current_shift.hours_per_day-0.16)) and (working_hours > (((current_shift.hours_per_day)/4)*3)):
-                    attendance_day_count += 0.75
-                    remarks = 'One Third Present'          
-                elif (working_hours < (current_shift.hours_per_day)) and (working_hours >((current_shift.hours_per_day)/2)):
-                    attendance_day_count += 0.5
-                    remarks = 'Half Present'    
-                    if holiday != '1':
-                        if rectification.state=='approved':
-                            remarks = 'Rectification (Approved)'
-                            absent = '0'
-                            attendance_day_count += 0.5
-                        elif leave_status=='validate' and leave_number_of_days >= 0.5:
-                            remarks = 'Leave (Approved)[0.5]'
-                            leave_day_count += 0.5
-                            absent = '0'
-                            
-                        elif leave_status=='validate' and leave_number_of_days == 0.25:
-                            remarks = 'Half Present (Leave[Approved] (0.25))'
-                            if working_hours < (((current_shift.hours_per_day-1.5)/4)*3):
-                                absent = '1'
-                                leave_day_count += 0.25
-                                absent_day_count += 0.25
-                            else:
-                                remarks = 'Attendance Present (Leave[Approved] (0.25))' 
-                                attendance_day_count += 0.25
-                                absent = '0'
-                        elif rectification.state=='submitted':
-                            absent = '1'
-                            remarks = 'Half Present (Rectification [To Approve])'
-                            absent_day_count = 0.5
-                        elif not rectification and leave_status=='confirm':
-                            if leave_number_of_days >= 0.5:
-                                absent = '1'
-                                remarks = 'Half Present (Leave [To Approve] (0.5))'
-                                absent_day_count += 0.5
-                            elif leave_number_of_days == 0.25:
-                                absent = '1'
-                                remarks = 'Half Present (Leave [To Approve] (0.25))'
-                                absent_day_count += 0.5
-                            else:
-                                absent = '1'
-                                absent_day_count += 1 
-                        else:
-                             absent = '1'
-                             absent_day_count += 0.5
-                    else:
-                        if holiday == '1': 
-                            attendance_day_count -= 0.5   
-                else:
-                    if holiday != '1':
-                        if rectification.state=='approved':
-                            remarks = 'Rectification (Approved)'
-                            attendance_day_count += 1
-                            absent = '0'
-                        elif leave_status=='validate' and leave_number_of_days >= 1:
-                            remarks = 'Leave (Approved)'
-                            leave_day_count += 1
-                            absent = '0'
-                        elif rectification.state=='submitted':
-                            absent = '1'
-                            remarks = 'Rectification (To Approve)'
-                            absent_day_count += 1
-                        elif leave_status=='confirm':
-                            if leave_number_of_days >= 1:
-                                absent = '1'
-                                remarks = 'Leave (To Approve)'
-                                absent_day_count += 1
-                            elif leave_number_of_days >= 0.5:
-                                absent = '1'
-                                remarks = 'Half Leave (To Approve) (0.5)'
-                                absent_day_count += 1 
-                            elif leave_number_of_days >= 0.25:
-                                absent = '1'
-                                remarks = 'Short Leave (To Approve) (0.25)'
-                                absent_day_count += 1
-                            else:
-                                absent = '1'
-                                absent_day_count += 1
-                        elif leave_status=='validate':
-                            if leave_number_of_days >= 0.5:
-                                absent = '1'
-                                remarks = 'Half Leave (Approved) (0.5)'
-                                leave_day_count += 0.5
-                                absent_day_count += 0.5
-                            elif leave_number_of_days >= 0.25:
-                                absent = '1'
-                                remarks = 'Short Leave (Approved) (0.25)'
-                                leave_day_count += 0.25
-                                absent_day_count += 0.75
-                            else:
-                                absent = '1'
-                                absent_day_count += 1     
-                        else:
-                            absent = '1'
-                            absent_day_count += 1
-                            
-                present = 'A' 
-                if  absent!='1':  
-                    present = 'P'
-                if  working_hours >= 24:
-                    remarks = 'Working Hours are wrong' 
-                    present = 'E'
-                    absent = '1'            
                 attendances.append({
                     'date': start_date.strftime('%d/%b/%Y'),
                     'day':  start_date.strftime('%A'),
                     'check_in': check_in_time.strftime('%d/%b/%Y %H:%M:%S') if check_in_time else '',
                     'check_out':  check_out_time.strftime('%d/%b/%Y %H:%M:%S') if check_out_time else '',
                     'hours': working_hours,
-                    'present': present,
-                    'shift': current_shift.name,
+                    'present': '',
+                    'shift': '',
                     'holiday': holiday,
                     'absent': absent,
                     'rest_day': rest_day,
@@ -249,14 +149,13 @@ class PortalAttendanceReport(models.AbstractModel):
             number_absent_count_over = round(number_absent_count_over/2)*employee.policy_id.leave_ded        
             employees_attendance.append({
                 'name': employee.name,
-                'employee_no': '',
+                'employee_no': employee.barcode,
                 'attendances': attendances,
                 'attendance_day_count': attendance_day_count - number_absent_count_over,
                 'rest_day_count': rest_day_count,
                 'absent_day_count': float(absent_day_count) + float(number_absent_count_over),
                 'leave_day_count': leave_day_count,
-            }) 
-        
+            })         
         return {
                 'employees_attendance': employees_attendance,
                 'date_from': datetime.strptime(str(date_from.strftime('%Y-%m-%d')), "%Y-%m-%d").strftime('%Y-%m-%d'),
