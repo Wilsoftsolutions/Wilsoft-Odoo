@@ -16,7 +16,7 @@ class HRPolicyConfiguration(models.Model):
     grace_period = fields.Float(string='Day Grace Time', required=True)
     max_grace_period = fields.Float(string='Grace Period End')
     number_of_late = fields.Float(string='Number of Late', required=True)
-    
+    number_of_short = fields.Float(string='Number of Short', required=True)
     
     leave_ded = fields.Float(string='Leave Deduction', required=True)
     shift_start_time = fields.Float(string='Shift Start Time', required=True)
@@ -87,8 +87,8 @@ class PolicyDayAttendance(models.Model):
         ('14', 'One Forth'),
         ('15', 'Absent'),
         ], string="Type", default="1", required=True)
-    date_from = fields.Float(string='Date From',  required=True) 
-    date_to = fields.Float(string='Date To',  required=True) 
+    date_from = fields.Float(string='Time From',  required=True) 
+    date_to = fields.Float(string='Time To',  required=True) 
     policy_id = fields.Many2one('hr.policy.configuration', string='Policy') 
     
     
@@ -104,8 +104,8 @@ class PolicyDayAttendance(models.Model):
         ('14', 'One Forth'),
         ('15', 'Absent'),
         ], string="Type", default="1", required=True)
-    date_from = fields.Float(string='Date From',  required=True) 
-    date_to = fields.Float(string='Date To',  required=True) 
+    date_from = fields.Float(string='Time From',  required=True) 
+    date_to = fields.Float(string='Time To',  required=True) 
     policy_id = fields.Many2one('hr.policy.configuration', string='Policy')     
     
 class PolicyDayAttendance(models.Model):
