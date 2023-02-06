@@ -15,6 +15,15 @@ class StockMovementReport(models.AbstractModel):
         docs = self.env['stock.movement.wizard'].browse(self.env.context.get('active_id'))
         sheet = workbook.add_worksheet('Stock Movement Report')
         bold = workbook. add_format({'bold': True, 'align': 'center','bg_color': '#FFFF99','border': True})
+        opening = workbook. add_format({'bold': True,'bg_color': '#DE3163','border': True})
+        purchase = workbook. add_format({'bold': True,'bg_color': '#FF7F50','border': True})
+        inter_tr = workbook. add_format({'bold': True,'bg_color': '#FFBF00','border': True})
+        inter_rtn = workbook. add_format({'bold': True,'bg_color': '#DFFF00','border': True})
+        inter_sale = workbook. add_format({'bold': True,'bg_color': '#CCCCFF','border': True})
+        inter_out = workbook. add_format({'bold': True,'bg_color': '#6495ED','border': True})
+        inter_adj = workbook. add_format({'bold': True,'bg_color': '#999999','border': True})
+        closing = workbook. add_format({'bold': True,'bg_color': '#454545','border': True})
+        transit = workbook. add_format({'bold': True,'bg_color': '#0000FF','border': True})
         title = workbook.add_format({'bold': True, 'border': True})
         header_row_style = workbook.add_format({'bold': True, 'align': 'center', 'border':True,})
         format2 = workbook.add_format({'align': 'center'})
@@ -46,23 +55,23 @@ class StockMovementReport(models.AbstractModel):
         sheet.write(3, 8, '', header_row_style)
         
         #Opening Stock
-        sheet.merge_range(3,9, 3,11, 'Opening Stock', title)       
+        sheet.merge_range(3,9, 3,11, 'Opening Stock', opening)       
         #Purchases
-        sheet.merge_range(3,12, 3,14, 'Purchases', title)
+        sheet.merge_range(3,12, 3,14, 'Purchases', purchase)
         #Transfer In
-        sheet.merge_range(3,15, 3,17, 'Transfer In', title)
+        sheet.merge_range(3,15, 3,17, 'Transfer In', inter_tr)
         #Sales Return
-        sheet.merge_range(3,18, 3,20, 'Sales Return', title)
+        sheet.merge_range(3,18, 3,20, 'Sales Return', inter_rtn)
         #Sales
-        sheet.merge_range(3,21, 3,24, 'Sales', title)
+        sheet.merge_range(3,21, 3,24, 'Sales', inter_sale)
         #Transfer Out
-        sheet.merge_range(3,26, 3,27, 'Transfer Out', title)
+        sheet.merge_range(3,25, 3,27, 'Transfer Out', inter_out)
         #Adjustment
-        sheet.merge_range(3,28, 3,30, 'Adjustment', title)        
+        sheet.merge_range(3,28, 3,30, 'Adjustment', inter_adj)        
         #Closing Stock
-        sheet.merge_range(3,31, 3,33, 'Closing Stock', title)
+        sheet.merge_range(3,31, 3,33, 'Closing Stock', closing)
         #Stock in Transit
-        sheet.merge_range(3,34, 3,36, 'Stock in Transit', title)        
+        sheet.merge_range(3,34, 3,36, 'Stock in Transit', transit)        
         
         sheet.write(4, 0, 'Item Code', header_row_style)
         sheet.write(4, 1, 'Item Description', header_row_style)
@@ -119,6 +128,42 @@ class StockMovementReport(models.AbstractModel):
         invoices = self.env['account.move.line'] 
         quantsa = self.env['stock.quant']
         
+        total_opening_qty = 0
+        total_opening_list_price = 0
+        total_opening_amount = 0
+        
+        total_closing_qty = 0
+        total_closing_list_price = 0
+        total_closing_amount = 0
+        
+        total_in_transit_qty = 0
+        total_in_transit_list_price = 0
+        total_in_transit_amount = 0
+        
+        total_adjustment_qty = 0
+        total_adjustment_list_price = 0
+        total_adjustment_amount = 0
+        
+        total_transfer_out_qty = 0
+        total_transfer_out_list_price = 0
+        total_transfer_out_amount = 0
+        
+        total_sales_qty = 0
+        total_sales_list_price = 0
+        total_sales_amount = 0
+        
+        total_sale_rtn_qty = 0
+        total_sale_rtn_list_price = 0
+        total_sale_rtn_amount = 0
+        
+        total_transfer_in_qty = 0
+        total_transfer_in_list_price = 0
+        total_transfer_in_amount = 0
+        
+        total_purchase_qty = 0
+        total_purchase_list_price = 0
+        total_purchase_amount = 0
+            
         in_stock_move_lines = move_lines.search([('location_id','=',docs.location_ids.ids),('date','>=',docs.date_from),('date','<=',docs.date_to),('state','=','done')])
         out_stock_move_lines = move_lines.search([('location_dest_id','=',docs.location_ids.ids),('date','>=',docs.date_from),('date','<=',docs.date_to),('state','=','done')])
         if docs.categ_id:
@@ -209,41 +254,69 @@ class StockMovementReport(models.AbstractModel):
                closing_vals = closing_vals * 12 
              
             sheet.write(row, 9,str('{0:,}'.format(int(round(opening_vals)))), format2)
+            total_opening_qty += opening_vals
             sheet.write(row, 10, str('{0:,}'.format(int(round(product.standard_price)))), format2)
+            total_opening_list_price += product.standard_price
             sheet.write(row, 11, str('{0:,}'.format(int(round( product.standard_price * opening_vals)))), format2)
+            total_opening_amount += (product.standard_price * opening_vals)
             #Purchases
             sheet.write(row, 12, str('{0:,}'.format(int(round(purchase_qty)))), format2)
+            total_purchase_qty += purchase_qty
             sheet.write(row, 13, str('{0:,}'.format(int(round(product.standard_price)))), format2)
+            total_purchase_list_price += product.standard_price
             sheet.write(row, 14, str('{0:,}'.format(int(round(product.standard_price * purchase_qty)))), format2)
+            total_purchase_amount += product.standard_price * purchase_qty
             #Transfer In
             sheet.write(row, 15, str('{0:,}'.format(int(round(transfer_in_qty)))), format2)
+            total_transfer_in_qty += transfer_in_qty
             sheet.write(row, 16, str('{0:,}'.format(int(round(product.standard_price)))), format2)
+            total_transfer_in_list_price += product.standard_price
             sheet.write(row, 17, str('{0:,}'.format(int(round(product.standard_price * transfer_in_qty)))), format2)
+            total_transfer_in_amount += product.standard_price * transfer_in_qty
             #Sales Return
             sheet.write(row, 18, str('{0:,}'.format(int(round(sale_rtn_qty)))), format2)
+            total_sale_rtn_qty += sale_rtn_qty
             sheet.write(row, 19, str('{0:,}'.format(int(round(product.standard_price)))), format2)
+            total_sale_rtn_list_price += product.standard_price
             sheet.write(row, 20, str('{0:,}'.format(int(round(product.standard_price * sale_rtn_qty)))), format2)
+            total_sale_rtn_amount += product.standard_price * sale_rtn_qty
             #Sales
             sheet.write(row, 21, str('{0:,}'.format(int(round(sales_qty)))), format2)
+            total_sales_qty += sales_qty
             sheet.write(row, 22, str('{0:,}'.format(int(round(product.standard_price)))), format2)
+            total_sales_list_price += product.standard_price
             sheet.write(row, 23, str('{0:,}'.format(int(round(product.standard_price * sales_qty)))), format2)
+            total_sales_amount += product.standard_price * sales_qty
             sheet.write(row, 24, str('{0:,}'.format(int(round(invoice_amount)))), format2)
+            total_opening_qty += invoice_amount
             #Transfer Out
             sheet.write(row, 25, str('{0:,}'.format(int(round(transfer_out_qty)))), format2)
+            total_transfer_out_qty += transfer_out_qty
             sheet.write(row, 26, str('{0:,}'.format(int(round(product.standard_price)))), format2)
+            total_transfer_out_list_price += product.standard_price
             sheet.write(row, 27, str('{0:,}'.format(int(round(product.standard_price * transfer_out_qty)))), format2)
+            total_transfer_out_amount += product.standard_price * transfer_out_qty
             #Adjustment
             sheet.write(row, 28, str('{0:,}'.format(int(round(adjustment_qty)))), format2)
+            total_adjustment_qty += adjustment_qty
             sheet.write(row, 29, str('{0:,}'.format(int(round(product.standard_price)))), format2)
+            total_adjustment_list_price += product.standard_price
             sheet.write(row, 30, str('{0:,}'.format(int(round(product.standard_price * adjustment_qty)))), format2)
+            total_adjustment_amount += product.standard_price * adjustment_qty
             #Closing Stock
             sheet.write(row, 31, str('{0:,}'.format(int(round(closing_vals)))), format2)
+            total_closing_qty += closing_vals
             sheet.write(row, 32, str('{0:,}'.format(int(round(product.standard_price)))), format2)
+            total_closing_list_price += product.standard_price
             sheet.write(row, 33, str('{0:,}'.format(int(round(product.standard_price * closing_vals)))), format2)
+            total_closing_amount += product.standard_price * closing_vals
             #stock in Transit            
             sheet.write(row, 34, str('{0:,}'.format(int(round(in_transit_qty)))), format2)
+            total_in_transit_qty += in_transit_qty
             sheet.write(row, 35, str('{0:,}'.format(int(round(product.standard_price)))), format2)
+            total_in_transit_list_price += product.standard_price
             sheet.write(row, 36, str('{0:,}'.format(int(round(product.standard_price * in_transit_qty)))), format2)
+            total_in_transit_amount += product.standard_price * in_transit_qty
             row+=1
         #Total
         sheet.write(row, 0, str(), header_row_style)
@@ -256,39 +329,39 @@ class StockMovementReport(models.AbstractModel):
         sheet.write(row, 7, str(), header_row_style)
         sheet.write(row, 8, str(), header_row_style)
         #Opening Stock
-        sheet.write(row, 9,str(), header_row_style)
-        sheet.write(row, 10, str(), header_row_style)
-        sheet.write(row, 11, str(), header_row_style)
+        sheet.write(row, 9,str('{0:,}'.format(int(round(total_opening_qty)))), header_row_style)
+        sheet.write(row, 10, str('{0:,}'.format(int(round(total_opening_list_price)))), header_row_style)
+        sheet.write(row, 11, str('{0:,}'.format(int(round(total_opening_amount)))), header_row_style)
         #Purchases
-        sheet.write(row, 12, str(), header_row_style)
-        sheet.write(row, 13, str(), header_row_style)
-        sheet.write(row, 14, str(), header_row_style)
+        sheet.write(row, 12, str('{0:,}'.format(int(round(total_purchase_qty)))), header_row_style)
+        sheet.write(row, 13, str('{0:,}'.format(int(round(total_purchase_list_price)))), header_row_style)
+        sheet.write(row, 14, str('{0:,}'.format(int(round(total_purchase_amount)))), header_row_style)
         #Transfer In
-        sheet.write(row, 15, str(), header_row_style)
-        sheet.write(row, 16, str(), header_row_style)
-        sheet.write(row, 17, str(), header_row_style)
+        sheet.write(row, 15, str('{0:,}'.format(int(round(total_transfer_in_qty)))), header_row_style)
+        sheet.write(row, 16, str('{0:,}'.format(int(round(total_transfer_in_list_price)))), header_row_style)
+        sheet.write(row, 17, str('{0:,}'.format(int(round(total_transfer_in_amount)))), header_row_style)
         #Sales Return
-        sheet.write(row, 18, str(), header_row_style)
-        sheet.write(row, 19, str(), header_row_style)
-        sheet.write(row, 20, str(), header_row_style)
+        sheet.write(row, 18, str('{0:,}'.format(int(round(total_sale_rtn_qty)))), header_row_style)
+        sheet.write(row, 19, str('{0:,}'.format(int(round(total_sale_rtn_list_price)))), header_row_style)
+        sheet.write(row, 20, str('{0:,}'.format(int(round(total_sale_rtn_amount)))), header_row_style)
         #Sales
-        sheet.write(row, 21, str(), header_row_style)
-        sheet.write(row, 22, str(), header_row_style)
-        sheet.write(row, 23, str(), header_row_style)
-        sheet.write(row, 24, str(), header_row_style)
+        sheet.write(row, 21, str('{0:,}'.format(int(round(total_sales_qty)))), header_row_style)
+        sheet.write(row, 22, str('{0:,}'.format(int(round(total_sales_list_price)))), header_row_style)
+        sheet.write(row, 23, str('{0:,}'.format(int(round(total_sales_amount)))), header_row_style)
+        sheet.write(row, 24, str('{0:,}'.format(int(round(total_sales_inv_amount)))), header_row_style)
         #Transfer Out
-        sheet.write(row, 25, str(), header_row_style)
-        sheet.write(row, 26, str(), header_row_style)
-        sheet.write(row, 27, str(), header_row_style)
+        sheet.write(row, 25, str('{0:,}'.format(int(round(total_transfer_out_qty)))), header_row_style)
+        sheet.write(row, 26, str('{0:,}'.format(int(round(total_transfer_out_list_price)))), header_row_style)
+        sheet.write(row, 27, str('{0:,}'.format(int(round(total_transfer_out_amount)))), header_row_style)
         #Adjustment
-        sheet.write(row, 28, str(), header_row_style)
-        sheet.write(row, 29, str(), header_row_style)
-        sheet.write(row, 30, str(), header_row_style)
+        sheet.write(row, 28, str('{0:,}'.format(int(round(total_adjustment_qty)))), header_row_style)
+        sheet.write(row, 29, str('{0:,}'.format(int(round(total_adjustment_list_price)))), header_row_style)
+        sheet.write(row, 30, str('{0:,}'.format(int(round(total_adjustment_amount)))), header_row_style)
         #Closing Stock
-        sheet.write(row, 31, str(), header_row_style)
-        sheet.write(row, 32, str(), header_row_style)
-        sheet.write(row, 33, str(), header_row_style)
+        sheet.write(row, 31, str('{0:,}'.format(int(round(total_closing_qty)))), header_row_style)
+        sheet.write(row, 32, str('{0:,}'.format(int(round(total_closing_list_price)))), header_row_style)
+        sheet.write(row, 33, str('{0:,}'.format(int(round(total_closing_amount)))), header_row_style)
         #stock in Transit
-        sheet.write(row, 34, str(), header_row_style)
-        sheet.write(row, 35, str(), header_row_style)
-        sheet.write(row, 36, str(), header_row_style)        
+        sheet.write(row, 34, str('{0:,}'.format(int(round(total_in_transit_qty)))), header_row_style)
+        sheet.write(row, 35, str('{0:,}'.format(int(round(total_in_transit_list_price)))), header_row_style)
+        sheet.write(row, 36, str('{0:,}'.format(int(round(total_in_transit_amount)))), header_row_style)        
