@@ -151,6 +151,7 @@ class StockMovementReport(models.AbstractModel):
         total_sales_qty = 0
         total_sales_list_price = 0
         total_sales_amount = 0
+        total_sales_inv_amount = 0
         
         total_sale_rtn_qty = 0
         total_sale_rtn_list_price = 0
@@ -288,7 +289,7 @@ class StockMovementReport(models.AbstractModel):
             sheet.write(row, 23, str('{0:,}'.format(int(round(product.standard_price * sales_qty)))), format2)
             total_sales_amount += product.standard_price * sales_qty
             sheet.write(row, 24, str('{0:,}'.format(int(round(invoice_amount)))), format2)
-            total_opening_qty += invoice_amount
+            total_sales_inv_amount += invoice_amount
             #Transfer Out
             sheet.write(row, 25, str('{0:,}'.format(int(round(transfer_out_qty)))), format2)
             total_transfer_out_qty += transfer_out_qty
