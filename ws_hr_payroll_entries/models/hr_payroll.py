@@ -37,8 +37,14 @@ class HrPayslip(models.Model):
             """Attendance Count"""
             attendances = self.env['hr.attendance'].search([('employee_id','=',payslip.employee_id.id),('att_date','>=',payslip.date_from),('att_date','<=',payslip.date_to)])
             attendance_day=0
+            late_count = 0
             for att in attendances:
                 attendance_day += att.att_count
+                if att.attendance_status=='16':
+                    late_count += 1
+            deducted_late_count =  late_count - payslip.employee_id.policy_id.number_of_late 
+            if   deducted_late_count < 0:
+                deducted_late_count = 0   
             att_end = self.env['hr.work.entry.type'].search([('code','=','WORK100')], limit=1)    
             data.append((0,0,{
               'payslip_id': payslip.id,
