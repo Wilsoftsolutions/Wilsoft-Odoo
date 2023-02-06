@@ -18,7 +18,7 @@ class StockMovementWizard(models.Model):
    
     def check_report(self):
         data = {}
-        if not docs.location_ids:
+        if not self.location_ids:
             raise UserError('Please select Location!')    
         data['form'] = self.read(['date_from','date_to','categ_id','location_ids'])[0]
         return self._print_report(data)
