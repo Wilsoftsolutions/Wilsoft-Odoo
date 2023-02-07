@@ -236,7 +236,7 @@ class StockMovementReport(models.AbstractModel):
                 if out_line.location_id.id==4:
                     purchase_qty += out_line.qty_done
                 #Transfer In
-                if out_line.location_id.id!=4 and out_line.location_id.id not in (913,934,951,952,14,15):
+                if out_line.location_id.id!=4 and out_line.location_id.id not in (5,913,934,951,952,14,15):
                     transfer_in_qty += out_line.qty_done
                 #Sales Return
                 if out_line.location_id.id==5:
@@ -246,7 +246,7 @@ class StockMovementReport(models.AbstractModel):
                 if in_line.location_dest_id.id in (14,15):
                     adjustment_qty += in_line.qty_done
                 #Transfer Out
-                if in_line.location_dest_id.id!=5 and in_line.location_dest_id.id not in (913,934,951,952,14,15):
+                if in_line.location_dest_id.id!=5 and in_line.location_dest_id.id not in (4,913,934,951,952,14,15):
                     transfer_out_qty += in_line.qty_done
                 #Sales
                 if in_line.location_dest_id.id==5:
