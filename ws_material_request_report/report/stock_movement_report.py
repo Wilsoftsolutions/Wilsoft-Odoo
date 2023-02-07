@@ -220,7 +220,7 @@ class StockMovementReport(models.AbstractModel):
             if docs.categ_id:
                 aout_stock_move_lines = out_stock_move_lines.search([('product_id.categ_id','=',docs.categ_id.id),('location_dest_id','in',docs.location_ids.ids),('product_id','=',uniq_product),('date','>=',docs.date_from),('date','<=',docs.date_to)])
                 ain_stock_move_lines = in_stock_move_lines.search([('product_id.categ_id','=',docs.categ_id.id),('location_id','in',docs.location_ids.ids),('product_id','=',uniq_product),('date','>=',docs.date_from),('date','<=',docs.date_to)])
-            if docs.categ_id:
+            
             for out_line in aout_stock_move_lines:
                 #stock in Transit
                 if out_line.location_id.id in (913,934,951,952):
