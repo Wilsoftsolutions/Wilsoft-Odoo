@@ -201,9 +201,9 @@ class StockMovementReport(models.AbstractModel):
             sheet.write(row, 7, str('{0:,}'.format(int(round(product.list_price)))), format2)
             sheet.write(row, 8, str('{0:,}'.format(int(round(product.list_price)))), format2)
             #Opening Stock  
-            opening_qunats = quantsa.search([('product_id','=',uniq_product),('in_date','<',docs.date_from),('location_id','=',docs.location_ids.ids)])
+            opening_qunats = quantsa.search([('product_id','=',uniq_product),('in_date','<',docs.date_from),('location_id','in',docs.location_ids.ids)])
             quants = [op_qt.quantity for op_qt in opening_qunats]
-            within_quantsa = quantsa.search([('product_id','=',uniq_product),('in_date','>=',docs.date_from),('in_date','<=',docs.date_to),('location_id','=',docs.location_ids.ids)])
+            within_quantsa = quantsa.search([('product_id','=',uniq_product),('in_date','>=',docs.date_from),('in_date','<=',docs.date_to),('location_id','in',docs.location_ids.ids)])
             within_quants = [cl_qt.quantity for cl_qt in within_quantsa]
             opening_vals = sum(quants)
             closing_vals = sum(within_quants)
