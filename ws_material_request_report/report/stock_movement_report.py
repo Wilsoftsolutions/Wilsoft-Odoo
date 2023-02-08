@@ -35,7 +35,7 @@ class StockMovementReport(models.AbstractModel):
         sheet.write(1, 2, str(docs.date_to.strftime('%d-%m-%Y')) ,title)
         
         sheet.write(0,4, 'LOCATION ' ,title)
-        sheet.write(0, 5, str([loc.barcode if loc.barcode!='' else loc.name for loc in docs.location_ids]) ,title)
+        sheet.write(0, 5, str([loc.barcode if loc.barcode else loc.name for loc in docs.location_ids]) ,title)
 
         sheet.write(0, 7,  'CATEGORY ' ,title)
         sheet.write(0, 8, str(docs.categ_id.name if docs.categ_id else '-') ,title)
