@@ -227,29 +227,29 @@ class StockMovementReport(models.AbstractModel):
             
             for out_line in aout_stock_move_lines:
                 #stock in Transit
-                if out_line.location_id.id in (913,934,951,952):
+                if out_line.location_id.is_transit==True:
                     in_transit_qty += out_line.qty_done
                 #Adjustment
-                if out_line.location_id.id in (14,15):
+                if out_line.location_id.is_adjustment==True:
                     adjustment_qty += out_line.qty_done
                 #Purchases
-                if out_line.location_id.id==4:
+                if out_line.location_id.is_vendor==True:
                     purchase_qty += out_line.qty_done
                 #Transfer In
-                if out_line.location_id.id!=4 and out_line.location_id.id not in (5,913,934,951,952,14,15):
+                if out_line.location_id.is_vendor==False and out_line.location_id.is_customer==False and  out_line.location_id.is_adjustment==False and out_line.location_id.is_transit==False:
                     transfer_in_qty += out_line.qty_done
                 #Sales Return
-                if out_line.location_id.id==5:
+                if out_line.location_id.is_customer==True:
                     sale_rtn_qty += out_line.qty_done
             for in_line in ain_stock_move_lines:
                 #Adjustment
-                if in_line.location_dest_id.id in (14,15):
+                if in_line.location_dest_id.is_adjustment==True:
                     adjustment_qty += in_line.qty_done
                 #Transfer Out
-                if in_line.location_dest_id.id!=5 and in_line.location_dest_id.id not in (4,913,934,951,952,14,15):
+                if in_line.location_dest_id.is_customer==False and in_line.location_dest_id.is_vendor==False and in_line.location_dest_id.is_adjustment==False and in_line.location_dest_id.is_transit==False :
                     transfer_out_qty += in_line.qty_done
                 #Sales
-                if in_line.location_dest_id.id==5:
+                if in_line.location_dest_id.is_customer==True:
                     sales_qty += in_line.qty_done
             
             if product.uom_id.id==9:

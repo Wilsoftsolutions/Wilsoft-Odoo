@@ -31,6 +31,7 @@
         'report/stock_movement_report.xml',
         'report/material_report.xml',
         'report/transfer_report.xml',
+        'views/stock_location_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

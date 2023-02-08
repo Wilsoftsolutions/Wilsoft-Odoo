@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
 
-# from odoo import models, fields, api
+from odoo import models, fields, api, _ 
 
 
-# class ws_material_request_report(models.Model):
-#     _name = 'ws_material_request_report.ws_material_request_report'
-#     _description = 'ws_material_request_report.ws_material_request_report'
+class StockLocation(models.Model):
+    _inherit = 'stock.location'
+    
+    is_vendor = fields.Boolean(string='Vendor Location')
+    is_customer = fields.Boolean(string='Customer Location')
+    is_transit = fields.Boolean(string='Transit Location')
+    is_adjustment = fields.Boolean(string='Adjustment Location')
+    
+    
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
