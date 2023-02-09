@@ -6,7 +6,7 @@
             <field name="name">zacuta.instance.form.view</field>
             <field name="model">zacuta.instance</field>
             <field name="arch" type="xml">
-                <form string="Instance" delete='0' edit='0' create='0'>
+                <form string="Instance" delete='0' >
                     <header>
                        <field name="state" widget="statusbar"
                                statusbar_visible="draft,active,close" clickable='1'/>
@@ -55,7 +55,7 @@
             <field name="name">zacuta.instance.tree.view</field>
             <field name="model">zacuta.instance</field>
             <field name="arch" type="xml">
-                <tree string="Instance" delete='0' edit='0' create='0' >                 
+                <tree string="Instance" delete='0' >                 
                     <field name="name"/>
                     <field name="url"  />
                     <field name="token" />
