@@ -6,7 +6,7 @@
             <field name="name">zacuta.order.form.view</field>
             <field name="model">zacuta.order</field>
             <field name="arch" type="xml">
-                <form string="Instance" create='0' edit='0'>
+                <form string="Instance" create='0' edit='0' delete='0'>
                     <header>
                        <field name="state" widget="statusbar"
                                statusbar_visible="draft,post,cancel"/>
@@ -155,7 +155,7 @@
             <field name="name">zacuta.order.tree.view</field>
             <field name="model">zacuta.order</field>
             <field name="arch" type="xml">
-                <tree string="data" create='0' edit='0'>                 
+                <tree string="data" create='0' edit='0' delete='0'>                 
                     <field name="zid"/>
                     <field name="shopify_order_id"/>
                     <field name="booking_date"  />
