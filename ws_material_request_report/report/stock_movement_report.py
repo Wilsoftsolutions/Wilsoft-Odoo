@@ -165,6 +165,7 @@ class StockMovementReport(models.AbstractModel):
         total_purchase_list_price = 0
         total_purchase_amount = 0
             
+            
         in_stock_move_lines = move_lines.search([('location_id','in',docs.location_ids.ids),('date','>=',docs.date_from),('date','<=',docs.date_to),('state','=','done')])
         out_stock_move_lines = move_lines.search([('location_dest_id','in',docs.location_ids.ids),('date','>=',docs.date_from),('date','<=',docs.date_to),('state','=','done')])
         if docs.categ_id:
