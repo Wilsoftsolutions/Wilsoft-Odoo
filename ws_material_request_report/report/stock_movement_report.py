@@ -172,15 +172,15 @@ class StockMovementReport(models.AbstractModel):
             ('date','>=',docs.date_from),('date','<=',docs.date_to),('state','=','done')])
             out_stock_move_lines = move_lines.search([('product_id.categ_id','=',docs.categ_id.id),
             ('location_dest_id','in',docs.location_ids.ids),('date','>=',docs.date_from),('date','<=',docs.date_to),('state','=','done')])
-        for  mv_line in in_stock_move_lines:  
-            product_list.append(mv_line.product_id.id)
-        for  mvline in out_stock_move_lines:  
-            product_list.append(mvline.product_id.id)
-        uniq_product_list = set(product_list)   
+        #for  mv_line in in_stock_move_lines:  
+        #    product_list.append(mv_line.product_id.id)
+        #for  mvline in out_stock_move_lines:  
+        #    product_list.append(mvline.product_id.id)
+        uniq_product_list = products.search([])   
         for uniq_product in uniq_product_list:
-            product = products.search([('id','=',uniq_product)])
+            product = uniq_product
             invoice_amount = 0
-            sale_invoices = invoices.search([('product_id','=',uniq_product),('parent_state','=','posted'),('date','>=',docs.date_from.strftime('%Y-%m-%d')),('date','<=',docs.date_to.strftime('%Y-%m-%d'))])
+            sale_invoices = invoices.search([('product_id','=',uniq_product.id),('parent_state','=','posted'),('date','>=',docs.date_from.strftime('%Y-%m-%d')),('date','<=',docs.date_to.strftime('%Y-%m-%d'))])
             ext_invoices = [so_inv.credit for so_inv in sale_invoices]
             invoice_amount = sum(ext_invoices)
             sheet.write(row, 0, str(product.default_code), format2)
@@ -203,9 +203,9 @@ class StockMovementReport(models.AbstractModel):
             sheet.write(row, 7, str('{0:,}'.format(int(round(product.list_price)))), format2)
             sheet.write(row, 8, str('{0:,}'.format(int(round(product.list_price)))), format2)
             #Opening Stock  
-            opening_qunats = quantsa.search([('product_id','=',uniq_product),('in_date','<',docs.date_from),('location_id','in',docs.location_ids.ids)])
+            opening_qunats = quantsa.search([('product_id','=',uniq_product.id),('in_date','<',docs.date_from),('location_id','in',docs.location_ids.ids)])
             quants = [op_qt.quantity for op_qt in opening_qunats]
-            within_quantsa = quantsa.search([('product_id','=',uniq_product),('in_date','>=',docs.date_from),('in_date','<=',docs.date_to),('location_id','in',docs.location_ids.ids)])
+            within_quantsa = quantsa.search([('product_id','=',uniq_product.id),('in_date','>=',docs.date_from),('in_date','<=',docs.date_to),('location_id','in',docs.location_ids.ids)])
             within_quants = [cl_qt.quantity for cl_qt in within_quantsa]
             opening_vals = sum(quants)
             closing_vals = sum(within_quants)
@@ -217,13 +217,13 @@ class StockMovementReport(models.AbstractModel):
             sale_rtn_qty = 0
             transfer_in_qty = 0
             purchase_qty = 0
-            aout_stock_move_lines = out_stock_move_lines.search([('state','=','done'),('location_dest_id','in',docs.location_ids.ids),('product_id','=',uniq_product),('date','>=',docs.date_from),('date','<=',docs.date_to)])
-            ain_stock_move_lines = in_stock_move_lines.search([('state','=','done'),('location_id','in',docs.location_ids.ids),('product_id','=',uniq_product),('date','>=',docs.date_from),('date','<=',docs.date_to)])
+            aout_stock_move_lines = out_stock_move_lines.search([('state','=','done'),('location_dest_id','in',docs.location_ids.ids),('product_id','=',uniq_product.id),('date','>=',docs.date_from),('date','<=',docs.date_to)])
+            ain_stock_move_lines = in_stock_move_lines.search([('state','=','done'),('location_id','in',docs.location_ids.ids),('product_id','=',uniq_product.id),('date','>=',docs.date_from),('date','<=',docs.date_to)])
             if docs.categ_id:
                 aout_stock_move_lines = out_stock_move_lines.search([('state','=','done'),('product_id.categ_id','=',docs.categ_id.id),
-                ('location_dest_id','in',docs.location_ids.ids),('product_id','=',uniq_product),('date','>=',docs.date_from),('date','<=',docs.date_to)])
+                ('location_dest_id','in',docs.location_ids.ids),('product_id','=',uniq_product.id),('date','>=',docs.date_from),('date','<=',docs.date_to)])
                 ain_stock_move_lines = in_stock_move_lines.search([('state','=','done'),('product_id.categ_id','=',docs.categ_id.id),('location_id','in',docs.location_ids.ids),
-                ('product_id','=',uniq_product),('date','>=',docs.date_from),('date','<=',docs.date_to)])
+                ('product_id','=',uniq_product.id),('date','>=',docs.date_from),('date','<=',docs.date_to)])
             
             for out_line in aout_stock_move_lines:
                 #stock in Transit
