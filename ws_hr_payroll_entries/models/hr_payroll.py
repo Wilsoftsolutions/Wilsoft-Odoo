@@ -33,26 +33,6 @@ class HrPayslip(models.Model):
         for payslip in self:
             data=[]
             
-                
-            """Attendance Count"""
-            attendances = self.env['hr.attendance'].search([('employee_id','=',payslip.employee_id.id),('att_date','>=',payslip.date_from),('att_date','<=',payslip.date_to)])
-            attendance_day=0
-            late_count = 0
-            for att in attendances:
-                attendance_day += att.att_count
-                if att.attendance_status=='16':
-                    late_count += 1
-            deducted_late_count =  late_count - payslip.employee_id.policy_id.number_of_late 
-            if   deducted_late_count < 0:
-                deducted_late_count = 0   
-            att_end = self.env['hr.work.entry.type'].search([('code','=','WORK100')], limit=1)    
-            data.append((0,0,{
-              'payslip_id': payslip.id,
-              'work_entry_type_id': att_end.id,
-              'name': att_end.name,
-              'number_of_days':attendance_day,
-            }))
-            
             """Leave Count"""
             leaves = self.env['hr.leave'].search([('employee_id','=',payslip.employee_id.id),('date_from','>=',payslip.date_from),('date_to','<=',payslip.date_to),('state','=','validate')])
             leave_day=0
@@ -94,11 +74,36 @@ class HrPayslip(models.Model):
               'number_of_days':rest_day_count,
             }))
             
-            """Absent Count"""
+            
+            """Attendance Count"""
+            attendances = self.env['hr.attendance'].search([('employee_id','=',payslip.employee_id.id),('att_date','>=',payslip.date_from),('att_date','<=',payslip.date_to)])
+            attendance_day=0
+            late_count = 0
+            for att in attendances:
+                attendance_day += att.att_count
+                if att.attendance_status=='16':
+                    late_count += 1
+            deducted_late_count =  late_count - payslip.employee_id.policy_id.number_of_late 
+            if   deducted_late_count < 0:
+                deducted_late_count = 0   
+            att_end = self.env['hr.work.entry.type'].search([('code','=','WORK100')], limit=1)    
             total_days = attendance_day + leave_day + rest_day_count
             absent_day = (day - total_days)
+            
             if absent_day < 0:
+               attendance_day = attendance_day + absent_day
                absent_day=0
+               
+            data.append((0,0,{
+              'payslip_id': payslip.id,
+              'work_entry_type_id': att_end.id,
+              'name': att_end.name,
+              'number_of_days':attendance_day,
+            }))
+            
+            """Absent Count"""
+            
+            
             absent_day_end = self.env['hr.work.entry.type'].search([('code','=','OUT')], limit=1)
             if payslip.employee_id.leave_ded==False:
                 data.append((0,0,{
