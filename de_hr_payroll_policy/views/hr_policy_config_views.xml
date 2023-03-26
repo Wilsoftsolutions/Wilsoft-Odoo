@@ -19,7 +19,8 @@
                         </group>
                         <group>
                             
-                              
+                            <field name="date_from" />
+                            <field name="date_to" />  
                             <field name="shift_start_time" />
                             <field name="shift_end_time" />
                             <field name="company_id" />  
