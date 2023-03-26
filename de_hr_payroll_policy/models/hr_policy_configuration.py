@@ -18,8 +18,8 @@ class HRPolicyConfiguration(models.Model):
     number_of_late = fields.Float(string='Number of Late', required=True)
     number_of_short = fields.Float(string='Number of Short', required=True)
     
-    date_from = fields.Float(string='Time From') 
-    date_to = fields.Float(string='Time To') 
+    date_from = fields.Date(string='Time From') 
+    date_to = fields.Date(string='Time To') 
     
     leave_ded = fields.Float(string='Leave Deduction', required=True)
     shift_start_time = fields.Float(string='Shift Start Time', required=True)

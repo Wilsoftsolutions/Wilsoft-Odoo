@@ -83,6 +83,7 @@ class HrPayslip(models.Model):
                 attendance_day += att.att_count
                 if att.attendance_status=='16':
                     late_count += 1
+                    
             deducted_late_count =  late_count - payslip.employee_id.policy_id.number_of_late 
             if   deducted_late_count < 0:
                 deducted_late_count = 0   
