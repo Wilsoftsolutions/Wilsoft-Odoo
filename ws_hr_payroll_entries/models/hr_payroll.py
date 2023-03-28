@@ -33,34 +33,6 @@ class HrPayslip(models.Model):
         for payslip in self:
             data=[]
             
-            """Leave Count"""
-            day = (payslip.date_to - payslip.date_from).days + 1
-            
-            ldayss = (payslip.date_to - payslip.date_from).days + 1
-            lstart_date = payslip.date_from
-            if payslip.contract_id.date_start > payslip.date_from:
-                ldayss = (payslip.date_to - payslip.contract_id.date_start).days + 1
-                lstart_date = payslip.contract_id.date_start
-            leave_day=0    
-            for ia in range(ldayss):
-                lstart_date = lstart_date + timedelta(1)    
-                leaves = self.env['hr.leave'].search([('employee_id','=',payslip.employee_id.id),('request_date_from','<=',lstart_date),('request_date_to','>=',lstart_date),('state','=','validate')])
-                for lv in leaves:
-                    if lv.number_of_days > 1:
-                        leave_day += 1
-                    else:
-                        leave_day += lv.number_of_days   
-            
-            
-            
-            lv_end = self.env['hr.work.entry.type'].search([('code','=','LEAVE110')], limit=1)    
-            data.append((0,0,{
-              'payslip_id': payslip.id,
-              'work_entry_type_id': lv_end.id,
-              'name': lv_end.name,
-              'number_of_days':leave_day,
-            }))
-            
             """Rest Day Count"""
             day = (payslip.date_to - payslip.date_from).days + 1
             
@@ -71,6 +43,7 @@ class HrPayslip(models.Model):
                 start_date = payslip.contract_id.date_start
             rest_day_count=0
             for ia in range(dayss):
+                is_rest_dau=0
                 start_date = start_date + timedelta(1)
                 attendance_present = self.env['resource.calendar.attendance'].sudo().search([('dayofweek','=',start_date.weekday()),('calendar_id','=',payslip.employee_id.resource_calendar_id.id)], limit=1)
                 attendd=self.env['hr.attendance'].search([('employee_id' ,'=', payslip.employee_id.id),('att_date' ,'=', start_date)], limit=1) 
@@ -79,7 +52,7 @@ class HrPayslip(models.Model):
                     remain_day = 1 - attendd.att_count
                 if not attendance_present:
                     rest_day_count+= 1 - remain_day 
-                    
+                    is_rest_dau=1
                 current_shift = self.env['resource.calendar'].sudo().search([('company_id','=',payslip.employee_id.company_id.id)], limit=1)
                 if payslip.employee_id.resource_calendar_id: 
                     current_shift = payslip.employee_id.resource_calendar_id  
@@ -89,8 +62,17 @@ class HrPayslip(models.Model):
                     gazetted_date_to = gazetted_day.date_to +relativedelta(hours=+5)
                     if str(start_date.strftime('%y-%m-%d')) >= str(gazetted_date_from.strftime('%y-%m-%d')) and str(start_date.strftime('%y-%m-%d')) <= str(gazetted_date_to.strftime('%y-%m-%d')): 
                         rest_day_count += 1
-                        
-                        
+                        is_rest_dau=1
+                """Leave Count"""
+                    
+                if is_rest_dau==0:        
+                       
+                    leaves = self.env['hr.leave'].search([('employee_id','=',payslip.employee_id.id),('request_date_from','<=',start_date),('request_date_to','>=',start_date),('state','=','validate')])
+                    for lv in leaves:
+                        if lv.number_of_days > 1:
+                            leave_day += 1
+                        else:
+                            leave_day += lv.number_of_days         
                             
             rest_day_end = self.env['hr.work.entry.type'].search([('code','=','LEAVE100')], limit=1)    
             data.append((0,0,{
@@ -98,6 +80,13 @@ class HrPayslip(models.Model):
               'work_entry_type_id': rest_day_end.id,
               'name': rest_day_end.name,
               'number_of_days':rest_day_count,
+            }))
+            lv_end = self.env['hr.work.entry.type'].search([('code','=','LEAVE110')], limit=1)    
+            data.append((0,0,{
+              'payslip_id': payslip.id,
+              'work_entry_type_id': lv_end.id,
+              'name': lv_end.name,
+              'number_of_days':leave_day,
             }))
             
             
