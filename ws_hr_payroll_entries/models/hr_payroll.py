@@ -34,6 +34,7 @@ class HrPayslip(models.Model):
             data=[]
             
             """Rest Day Count"""
+            leave_day=0
             day = (payslip.date_to - payslip.date_from).days + 1
             
             dayss = (payslip.date_to - payslip.date_from).days + 1
