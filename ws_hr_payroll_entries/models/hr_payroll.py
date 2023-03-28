@@ -34,11 +34,22 @@ class HrPayslip(models.Model):
             data=[]
             
             """Leave Count"""
-            leaves = self.env['hr.leave'].search([('employee_id','=',payslip.employee_id.id),('date_from','>=',payslip.date_from),('date_to','<=',payslip.date_to),('state','=','validate')])
-            leave_day=0
+            day = (payslip.date_to - payslip.date_from).days + 1
             
-            for lv in leaves:
-                leave_day += lv.number_of_days
+            ldayss = (payslip.date_to - payslip.date_from).days + 1
+            lstart_date = payslip.date_from
+            if payslip.contract_id.date_start > payslip.date_from:
+                ldayss = (payslip.date_to - payslip.contract_id.date_start).days + 1
+                lstart_date = payslip.contract_id.date_start
+            leave_day=0    
+            for ia in range(ldayss):
+                lstart_date = start_date + timedelta(1)    
+                leaves = self.env['hr.leave'].search([('employee_id','=',payslip.employee_id.id),('date_from','>=',lstart_date),('date_to','<=',lstart_date),('state','=','validate')])
+                for lv in leaves:
+                    leave_day += lv.number_of_days
+            
+            
+            
             lv_end = self.env['hr.work.entry.type'].search([('code','=','LEAVE110')], limit=1)    
             data.append((0,0,{
               'payslip_id': payslip.id,
