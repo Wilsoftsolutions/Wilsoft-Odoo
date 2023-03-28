@@ -118,9 +118,10 @@ class HrPayslip(models.Model):
             absent_day = (day - total_days)
             
             if absent_day < 0:
-               attendance_day = attendance_day + absent_day
-               absent_day=0
-               
+                attendance_day = attendance_day + absent_day
+                absent_day=0
+            if attendance_day < 0:
+                attendance_day=0   
             data.append((0,0,{
               'payslip_id': payslip.id,
               'work_entry_type_id': att_end.id,
