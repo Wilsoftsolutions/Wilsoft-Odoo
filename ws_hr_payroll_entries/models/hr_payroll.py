@@ -64,8 +64,20 @@ class HrPayslip(models.Model):
                 if attendd:
                     remain_day = 1 - attendd.att_count
                 if not attendance_present:
-                    rest_day_count+= 1 - remain_day   
-                
+                    rest_day_count+= 1 - remain_day 
+                    
+                current_shift = self.env['resource.calendar'].sudo().search([('company_id','=',payslip.employee_id.company_id.id)], limit=1)
+                if payslip.employee_id.resource_calendar_id: 
+                    current_shift = payslip.employee_id.resource_calendar_id  
+                        
+                for gazetted_day in current_shift.global_leave_ids:
+                    gazetted_date_from = gazetted_day.date_from +relativedelta(hours=+5)
+                    gazetted_date_to = gazetted_day.date_to +relativedelta(hours=+5)
+                    if str(start_date.strftime('%y-%m-%d')) >= str(gazetted_date_from.strftime('%y-%m-%d')) and str(start_date.strftime('%y-%m-%d')) <= str(gazetted_date_to.strftime('%y-%m-%d')): 
+                        rest_day_count += 1
+                        
+                        
+                            
             rest_day_end = self.env['hr.work.entry.type'].search([('code','=','LEAVE100')], limit=1)    
             data.append((0,0,{
               'payslip_id': payslip.id,
