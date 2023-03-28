@@ -29,7 +29,7 @@ class HrPayslip(models.Model):
     def compute_sheet(self):
         for payslip in self: 
             for other_input in payslip.input_line_ids:
-                if other_input.code in ('LOAN','ADVSAL'):
+                if other_input.code in ('LOAN','ADVSAL','LOANNC'):
                     other_input.unlink()
             if payslip.contract_id:
                 contracts = payslip.contract_id
@@ -60,6 +60,7 @@ class HrPayslip(models.Model):
                                         'payslip_id': payslip.id,
                                         'paid': True,
                                     })
+                                    
             payslip.input_line_ids = data
         res = super(HrPayslip, self).compute_sheet()
         return res
