@@ -125,7 +125,10 @@ class PortalAttendanceReport(models.AbstractModel):
                 leaves = self.env['hr.leave'].sudo().search( [('employee_id','=',employee.id),('request_date_from','<=', start_date),('request_date_to','>=', start_date),('state','=','validate')] )
                 if absent=='1':
                     for leave in leaves:
-                        leave_day_count += leave.number_of_days 
+                        if leave.number_of_days > 1:
+                            leave_day_count += 1 
+                        else:
+                            leave_day_count += leave.number_of_days 
                         remarks = 'Leave'
                         absent='0'
                     
