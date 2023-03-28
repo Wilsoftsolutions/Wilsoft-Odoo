@@ -86,6 +86,7 @@ class HrAttendance(models.Model):
             test_check_out=0
             policy=attendance.employee_id.policy_id
             exist_policy = self.env['hr.policy.configuration'].search([('date_from','!=',False),('date_to','!=',False),('date_from','<=',attendance.att_date),('date_to','>=',attendance.att_date)], limit=1)
+            raise UserError(str(exist_policy.name))
             if exist_policy:
                 policy= exist_policy   
             exist_record=self.env['hr.attendance'].search([('employee_id','=',attendance.employee_id.id),('att_date','=',attendance.att_date)], order='check_in asc')
