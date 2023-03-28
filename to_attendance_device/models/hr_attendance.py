@@ -86,7 +86,7 @@ class HrAttendance(models.Model):
             test_check_out=0
             policy=attendance.employee_id.policy_id
             exist_policy = self.env['hr.policy.configuration'].search([('date_from','!=',False),('date_to','!=',False),('date_from','<=',attendance.att_date),('date_to','>=',attendance.att_date)], limit=1)
-            raise UserError(str(exist_policy.name))
+            
             if exist_policy:
                 policy= exist_policy   
             exist_record=self.env['hr.attendance'].search([('employee_id','=',attendance.employee_id.id),('att_date','=',attendance.att_date)], order='check_in asc')
@@ -108,12 +108,12 @@ class HrAttendance(models.Model):
                 if ext_att.check_out:
                     test_check_out =  ext_att.check_out + relativedelta(hours=+5)     
             policy_dayin = self.env['policy.day.attendance.in'].search([
-            ('policy_id' ,'=', attendance.employee_id.policy_id.id),
+            ('policy_id' ,'=', policy.id),
             ('date_from','<=',float(test_check_in.strftime('%H.%M'))),
             ('date_to','>=',float(test_check_in.strftime('%H.%M')))], order='date_from DESC', limit=1)
             
             policy_dayout = self.env['policy.day.attendance.out'].search([
-            ('policy_id' ,'=', attendance.employee_id.policy_id.id),
+            ('policy_id' ,'=', policy.id),
             ('date_from','<=',float(test_check_out.strftime('%H.%M'))),
             ('date_to','>=',float(test_check_out.strftime('%H.%M')))], order='date_from DESC', limit=1)
                     
