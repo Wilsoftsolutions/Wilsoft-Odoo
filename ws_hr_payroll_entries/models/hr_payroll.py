@@ -44,7 +44,7 @@ class HrPayslip(models.Model):
             leave_day=0    
             for ia in range(ldayss):
                 lstart_date = lstart_date + timedelta(1)    
-                leaves = self.env['hr.leave'].search([('employee_id','=',payslip.employee_id.id),('date_from','>=',lstart_date),('date_to','<=',lstart_date),('state','=','validate')])
+                leaves = self.env['hr.leave'].search([('employee_id','=',payslip.employee_id.id),('request_date_from','<=',lstart_date),('request_date_to','>=',lstart_date),('state','=','validate')])
                 for lv in leaves:
                     if lv.number_of_days > 1:
                         leave_day += 1
